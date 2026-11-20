@@ -1,5 +1,6 @@
 import { defineConfig, type Plugin } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
+import { VitePWA } from 'vite-plugin-pwa'
 import fs from 'node:fs'
 import path from 'node:path'
 
@@ -55,6 +56,41 @@ export default defineConfig({
   // relative Pfade: funktioniert unter https://<name>.github.io/<repo>/ unabhängig vom Repo-Namen
   base: './',
   define: { __APP_VERSION__: JSON.stringify(pkg.version) },
-  plugins: [svelte(), strokes()],
+  plugins: [
+    svelte(),
+    strokes(),
+    // Offline-Modus: Service Worker (Workbox)
+    VitePWA({
+      registerType: 'prompt', // Updates erst nach Tippen auf „Aktualisieren“
+      injectRegister: false, // Registrierung in src/lib/pwa.svelte.ts
+      manifest: false, // eigenes public/manifest.webmanifest
+      workbox: {
+        // fest gespeichert: App, HSK-Sets, Audio-Index (klein)
+        globPatterns: ['**/*.{js,css,html,svg,png,webmanifest}', 'data/sets/*.json', 'data/audio.json', 'data/sources.json'],
+        globIgnores: ['strokes/**', 'audio/**', 'ai-samples/**', 'data/dict.json'],
+        navigateFallback: 'index.html',
+        clientsClaim: true,
+        cleanupOutdatedCaches: true,
+        // bei Bedarf gespeichert (Namen auch in src/lib/offline.ts)
+        runtimeCaching: [
+          {
+            urlPattern: ({ url }) => url.pathname.includes('/strokes/'),
+            handler: 'CacheFirst',
+            options: { cacheName: 'zw-strokes', expiration: { maxEntries: 12000 } },
+          },
+          {
+            urlPattern: ({ url }) => url.pathname.includes('/audio/') && url.pathname.endsWith('.mp3'),
+            handler: 'CacheFirst',
+            options: { cacheName: 'zw-audio', expiration: { maxEntries: 15000 } },
+          },
+          {
+            urlPattern: ({ url }) => url.pathname.endsWith('/data/dict.json'),
+            handler: 'StaleWhileRevalidate',
+            options: { cacheName: 'zw-dict' },
+          },
+        ],
+      },
+    }),
+  ],
   server: { host: true },
 })

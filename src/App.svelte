@@ -1,6 +1,9 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import TabBar from './components/TabBar.svelte'
+  import Icon from './components/Icon.svelte'
+  import { scheduleWarmUp } from './lib/offline.svelte'
+  import { applyUpdate, pwa } from './lib/pwa.svelte'
   import { route } from './lib/router.svelte'
   import { app, initApp } from './lib/state.svelte'
   import Backup from './views/Backup.svelte'
@@ -26,6 +29,14 @@
   $effect(() => {
     void viewKey
     window.scrollTo(0, 0)
+  })
+
+  // Offline-Vorrat aktuell halten: nach dem Start und wenn sich Decks oder Auswahl ändern
+  $effect(() => {
+    if (!app.ready) return
+    void app.decks.reduce((n, d) => n + d.words.length, 0)
+    void app.settings.activeDecks.length
+    scheduleWarmUp()
   })
 </script>
 
@@ -64,9 +75,37 @@
     {/if}
   {/key}
   {#if !fullscreen}<TabBar />{/if}
+  {#if pwa.needRefresh && !fullscreen}
+    <div class="update fade-in" role="status">
+      <span class="grow">Neue Version verfügbar</span>
+      <button class="btn small primary" onclick={applyUpdate}>Aktualisieren</button>
+      <button class="icon-btn" aria-label="Später" onclick={() => (pwa.needRefresh = false)}><Icon name="close" size={18} /></button>
+    </div>
+  {/if}
 {/if}
 
 <style>
+  .update {
+    position: fixed;
+    z-index: 20;
+    left: 12px;
+    right: 12px;
+    top: calc(var(--safe-top) + 8px);
+    max-width: 536px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 6px 6px 16px;
+    border-radius: var(--radius);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    box-shadow: 0 6px 24px rgb(0 0 0 / 0.15);
+    font-weight: 600;
+  }
+  .grow {
+    flex: 1;
+  }
   .splash {
     min-height: 100dvh;
     display: flex;

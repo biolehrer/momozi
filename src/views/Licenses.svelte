@@ -116,6 +116,7 @@
       <li>Hanzi Writer – © David Chanin, MIT-Lizenz</li>
       <li>ts-fsrs (FSRS-Algorithmus) – © Open Spaced Repetition, MIT-Lizenz</li>
       <li>idb – © Jake Archibald, ISC-Lizenz</li>
+      <li>Workbox (Offline-Modus) – © Google, MIT-Lizenz</li>
       <li>Svelte – MIT-Lizenz</li>
       <li>Vite (nur zum Bauen) – MIT-Lizenz</li>
     </ul>

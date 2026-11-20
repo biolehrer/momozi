@@ -3,6 +3,8 @@
   import Header from '../components/Header.svelte'
   import Icon from '../components/Icon.svelte'
   import { isIos, isStandalone } from '../lib/platform'
+  import { cacheDictionary, offline, offlineStatus, storageUsageMB, type OfflineStatus } from '../lib/offline.svelte'
+  import { serviceWorkerActive } from '../lib/pwa.svelte'
   import { go } from '../lib/router.svelte'
   import { app, saveSettings } from '../lib/state.svelte'
   import { QUIZ_HINT, QUIZ_LABEL, QUIZ_TYPES, type QuizType, type Theme } from '../lib/types'
@@ -10,6 +12,31 @@
   let persisted = $state<boolean | null>(null)
   const ios = isIos()
   const standalone = isStandalone()
+
+  let ostatus = $state<OfflineStatus | null>(null)
+  let usage = $state<number | null>(null)
+  let dictBusy = $state(false)
+  const swActive = serviceWorkerActive()
+
+  async function refreshOffline() {
+    ;[ostatus, usage] = await Promise.all([offlineStatus(), storageUsageMB()])
+  }
+
+  async function saveDict() {
+    dictBusy = true
+    try {
+      await cacheDictionary()
+    } catch {
+      /* offline o. Ä. */
+    }
+    dictBusy = false
+    await refreshOffline()
+  }
+
+  // nach dem Vorladen den Stand neu anzeigen
+  $effect(() => {
+    if (!offline.running) void refreshOffline()
+  })
 
   onMount(async () => {
     persisted = (await navigator.storage?.persisted?.()) ?? null
@@ -91,6 +118,45 @@
     {/each}
   </div>
 
+  <p class="section-title">Offline</p>
+  <div class="card stack small offline">
+    <div class="row">
+      <span class="spacer">App ohne Internet nutzbar</span>
+      {#if swActive}
+        <span class="ok"><Icon name="check" size={18} stroke={3} /> bereit</span>
+      {:else}
+        <span class="muted">ab dem nächsten Öffnen</span>
+      {/if}
+    </div>
+    <div class="row">
+      <span class="spacer">Strichfolgen & Aussprache deiner Decks</span>
+      {#if offline.running}
+        <span class="muted">lädt {offline.done}/{offline.total}</span>
+      {:else if ostatus}
+        {#if ostatus.have >= ostatus.total}
+          <span class="ok"><Icon name="check" size={18} stroke={3} /> gespeichert</span>
+        {:else}
+          <span class="muted">{ostatus.have}/{ostatus.total}</span>
+        {/if}
+      {/if}
+    </div>
+    {#if offline.running && offline.total}
+      <div class="bar"><div class="fill" style:width="{(offline.done / offline.total) * 100}%"></div></div>
+    {/if}
+    <div class="row">
+      <span class="spacer">
+        <span>Wörterbuch für die Suche</span>
+        <span class="muted sub">ca. 5 MB – wird sonst beim ersten Suchen gespeichert</span>
+      </span>
+      {#if ostatus?.dict}
+        <span class="ok"><Icon name="check" size={18} stroke={3} /> gespeichert</span>
+      {:else}
+        <button class="btn small" disabled={dictBusy || !navigator.onLine} onclick={saveDict}>{dictBusy ? 'Lädt …' : 'Speichern'}</button>
+      {/if}
+    </div>
+    {#if usage !== null}<p class="muted">Belegter Speicher insgesamt: {usage} MB</p>{/if}
+  </div>
+
   <p class="section-title">App & Daten</p>
   <div class="card stack small">
     <p>Alle Daten bleiben auf diesem Gerät. Es gibt kein Konto und keine Übertragung an einen Server.</p>
@@ -158,6 +224,31 @@
   }
   .backup-link {
     margin-top: 12px;
+  }
+  .offline .row {
+    gap: 10px;
+  }
+  .ok {
+    color: var(--good);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .sub {
+    display: block;
+  }
+  .bar {
+    height: 6px;
+    border-radius: 3px;
+    background: var(--surface-2);
+    overflow: hidden;
+  }
+  .fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.2s;
   }
   .card p {
     margin: 0;

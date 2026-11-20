@@ -12,6 +12,9 @@ Web-App zum Üben chinesischer Schriftzeichen (Kurzzeichen) – für das Handy g
 - **Neue Wörter** werden erst vorgeführt (Strichfolge-Animation) und dann nachgezeichnet
 - **Aussprache** mit echten Aufnahmen, Lücken mit gekennzeichneter KI-Stimme (abschaltbares automatisches Abspielen); bei Pinyin- und Ton-Abfragen erst nach der Antwort
 - **Spaced Repetition** mit FSRS, jede Abfrageart wird einzeln geplant
+- **Offline nutzbar** (Service Worker): App und HSK-Sets fest gespeichert, Strichfolgen und Aussprache der eigenen/aktiven Decks werden im Hintergrund vorgeladen, das Wörterbuch beim ersten Suchen; Updates nach Tippen auf „Aktualisieren“
+- **Eigene Decks zusammenstellen:** HSK-Wörter ankreuzen, im Wörterbuch suchen oder die Vokabelliste aus dem Kurs einfügen; Decks als Datei teilen und importieren
+- **Sicherung** des Lernstands als Datei (Teilen-Menü), Laden mit Zusammenführen oder Ersetzen; dezente Erinnerung
 - Alle Daten bleiben lokal auf dem Gerät (IndexedDB), kein Konto, kein Server
 
 ## Entwickeln
@@ -28,6 +31,7 @@ Die App läuft dann unter http://localhost:5173. Zum Testen auf dem Handy im sel
 ```bash
 npm run check   # Typprüfung
 npm run build   # fertige Seite in dist/
+npm run preview # fertige Seite lokal ansehen – nur hier läuft der Service Worker (Offline-Modus)
 ```
 
 ## Daten neu erzeugen

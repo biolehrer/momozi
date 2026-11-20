@@ -30,6 +30,8 @@ Sprecher, Lizenz und Originalseite jeder Audiodatei stehen in `public/audio/CRED
 | [hanzi-writer](https://github.com/chanind/hanzi-writer) (David Chanin) | Strichfolge-Animation, Nachzeichnen | MIT |
 | [ts-fsrs](https://github.com/open-spaced-repetition/ts-fsrs) (Open Spaced Repetition) | Spaced-Repetition-Algorithmus FSRS | MIT |
 | [idb](https://github.com/jakearchibald/idb) (Jake Archibald) | IndexedDB-Hilfsfunktionen | ISC |
+| [Workbox](https://github.com/GoogleChrome/workbox) (Google) | Service Worker für den Offline-Modus | MIT |
+| [vite-plugin-pwa](https://github.com/vite-pwa/vite-plugin-pwa) | erzeugt den Service Worker (nur beim Bauen) | MIT |
 | [Svelte](https://svelte.dev) | Oberfläche | MIT |
 | [Vite](https://vite.dev) | Bauwerkzeug (nicht in der App enthalten) | MIT |
 
