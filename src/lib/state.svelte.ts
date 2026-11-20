@@ -10,6 +10,7 @@ export const DEFAULT_SETTINGS: Settings = {
   theme: 'auto',
   activeDecks: ['hsk1'],
   autoplay: true,
+  backupReminder: true,
 }
 
 export const app = $state({

@@ -3,9 +3,32 @@
   import Icon from '../components/Icon.svelte'
   import { go } from '../lib/router.svelte'
   import { app, createDeck, isActive, saveDeck, setActive } from '../lib/state.svelte'
+  import { importDeck, parseFile } from '../lib/backup'
 
   let creating = $state(false)
   let name = $state('')
+  let importError = $state('')
+  let fileInput: HTMLInputElement
+
+  /** Geteiltes Deck (Datei von Freund*innen) als neues eigenes Deck übernehmen */
+  async function onFile(e: Event) {
+    const input = e.currentTarget as HTMLInputElement
+    const f = input.files?.[0]
+    input.value = ''
+    if (!f) return
+    importError = ''
+    try {
+      const data = parseFile(await f.text())
+      if (data.type === 'backup') {
+        importError = 'Das ist eine Sicherung des ganzen Lernstands – laden kannst du sie unter Optionen › Sicherung & Übertragen.'
+        return
+      }
+      const deck = await importDeck(data)
+      go(`/deck?id=${deck.id}`)
+    } catch (x) {
+      importError = (x as Error).message
+    }
+  }
 
   async function create(e: SubmitEvent) {
     e.preventDefault()
@@ -63,7 +86,10 @@
       <div class="list-item muted">Noch keine eigenen Decks.</div>
     {/each}
   </div>
-  <p class="muted small hint">Der Schalter legt fest, ob ein Deck in die Übungen kommt.</p>
+  <p class="muted small hint">
+    Der Schalter legt fest, ob ein Deck in die tägliche Übung kommt. Geteilte Decks von anderen übernimmst du mit „Importieren“.
+  </p>
+  {#if importError}<div class="notice error fade-in">{importError}</div>{/if}
 
   {#if creating}
     <form class="card stack fade-in" onsubmit={create}>
@@ -83,10 +109,12 @@
 {#if !creating}
   <div class="dock">
     <div class="dock-inner">
+      <button class="btn" onclick={() => fileInput.click()}><Icon name="upload" /> Importieren</button>
       <button class="btn primary" onclick={() => (creating = true)}><Icon name="plus" /> Neues Deck</button>
     </div>
   </div>
 {/if}
+<input bind:this={fileInput} type="file" accept="application/json,.json" hidden onchange={onFile} />
 
 <style>
   .open {
@@ -99,5 +127,10 @@
   }
   .hint {
     margin: 8px 4px 16px;
+  }
+  .error {
+    background: var(--bad-soft);
+    color: var(--bad);
+    margin-bottom: 16px;
   }
 </style>

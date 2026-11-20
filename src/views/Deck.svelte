@@ -6,6 +6,7 @@
   import { displayPinyin, searchKey } from '../lib/pinyin'
   import { back, go, route } from '../lib/router.svelte'
   import { introducedKeys, overview, type Overview } from '../lib/srs'
+  import { deckFile, shareText } from '../lib/backup'
   import { app, isActive, removeDeck, saveDeck, setActive } from '../lib/state.svelte'
   import { wordKey, type Word } from '../lib/types'
 
@@ -50,6 +51,16 @@
     back('/decks')
   }
 
+  let shareMsg = $state('')
+
+  async function share() {
+    if (!custom) return
+    // Datei sofort bauen: das Teilen-Menü muss direkt aus dem Tippen heraus geöffnet werden
+    const f = deckFile(custom)
+    const r = await shareText(f.name, f.text, custom.name)
+    if (r === 'downloaded') shareMsg = `Deck als „${f.name}“ heruntergeladen – die Datei kannst du jetzt verschicken.`
+  }
+
   function openWord(w: Word) {
     go(`/wort?deck=${encodeURIComponent(id)}&k=${encodeURIComponent(wordKey(w))}`)
   }
@@ -58,6 +69,9 @@
 <Header {title} backTo="/decks">
   {#snippet actions()}
     {#if custom}
+      <button class="icon-btn" aria-label="Deck teilen" title="Deck teilen" disabled={!custom.words.length} onclick={share}>
+        <Icon name="share" />
+      </button>
       <button
         class="icon-btn"
         aria-label="Umbenennen"
@@ -87,6 +101,8 @@
         </div>
       </form>
     {/if}
+
+    {#if shareMsg}<div class="notice fade-in share-msg">{shareMsg}</div>{/if}
 
     <div class="card stack">
       {#if set}<div class="muted small">{set.description}</div>{/if}
@@ -159,6 +175,9 @@
   }
   .sub {
     display: block;
+  }
+  .share-msg {
+    margin-bottom: 12px;
   }
   .words {
     margin-top: 14px;

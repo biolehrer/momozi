@@ -3,6 +3,7 @@
   import TabBar from './components/TabBar.svelte'
   import { route } from './lib/router.svelte'
   import { app, initApp } from './lib/state.svelte'
+  import Backup from './views/Backup.svelte'
   import Deck from './views/Deck.svelte'
   import Decks from './views/Decks.svelte'
   import Home from './views/Home.svelte'
@@ -56,6 +57,8 @@
       <Settings />
     {:else if route.path === '/lizenzen'}
       <Licenses />
+    {:else if route.path === '/sicherung'}
+      <Backup />
     {:else}
       <Home />
     {/if}

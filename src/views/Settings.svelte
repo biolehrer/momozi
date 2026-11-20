@@ -107,7 +107,16 @@
     {:else if !standalone}
       <p><strong>Android:</strong> Im Chrome-Menü (⋮) „App installieren“ bzw. „Zum Startbildschirm hinzufügen“.</p>
     {/if}
-    <p class="muted">Sicherung und Teilen von Decks (Export/Import) kommen in der nächsten Version.</p>
+  </div>
+  <div class="list backup-link">
+    <button class="list-item" onclick={() => go('/sicherung')}>
+      <Icon name="shield" size={22} />
+      <span class="grow">
+        <span>Sicherung & Übertragen</span>
+        <span class="muted small block">Lernstand als Datei speichern oder laden</span>
+      </span>
+      <Icon name="chevron" size={20} />
+    </button>
   </div>
 
   <p class="section-title">Über</p>
@@ -146,6 +155,9 @@
   .autoplay {
     margin-top: 12px;
     cursor: pointer;
+  }
+  .backup-link {
+    margin-top: 12px;
   }
   .card p {
     margin: 0;

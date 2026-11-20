@@ -4,16 +4,28 @@
   import { app, deckName, install } from '../lib/state.svelte'
   import { overview, resumableSession, type Overview } from '../lib/srs'
   import { isIos, isStandalone } from '../lib/platform'
+  import Icon from '../components/Icon.svelte'
+  import { formatDate, needsBackup, shouldRemind, snoozeReminder, type BackupStatus } from '../lib/backup'
 
   let ov = $state<Overview | null>(null)
   let resumeLeft = $state(0)
   let resumeDeck = $state('')
+  let remind = $state<BackupStatus | null>(null)
+  /** roter Punkt am Sicherungs-Symbol: bleibt, auch wenn die Hinweiskarte weggetippt wurde */
+  let due = $state(false)
+
+  async function snooze() {
+    remind = null
+    await snoozeReminder(7)
+  }
   let showIosHint = $state(false)
 
   const HINT_KEY = 'zw-ios-hint-dismissed'
 
   onMount(async () => {
-    const [o, s] = await Promise.all([overview(), resumableSession()])
+    const [o, s, r, n] = await Promise.all([overview(), resumableSession(), shouldRemind(), needsBackup()])
+    remind = r
+    due = !!n
     ov = o
     resumeLeft = s ? s.items.length - s.index : 0
     resumeDeck = s?.deckId ? deckName(s.deckId) : ''
@@ -49,10 +61,19 @@
 <header class="hero">
   <div class="inner">
     <div class="logo zh" aria-hidden="true">字</div>
-    <div>
+    <div class="spacer">
       <h1>Zeichenweise</h1>
       <p class="muted small">{dateLabel}</p>
     </div>
+    <button
+      class="icon-btn backup-btn"
+      onclick={() => go('/sicherung')}
+      aria-label={due ? 'Sicherung – letzte Sicherung ist länger her' : 'Sicherung'}
+      title="Sicherung"
+    >
+      <Icon name="shield" size={26} />
+      {#if due}<span class="dot" aria-hidden="true"></span>{/if}
+    </button>
   </div>
 </header>
 
@@ -93,6 +114,23 @@
       {/each}
     </div>
   </div>
+
+  {#if remind}
+    <div class="remind fade-in">
+      <button class="remind-open" onclick={() => go('/sicherung')}>
+        <Icon name="shield" size={22} />
+        <span class="grow">
+          <span class="remind-title">Lernstand sichern?</span>
+          <span class="muted small">
+            {remind.lastAt ? `Letzte Sicherung: ${formatDate(remind.lastAt)}` : 'Noch keine Sicherung'} · kurz erklärt
+          </span>
+        </span>
+      </button>
+      <button class="icon-btn" aria-label="Später erinnern" title="Später erinnern" onclick={snooze}>
+        <Icon name="close" size={18} />
+      </button>
+    </div>
+  {/if}
 
   {#if install.event}
     <div class="notice row">
@@ -186,6 +224,49 @@
   .fill {
     height: 100%;
     background: var(--good);
+  }
+  .backup-btn {
+    position: relative;
+    color: var(--muted);
+    margin-right: -6px;
+  }
+  .dot {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--bad);
+    border: 2px solid var(--bg);
+  }
+  .remind {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px dashed var(--line);
+    border-radius: var(--radius);
+    padding: 4px 4px 4px 0;
+  }
+  .remind-open {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: none;
+    background: transparent;
+    text-align: left;
+    padding: 10px 4px 10px 14px;
+    cursor: pointer;
+    color: var(--good);
+  }
+  .remind-open .grow {
+    display: flex;
+    flex-direction: column;
+    color: var(--ink);
+  }
+  .remind-title {
+    font-weight: 600;
   }
   .chips {
     display: flex;

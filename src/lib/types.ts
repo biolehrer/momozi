@@ -81,6 +81,8 @@ export interface Settings {
   activeDecks: string[]
   /** Aussprache automatisch abspielen (aus z. B. in Bus und Bahn) */
   autoplay: boolean
+  /** dezent an eine Sicherung erinnern */
+  backupReminder: boolean
 }
 
 export type SessionItem =
