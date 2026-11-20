@@ -1,6 +1,8 @@
 // Sammelt echte Aussprache-Aufnahmen für die Wörter der HSK-Sets:
 //   1. Yue Tan (Universität Caen, über audio-cmn), CC BY-SA 3.0 US – Lesung wird mit dem Shtooka-Index geprüft
 //   2. Lingua Libre (Wikimedia Commons), CC0 / CC BY / CC BY-SA – nur für Wörter mit eindeutiger Lesung
+//   3. Lücken: KI-Stimme Kokoro v1.1-zh (Apache 2.0), deutlich als KI gekennzeichnet
+//      (braucht die Python-Umgebung .venv-tts, siehe scripts/tts/ki_aussprache.py; abschaltbar mit --no-ai)
 // Ergebnis:
 //   public/audio/*.mp3          Audiodateien
 //   public/data/audio.json      Index Wort -> Datei + Quelle/Namensnennung
@@ -10,6 +12,7 @@
 // Aufruf: npm run audio            (nutzt Zwischenspeicher in data-src/)
 //         npm run audio -- --refresh
 
+import { spawnSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
 import { displayPinyin, inputToNumeric, normalizeNumeric, searchKey, splitNumeric, toneSearchKey } from '../src/lib/pinyin.ts'
@@ -20,6 +23,8 @@ const AUDIO_DIR = path.join(ROOT, 'public', 'audio')
 const DATA_DIR = path.join(ROOT, 'public', 'data')
 const UA = 'open-data-build-script/0.1'
 const refresh = process.argv.includes('--refresh')
+const noAi = process.argv.includes('--no-ai')
+const AI = { model: 'Kokoro v1.1-zh', voice: 'zf_001', python: path.join(ROOT, '.venv-tts', 'bin', 'python') }
 
 const AUDIO_CMN = 'hugolpz/audio-cmn'
 const TAN_INDEX_URL = 'https://fsi-languages.yojik.eu/audiocollections/detailled/cmn-caen-tan/flac/index.tags.txt'
@@ -228,6 +233,29 @@ async function worker() {
 await Promise.all(Array.from({ length: 4 }, worker))
 console.log(`${done} Audiodateien heruntergeladen`)
 
+// ---------- KI-Stimme für die Lücken ----------
+// Nur Wörter ohne echte Aufnahme; Quelle "ai" (in der App mit „KI“-Abzeichen gekennzeichnet).
+
+const missingReal = [...words.values()].filter((w) => !chosen.has(keyOf(w)))
+const aiFile = (w) => `${hex(w.s)}_${toneSearchKey(w.n)}.ki.mp3`
+if (!noAi) {
+  const todo = missingReal.filter((w) => refresh || !fs.existsSync(path.join(AUDIO_DIR, aiFile(w))))
+  if (todo.length && fs.existsSync(AI.python)) {
+    console.log(`KI-Stimme (${AI.model}, ${AI.voice}) für ${todo.length} Wörter …`)
+    const r = spawnSync(AI.python, [path.join(ROOT, 'scripts', 'tts', 'ki_aussprache.py'), '--out', AUDIO_DIR, '--voice', AI.voice], {
+      input: JSON.stringify(todo.map((w) => ({ s: w.s, n: normalizeNumeric(w.n), id: aiFile(w).slice(0, -4) }))),
+      stdio: ['pipe', 'ignore', 'inherit'],
+      cwd: ROOT,
+    })
+    if (r.status !== 0) console.warn(`KI-Erzeugung fehlgeschlagen (Status ${r.status})`)
+  } else if (todo.length) {
+    console.warn(`Hinweis: ${todo.length} Wörter ohne KI-Aussprache – Python-Umgebung .venv-tts fehlt (siehe scripts/tts/ki_aussprache.py)`)
+  }
+  for (const w of missingReal) {
+    if (fs.existsSync(path.join(AUDIO_DIR, aiFile(w)))) chosen.set(keyOf(w), { word: w, src: 'ai' })
+  }
+}
+
 // ---------- Index, Namensnennung, Fehlliste ----------
 
 const index = {
@@ -244,36 +272,53 @@ const index = {
       url: 'https://lingualibre.org',
       note: 'MP3-Fassung von Wikimedia Commons',
     },
+    ai: {
+      name: `KI-Stimme: ${AI.model} (Stimme ${AI.voice})`,
+      license: 'Apache 2.0',
+      licenseUrl: 'https://www.apache.org/licenses/LICENSE-2.0',
+      url: 'https://huggingface.co/hexgrad/Kokoro-82M-v1.1-zh',
+      note: 'synthetisch erzeugt, keine echte Aufnahme; Lesung aus unserem Pinyin vorgegeben',
+    },
   },
   words: {},
 }
 const credits = ['Namensnennung für die Audiodateien in diesem Ordner', '']
 for (const [key, e] of [...chosen.entries()].sort()) {
-  const entry = { f: fileOf(e.word), s: e.src }
+  const entry = { f: e.src === 'ai' ? aiFile(e.word) : fileOf(e.word), s: e.src }
   if (e.src === 'll') Object.assign(entry, { a: e.author, l: e.license, p: e.page })
   index.words[key] = entry
   credits.push(
     e.src === 'tan'
       ? `${entry.f}\t${e.word.s}\tYue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)`
-      : `${entry.f}\t${e.word.s}\t${e.author} – ${e.license} – ${e.page} (MP3-Fassung von Wikimedia Commons)`,
+      : e.src === 'll'
+        ? `${entry.f}\t${e.word.s}\t${e.author} – ${e.license} – ${e.page} (MP3-Fassung von Wikimedia Commons)`
+        : `${entry.f}\t${e.word.s}\tKI-Stimme ${AI.model} (${AI.voice}), Apache 2.0 – synthetisch erzeugt, keine echte Aufnahme`,
   )
 }
 fs.writeFileSync(path.join(DATA_DIR, 'audio.json'), JSON.stringify(index))
 fs.writeFileSync(path.join(AUDIO_DIR, 'CREDITS.txt'), credits.join('\n') + '\n')
 
-const missing = [...words.values()].filter((w) => !chosen.has(keyOf(w)))
+// nicht mehr verwendete Dateien entfernen (z. B. KI-Datei, wenn inzwischen eine echte Aufnahme existiert)
+const used = new Set(Object.values(index.words).map((e) => e.f))
+for (const f of fs.readdirSync(AUDIO_DIR)) {
+  if (f.endsWith('.mp3') && !used.has(f)) fs.rmSync(path.join(AUDIO_DIR, f))
+}
+
 fs.writeFileSync(
   path.join(ROOT, 'data', 'audio-missing.txt'),
-  '# Wörter ohne freie Aufnahme – können z. B. auf https://lingualibre.org eingesprochen werden\n' +
-    missing.map((w) => `${w.s}\t${displayPinyin(w.n)}\t${w.set}`).join('\n') +
+  '# Wörter ohne echte freie Aufnahme – können z. B. auf https://lingualibre.org eingesprochen werden.\n' +
+    '# Spalten: Wort, Pinyin, Set, derzeit in der App (KI = KI-Stimme, - = ohne Ton)\n' +
+    missingReal.map((w) => `${w.s}\t${displayPinyin(w.n)}\t${w.set}\t${chosen.has(keyOf(w)) ? 'KI' : '-'}`).join('\n') +
     '\n',
 )
 
 for (const set of sets) {
   const all = [...words.values()].filter((w) => w.set === set.id)
   const has = all.filter((w) => chosen.has(keyOf(w)))
-  const tan = has.filter((w) => chosen.get(keyOf(w)).src === 'tan').length
-  console.log(`${set.name}: ${has.length}/${all.length} mit Aufnahme (Yue Tan ${tan}, Lingua Libre ${has.length - tan})`)
+  const count = (src) => has.filter((w) => chosen.get(keyOf(w)).src === src).length
+  console.log(
+    `${set.name}: ${has.length}/${all.length} mit Aussprache – echt ${count('tan') + count('ll')} (Yue Tan ${count('tan')}, Lingua Libre ${count('ll')}), KI ${count('ai')}`,
+  )
 }
-console.log(`ohne Aufnahme (${missing.length}): ${missing.map((w) => w.s).join(' ')}`)
+console.log(`ohne echte Aufnahme (${missingReal.length}): ${missingReal.map((w) => w.s).join(' ')}`)
 if (rejected.length) console.log('\nAussortiert:\n  - ' + rejected.join('\n  - '))

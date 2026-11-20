@@ -1,13 +1,14 @@
-# Wörter ohne freie Aufnahme – können z. B. auf https://lingualibre.org eingesprochen werden
-超市	chāo shì	hsk1
-大学生	dà xué shēng	hsk1
-歌	gē	hsk1
-还	hái	hsk1
-了	le	hsk1
-哪	nǎ	hsk1
-那儿	nàr	hsk1
-男朋友	nán péng you	hsk1
-女朋友	nǚ péng you	hsk1
-这儿	zhèr	hsk1
-中学生	zhōng xué shēng	hsk1
-做饭	zuò fàn	hsk1
+# Wörter ohne echte freie Aufnahme – können z. B. auf https://lingualibre.org eingesprochen werden.
+# Spalten: Wort, Pinyin, Set, derzeit in der App (KI = KI-Stimme, - = ohne Ton)
+超市	chāo shì	hsk1	KI
+大学生	dà xué shēng	hsk1	KI
+歌	gē	hsk1	KI
+还	hái	hsk1	KI
+了	le	hsk1	KI
+哪	nǎ	hsk1	KI
+那儿	nàr	hsk1	KI
+男朋友	nán péng you	hsk1	KI
+女朋友	nǚ péng you	hsk1	KI
+这儿	zhèr	hsk1	KI
+中学生	zhōng xué shēng	hsk1	KI
+做饭	zuò fàn	hsk1	KI

@@ -17,6 +17,7 @@
     }
     return [...m.values()].sort((a, b) => b.count - a.count)
   })
+  const aiCount = $derived(Object.values(audio.index?.words ?? {}).filter((e) => e.s === 'ai').length)
   onMount(async () => {
     try {
       sources = await loadSources()
@@ -64,7 +65,8 @@
   <section class="card">
     <h2>Aussprache</h2>
     <p>
-      Alle Aussprachen sind echte Aufnahmen. Wörter, für die es keine freie Aufnahme gibt, haben keine Lautsprecher-Taste.
+      Die Aussprachen sind echte Aufnahmen – bis auf wenige Wörter, für die es keine freie Aufnahme gibt. Diese spricht eine
+      KI-Stimme; sie sind an der Taste mit „KI“ gekennzeichnet.
     </p>
     <p>
       <strong>Yue Tan</strong> (Universität Caen, Shtooka-Projekt), © 2009, Lizenz
@@ -82,6 +84,15 @@
           <li>{sp.name} – {sp.license} ({sp.count} {sp.count === 1 ? 'Wort' : 'Wörter'})</li>
         {/each}
       </ul>
+    {/if}
+    {#if aiCount}
+      <p>
+        <strong>KI-Stimme</strong> ({aiCount} {aiCount === 1 ? 'Wort' : 'Wörter'}): synthetisch erzeugt mit
+        <a href="https://huggingface.co/hexgrad/Kokoro-82M-v1.1-zh" target="_blank" rel="noopener">Kokoro v1.1-zh</a> (Stimme
+        zf_001), Lizenz <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="noopener">Apache 2.0</a>. Die
+        chinesischen Trainingsdaten stellte die Firma LongMaoData frei zur Verfügung. Die Lesung jedes Wortes ist aus unserem Pinyin
+        vorgegeben. Keine echte Aufnahme.
+      </p>
     {/if}
     <p class="muted small">Die Zuordnung jeder Datei steht in <a href="audio/CREDITS.txt" target="_blank" rel="noopener">audio/CREDITS.txt</a>.</p>
   </section>

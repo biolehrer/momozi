@@ -10,7 +10,7 @@ Web-App zum Üben chinesischer Schriftzeichen (Kurzzeichen) – für das Handy g
   - **Töne** – Zeichen sehen, Ton jeder Silbe wischen oder tippen
   - **Bedeutung** – Zeichen sehen, deutsche Bedeutung erinnern
 - **Neue Wörter** werden erst vorgeführt (Strichfolge-Animation) und dann nachgezeichnet
-- **Aussprache** mit echten Aufnahmen (abschaltbares automatisches Abspielen); bei Pinyin- und Ton-Abfragen erst nach der Antwort
+- **Aussprache** mit echten Aufnahmen, Lücken mit gekennzeichneter KI-Stimme (abschaltbares automatisches Abspielen); bei Pinyin- und Ton-Abfragen erst nach der Antwort
 - **Spaced Repetition** mit FSRS, jede Abfrageart wird einzeln geplant
 - Alle Daten bleiben lokal auf dem Gerät (IndexedDB), kein Konto, kein Server
 
@@ -47,6 +47,13 @@ npm run audio
 ```
 
 Lädt echte Aufnahmen für alle Wörter der HSK-Sets (Yue Tan / Universität Caen über audio-cmn, ergänzt durch Lingua Libre), prüft Lesung und Lizenz und schreibt `public/audio/`, `public/data/audio.json` und die Namensnennung `public/audio/CREDITS.txt`. Wörter ohne freie Aufnahme landen in `data/audio-missing.txt` – sie können z. B. auf [Lingua Libre](https://lingualibre.org) eingesprochen werden und werden beim nächsten Lauf übernommen.
+
+Bis dahin spricht sie eine **KI-Stimme** ([Kokoro v1.1-zh](https://huggingface.co/hexgrad/Kokoro-82M-v1.1-zh), Apache 2.0), in der App mit „KI“ gekennzeichnet. Die Lesung wird aus unserem Pinyin vorgegeben. Dafür braucht es einmalig eine Python-Umgebung (sonst überspringt das Skript diesen Schritt, mit `--no-ai` auch absichtlich):
+
+```bash
+uv venv .venv-tts --python 3.12
+VIRTUAL_ENV=.venv-tts uv pip install "kokoro>=0.9" "misaki[zh]>=0.9" soundfile lameenc
+```
 
 Die App-Symbole entstehen mit `node scripts/make-icons.mjs` (SVG) und werden auf dem Mac mit `sips` in PNG umgewandelt.
 

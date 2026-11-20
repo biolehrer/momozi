@@ -30,6 +30,30 @@ const BASE = import.meta.env.BASE_URL
 let ctx: AudioContext | null = null
 let current: AudioBufferSourceNode | null = null
 const buffers = new Map<string, Promise<AudioBuffer>>()
+const gains = new Map<string, number>()
+
+/** Lautheit angleichen: Aufnahmen verschiedener Quellen sind unterschiedlich laut */
+const TARGET_RMS = 0.09
+const PEAK_LIMIT = 0.95
+
+function gainFor(file: string, buffer: AudioBuffer): number {
+  let g = gains.get(file)
+  if (g === undefined) {
+    const d = buffer.getChannelData(0)
+    let sum = 0
+    let peak = 0
+    for (let i = 0; i < d.length; i++) {
+      const v = d[i]
+      sum += v * v
+      const a = Math.abs(v)
+      if (a > peak) peak = a
+    }
+    const rms = Math.sqrt(sum / Math.max(1, d.length)) || 1
+    g = Math.min(TARGET_RMS / rms, PEAK_LIMIT / (peak || 1))
+    gains.set(file, g)
+  }
+  return g
+}
 
 export async function loadAudioIndex() {
   try {
@@ -97,7 +121,9 @@ export async function playWord(w: Word) {
     stopAudio()
     const src = c.createBufferSource()
     src.buffer = buffer
-    src.connect(c.destination)
+    const gain = c.createGain()
+    gain.gain.value = gainFor(entry.f, buffer)
+    src.connect(gain).connect(c.destination)
     const key = wordKey(w)
     src.onended = () => {
       if (current === src) {

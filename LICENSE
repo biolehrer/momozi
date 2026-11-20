@@ -28,4 +28,5 @@ siehe LICENSES.md:
   - public/data/dict.json, public/data/sets/*, data/hsk-overrides.json: CC BY-SA
   - Strichdaten (hanzi-writer-data) und daraus erzeugte App-Symbole: Arphic Public License
   - public/audio/*: CC BY-SA 3.0 US (Yue Tan) bzw. je Datei CC0 / CC BY / CC BY-SA 4.0
-    (Lingua Libre), siehe public/audio/CREDITS.txt
+    (Lingua Libre), siehe public/audio/CREDITS.txt; *.ki.mp3 sind mit dem Modell
+    Kokoro v1.1-zh (Apache 2.0) erzeugt und stehen wie dieser Code unter MIT

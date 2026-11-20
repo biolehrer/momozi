@@ -25,12 +25,14 @@ Namensnennung für die Audiodateien in diesem Ordner
 4e2d-5348_zhong1wu3.mp3	中午	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 4e2d-56fd_zhong1guo2.mp3	中国	CanonNi – CC0 – https://commons.wikimedia.org/wiki/File%3ALL-Q9192_(cmn)-CanonNi-%E4%B8%AD%E5%9B%BD.wav (MP3-Fassung von Wikimedia Commons)
 4e2d-5b66_zhong1xue2.mp3	中学	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
+4e2d-5b66-751f_zhong1xue2sheng1.ki.mp3	中学生	KI-Stimme Kokoro v1.1-zh (zf_001), Apache 2.0 – synthetisch erzeugt, keine echte Aufnahme
 4e2d-6587_zhong1wen2.mp3	中文	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 4e5d_jiu3.mp3	九	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 4e5f_ye3.mp3	也	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 4e66_shu1.mp3	书	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 4e66-5e97_shu1dian4.mp3	书店	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 4e70_mai3.mp3	买	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
+4e86_le5.ki.mp3	了	KI-Stimme Kokoro v1.1-zh (zf_001), Apache 2.0 – synthetisch erzeugt, keine echte Aufnahme
 4e8b_shi4.mp3	事	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 4e8c_er4.mp3	二	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 4e94_wu3.mp3	五	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
@@ -50,6 +52,7 @@ Namensnennung für die Audiodateien in diesem Ordner
 4f60-4eec_ni3men5.mp3	你们	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 4fbf-5b9c_pian2yi5.mp3	便宜	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 505a_zuo4.mp3	做	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
+505a-996d_zuo4fan4.ki.mp3	做饭	KI-Stimme Kokoro v1.1-zh (zf_001), Apache 2.0 – synthetisch erzeugt, keine echte Aufnahme
 513f-5b50_er2zi5.mp3	儿子	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 5143_yuan2.mp3	元	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 5148-751f_xian1sheng5.mp3	先生	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
@@ -92,6 +95,7 @@ Namensnennung für die Audiodateien in diesem Ordner
 5462_ne5.mp3	呢	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 548c_he2.mp3	和	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 54e5-54e5_ge1ge5.mp3	哥哥	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
+54ea_na3.ki.mp3	哪	KI-Stimme Kokoro v1.1-zh (zf_001), Apache 2.0 – synthetisch erzeugt, keine echte Aufnahme
 54ea-4e9b_na3xie1.mp3	哪些	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 54ea-513f_na3r5.mp3	哪儿	CanonNi – CC0 – https://commons.wikimedia.org/wiki/File%3ALL-Q9192_(cmn)-CanonNi-%E5%93%AA%E5%84%BF.wav (MP3-Fassung von Wikimedia Commons)
 54ea-91cc_na3li3.mp3	哪里	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
@@ -112,6 +116,7 @@ Namensnennung für die Audiodateien in diesem Ordner
 591a-5c11_duo1shao5.mp3	多少	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 5927_da4.mp3	大	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 5927-5b66_da4xue2.mp3	大学	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
+5927-5b66-751f_da4xue2sheng1.ki.mp3	大学生	KI-Stimme Kokoro v1.1-zh (zf_001), Apache 2.0 – synthetisch erzeugt, keine echte Aufnahme
 5927-5bb6_da4jia1.mp3	大家	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 5929_tian1.mp3	天	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 5929-6c14_tian1qi4.mp3	天气	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
@@ -119,6 +124,7 @@ Namensnennung für die Audiodateien in diesem Ordner
 5973_nv3.mp3	女	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 5973-513f_nv3er2.mp3	女儿	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 5973-58eb_nv3shi4.mp3	女士	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
+5973-670b-53cb_nv3peng2you5.ki.mp3	女朋友	KI-Stimme Kokoro v1.1-zh (zf_001), Apache 2.0 – synthetisch erzeugt, keine echte Aufnahme
 5979_ta1.mp3	她	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 5979-4eec_ta1men5.mp3	她们	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 597d_hao3.mp3	好	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
@@ -194,6 +200,7 @@ Namensnennung für die Audiodateien in diesem Ordner
 676f-5b50_bei1zi5.mp3	杯子	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 684c-5b50_zhuo1zi5.mp3	桌子	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 6905-5b50_yi3zi5.mp3	椅子	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
+6b4c_ge1.ki.mp3	歌	KI-Stimme Kokoro v1.1-zh (zf_001), Apache 2.0 – synthetisch erzeugt, keine echte Aufnahme
 6b63-5728_zheng4zai4.mp3	正在	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 6c34_shui3.mp3	水	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 6c34-679c_shui3guo3.mp3	水果	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
@@ -219,6 +226,7 @@ Namensnennung für die Audiodateien in diesem Ordner
 7535-89c6_dian4shi4.mp3	电视	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 7535-8bdd_dian4hua4.mp3	电话	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 7537_nan2.mp3	男	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
+7537-670b-53cb_nan2peng2you5.ki.mp3	男朋友	KI-Stimme Kokoro v1.1-zh (zf_001), Apache 2.0 – synthetisch erzeugt, keine echte Aufnahme
 75c5_bing4.mp3	病	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 767d-5929_bai2tian1.mp3	白天	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 767e_bai3.mp3	百	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
@@ -255,14 +263,18 @@ Namensnennung für die Audiodateien in diesem Ordner
 8c22-8c22_xie4xie5.mp3	谢谢	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 8d35_gui4.mp3	贵	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 8d77-5e8a_qi3chuang2.mp3	起床	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
+8d85-5e02_chao1shi4.ki.mp3	超市	KI-Stimme Kokoro v1.1-zh (zf_001), Apache 2.0 – synthetisch erzeugt, keine echte Aufnahme
 8f66_che1.mp3	车	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 8fb9_bian1.mp3	边	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
+8fd8_hai2.ki.mp3	还	KI-Stimme Kokoro v1.1-zh (zf_001), Apache 2.0 – synthetisch erzeugt, keine echte Aufnahme
 8fd9_zhe4.mp3	这	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 8fd9-4e9b_zhe4xie1.mp3	这些	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
+8fd9-513f_zhe4r5.ki.mp3	这儿	KI-Stimme Kokoro v1.1-zh (zf_001), Apache 2.0 – synthetisch erzeugt, keine echte Aufnahme
 8fd9-8fb9_zhe4bian1.mp3	这边	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 8fd9-91cc_zhe4li3.mp3	这里	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 90a3_na4.mp3	那	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 90a3-4e9b_na4xie1.mp3	那些	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
+90a3-513f_na4r5.ki.mp3	那儿	KI-Stimme Kokoro v1.1-zh (zf_001), Apache 2.0 – synthetisch erzeugt, keine echte Aufnahme
 90a3-8fb9_na4bian5.mp3	那边	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 90a3-91cc_na4li5.mp3	那里	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)
 90fd_dou1.mp3	都	Yue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)

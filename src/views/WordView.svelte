@@ -3,6 +3,7 @@
   import Header from '../components/Header.svelte'
   import Icon from '../components/Icon.svelte'
   import SpeakButton from '../components/SpeakButton.svelte'
+  import { audioFor } from '../lib/audio.svelte'
   import WritingPad from '../components/WritingPad.svelte'
   import { loadSet } from '../lib/data'
   import { SENSE_SEP } from '../lib/meaning'
@@ -86,6 +87,9 @@
         {#if word.n}<span class="pinyin">{displayPinyin(word.n)}</span>{/if}
         <SpeakButton {word} size={44} />
       </div>
+      {#if audioFor(word)?.s === 'ai'}
+        <div class="muted small"><span class="badge ai">KI</span> Aussprache von einer KI-Stimme – keine echte Aufnahme</div>
+      {/if}
       <div class="meaning">{word.m}</div>
     </div>
 
@@ -142,6 +146,10 @@
   }
   .meaning {
     font-size: 1.1rem;
+  }
+  .badge.ai {
+    background: var(--hint);
+    color: var(--bg);
   }
   .senses {
     margin: 0;
