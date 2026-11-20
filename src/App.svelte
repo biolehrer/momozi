@@ -25,6 +25,8 @@
 
   const viewKey = $derived(route.path + '?' + route.query.toString())
   const fullscreen = $derived(route.path === '/ueben')
+  /** Formulare und Fließtext: auf großen Bildschirmen schmalere Spalte */
+  const narrow = $derived(['/einstellungen', '/lizenzen', '/sicherung', '/neu', '/bearbeiten'].includes(route.path))
 
   $effect(() => {
     void viewKey
@@ -49,46 +51,48 @@
 {:else if !app.ready}
   <div class="splash zh" aria-label="Lädt">字</div>
 {:else}
-  {#key viewKey}
-    {#if route.path === '/'}
-      <Home />
-    {:else if route.path === '/ueben'}
-      <Practice />
-    {:else if route.path === '/decks'}
-      <Decks />
-    {:else if route.path === '/deck'}
-      <Deck />
-    {:else if route.path === '/wort'}
-      <WordView />
-    {:else if route.path === '/neu' || route.path === '/bearbeiten'}
-      <WordForm />
-    {:else if route.path === '/suche' || route.path === '/auswahl'}
-      <Library />
-    {:else if route.path === '/einstellungen'}
-      <Settings />
-    {:else if route.path === '/lizenzen'}
-      <Licenses />
-    {:else if route.path === '/sicherung'}
-      <Backup />
-    {:else}
-      <Home />
+  <div class="shell" class:nav={!fullscreen} class:narrow>
+    {#key viewKey}
+      {#if route.path === '/'}
+        <Home />
+      {:else if route.path === '/ueben'}
+        <Practice />
+      {:else if route.path === '/decks'}
+        <Decks />
+      {:else if route.path === '/deck'}
+        <Deck />
+      {:else if route.path === '/wort'}
+        <WordView />
+      {:else if route.path === '/neu' || route.path === '/bearbeiten'}
+        <WordForm />
+      {:else if route.path === '/suche' || route.path === '/auswahl'}
+        <Library />
+      {:else if route.path === '/einstellungen'}
+        <Settings />
+      {:else if route.path === '/lizenzen'}
+        <Licenses />
+      {:else if route.path === '/sicherung'}
+        <Backup />
+      {:else}
+        <Home />
+      {/if}
+    {/key}
+    {#if !fullscreen}<TabBar />{/if}
+    {#if pwa.needRefresh && !fullscreen}
+      <div class="update fade-in" role="status">
+        <span class="grow">Neue Version verfügbar</span>
+        <button class="btn small primary" onclick={applyUpdate}>Aktualisieren</button>
+        <button class="icon-btn" aria-label="Später" onclick={() => (pwa.needRefresh = false)}><Icon name="close" size={18} /></button>
+      </div>
     {/if}
-  {/key}
-  {#if !fullscreen}<TabBar />{/if}
-  {#if pwa.needRefresh && !fullscreen}
-    <div class="update fade-in" role="status">
-      <span class="grow">Neue Version verfügbar</span>
-      <button class="btn small primary" onclick={applyUpdate}>Aktualisieren</button>
-      <button class="icon-btn" aria-label="Später" onclick={() => (pwa.needRefresh = false)}><Icon name="close" size={18} /></button>
-    </div>
-  {/if}
+  </div>
 {/if}
 
 <style>
   .update {
     position: fixed;
     z-index: 20;
-    left: 12px;
+    left: calc(var(--nav-w) + 12px);
     right: 12px;
     top: calc(var(--safe-top) + 8px);
     max-width: 536px;

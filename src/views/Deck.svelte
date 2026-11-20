@@ -135,7 +135,7 @@
     {/if}
 
     {#if words.length}
-      <div class="list words">
+      <div class="list words cols three">
         {#each shown as w (wordKey(w))}
           <button class="list-item" onclick={() => openWord(w)}>
             <span class="zh chars" lang="zh-Hans">{w.s}</span>

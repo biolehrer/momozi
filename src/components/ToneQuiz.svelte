@@ -2,6 +2,7 @@
   // Abfrage „Töne“: Zeichen sehen, Ton jeder Silbe angeben – per Taste oder Wischgeste
   // (waagerecht = 1, nach oben = 2, Haken ˇ = 3, nach unten = 4, Tippen = neutral).
   import SpeakButton from './SpeakButton.svelte'
+  import { consume, isPrimary, shortcut } from '../lib/keys'
   import { displayPinyin, markedSyllables, tonesOf } from '../lib/pinyin'
   import type { Word } from '../lib/types'
 
@@ -32,6 +33,18 @@
     answers[order[pos]] = t
     if (pos < order.length - 1) pos++
     else finished = true
+  }
+
+  function onKey(e: KeyboardEvent) {
+    const k = shortcut(e)
+    if (!k) return
+    if (!finished && /^[0-5]$/.test(k)) {
+      consume(e)
+      answer(k === '0' ? 5 : Number(k))
+    } else if (finished && isPrimary(k)) {
+      consume(e)
+      onrate(wrongCount === 0 ? 3 : 1)
+    }
   }
 
   // ---------- Wischgeste ----------
@@ -75,63 +88,73 @@
   const pathD = $derived(pts.length > 1 ? 'M' + pts.map((q) => `${q.x.toFixed(1)} ${q.y.toFixed(1)}`).join(' L') : '')
 </script>
 
-<div class="quiz fade-in">
-  <p class="label">Welcher Ton?</p>
+<svelte:window onkeydown={onKey} />
 
-  <div
-    class="area"
-    bind:this={area}
-    onpointerdown={down}
-    onpointermove={move}
-    onpointerup={up}
-    onpointercancel={() => (pts = [])}
-    role="application"
-    aria-label="Fläche für Tonzeichen-Geste"
-  >
-    <div class="chars" lang="zh-Hans">
-      {#each chars as c, i (i)}
-        {@const answered = answers[i] != null}
-        {@const ok = answers[i] === tones[i]}
-        <div class="cell" class:current={i === current} class:skip={tones[i] === null}>
-          <div class="syl" class:ok={answered && ok} class:wrong={answered && !ok}>
-            {#if tones[i] === null}
-              {finished ? syls[i] : ''}
-            {:else if answered}
-              {syls[i]}
-            {:else}
-              &nbsp;
-            {/if}
-          </div>
-          <div class="zh char">{c}</div>
-        </div>
-      {/each}
-    </div>
-    {#if pathD}
-      <svg class="trail" aria-hidden="true"><path d={pathD} /></svg>
-    {/if}
+<div class="quiz quiz-layout fade-in">
+  <div class="q-side">
+    <p class="label">Welcher Ton?</p>
   </div>
 
-  {#if finished}
-    <div class="summary card">
-      <div class="pinyin-row">
-        <span class="pinyin">{displayPinyin(word.n)}</span>
-        <SpeakButton {word} auto size={40} />
+  <div class="q-stage">
+    <div
+      class="area"
+      bind:this={area}
+      onpointerdown={down}
+      onpointermove={move}
+      onpointerup={up}
+      onpointercancel={() => (pts = [])}
+      role="application"
+      aria-label="Fläche für Tonzeichen-Geste"
+    >
+      <div class="chars" lang="zh-Hans">
+        {#each chars as c, i (i)}
+          {@const answered = answers[i] != null}
+          {@const ok = answers[i] === tones[i]}
+          <div class="cell" class:current={i === current} class:skip={tones[i] === null}>
+            <div class="syl" class:ok={answered && ok} class:wrong={answered && !ok}>
+              {#if tones[i] === null}
+                {finished ? syls[i] : ''}
+              {:else if answered}
+                {syls[i]}
+              {:else}
+                &nbsp;
+              {/if}
+            </div>
+            <div class="zh char">{c}</div>
+          </div>
+        {/each}
       </div>
-      <div class="muted">{word.m}</div>
-      <div class="verdict" class:ok={wrongCount === 0}>
-        {wrongCount === 0 ? 'Alle Töne richtig' : `${wrongCount} von ${order.length} falsch`}
-      </div>
+      {#if pathD}
+        <svg class="trail" aria-hidden="true"><path d={pathD} /></svg>
+      {/if}
     </div>
-  {:else}
-    <p class="muted small hint">Ton auf das Zeichen wischen oder unten tippen.<br />Töne in Grundform (ohne Tonsandhi).</p>
-  {/if}
+  </div>
+
+  <div class="q-after">
+    {#if finished}
+      <div class="summary card">
+        <div class="pinyin-row">
+          <span class="pinyin">{displayPinyin(word.n)}</span>
+          <SpeakButton {word} auto size={40} />
+        </div>
+        <div class="muted">{word.m}</div>
+        <div class="verdict" class:ok={wrongCount === 0}>
+          {wrongCount === 0 ? 'Alle Töne richtig' : `${wrongCount} von ${order.length} falsch`}
+        </div>
+      </div>
+    {:else}
+      <p class="muted small hint">
+        Ton auf das Zeichen wischen oder unten tippen<span class="fine-only"> – oder Taste 1–5</span>.<br />Töne in Grundform (ohne Tonsandhi).
+      </p>
+    {/if}
+  </div>
 </div>
 
 <div class="dock bottom">
   <div class="dock-inner">
     {#if finished}
       <button class="btn" class:good={wrongCount === 0} class:primary={wrongCount > 0} onclick={() => onrate(wrongCount === 0 ? 3 : 1)}>
-        Weiter
+        Weiter <kbd class="key">↵</kbd>
       </button>
     {:else}
       <div class="tones">
@@ -276,5 +299,20 @@
   .num {
     font-size: 0.75rem;
     color: var(--muted);
+  }
+  /* Querformat: große Wischfläche rechts */
+  @media (min-width: 900px) and (min-height: 560px) and (orientation: landscape) {
+    .q-stage {
+      width: 100%;
+    }
+    .area {
+      min-height: calc(100dvh - 160px);
+    }
+    .char {
+      font-size: clamp(5rem, 20vh, 10rem);
+    }
+    .syl {
+      font-size: 1.6rem;
+    }
   }
 </style>

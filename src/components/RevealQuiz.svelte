@@ -1,6 +1,7 @@
 <script lang="ts">
   // Abfragen „Pinyin“ und „Bedeutung“: Zeichen sehen, Antwort erinnern, aufdecken, selbst bewerten.
   import SpeakButton from './SpeakButton.svelte'
+  import { consume, isPrimary, shortcut } from '../lib/keys'
   import { displayPinyin } from '../lib/pinyin'
   import type { Word } from '../lib/types'
 
@@ -8,43 +9,63 @@
 
   let shown = $state(false)
   const size = $derived([...word.s].length > 3 ? 'm' : 'l')
+
+  function onKey(e: KeyboardEvent) {
+    const k = shortcut(e)
+    if (!k) return
+    if (!shown && isPrimary(k)) {
+      consume(e)
+      shown = true
+    } else if (shown && (k === '1' || k === '2')) {
+      consume(e)
+      onrate(k === '1' ? 1 : 3)
+    }
+  }
 </script>
 
-<div class="quiz fade-in">
-  <p class="label">{type === 'pinyin' ? 'Wie spricht man das aus?' : 'Was bedeutet das?'}</p>
-  <div class="chars zh {size}" lang="zh-Hans">{word.s}</div>
+<svelte:window onkeydown={onKey} />
 
-  <!-- Bei der Pinyin-Abfrage erst nach dem Aufdecken – sonst wäre die Antwort hörbar -->
-  <div class="speak-slot">
-    {#if type === 'meaning' || shown}
-      {#key shown}
-        <SpeakButton {word} auto={shown} />
-      {/key}
-    {/if}
+<div class="quiz quiz-layout fade-in">
+  <div class="q-side">
+    <p class="label">{type === 'pinyin' ? 'Wie spricht man das aus?' : 'Was bedeutet das?'}</p>
+  </div>
+  <div class="q-stage">
+    <div class="chars zh {size}" lang="zh-Hans">{word.s}</div>
   </div>
 
-  <div class="answer" class:shown>
-    {#if shown}
-      {#if type === 'pinyin'}
-        <div class="main">{displayPinyin(word.n)}</div>
-        <div class="sub">{word.m}</div>
-      {:else}
-        <div class="main">{word.m}</div>
-        {#if word.n}<div class="sub">{displayPinyin(word.n)}</div>{/if}
+  <div class="q-after">
+    <!-- Bei der Pinyin-Abfrage erst nach dem Aufdecken – sonst wäre die Antwort hörbar -->
+    <div class="speak-slot">
+      {#if type === 'meaning' || shown}
+        {#key shown}
+          <SpeakButton {word} auto={shown} />
+        {/key}
       {/if}
-    {:else}
-      <div class="placeholder">Antwort im Kopf überlegen …</div>
-    {/if}
+    </div>
+
+    <div class="answer" class:shown>
+      {#if shown}
+        {#if type === 'pinyin'}
+          <div class="main">{displayPinyin(word.n)}</div>
+          <div class="sub">{word.m}</div>
+        {:else}
+          <div class="main">{word.m}</div>
+          {#if word.n}<div class="sub">{displayPinyin(word.n)}</div>{/if}
+        {/if}
+      {:else}
+        <div class="placeholder">Antwort im Kopf überlegen …</div>
+      {/if}
+    </div>
   </div>
 </div>
 
 <div class="dock bottom">
   <div class="dock-inner">
     {#if !shown}
-      <button class="btn primary" onclick={() => (shown = true)}>Aufdecken</button>
+      <button class="btn primary" onclick={() => (shown = true)}>Aufdecken <kbd class="key">↵</kbd></button>
     {:else}
-      <button class="btn bad" onclick={() => onrate(1)}>Nochmal</button>
-      <button class="btn good" onclick={() => onrate(3)}>Gewusst</button>
+      <button class="btn bad" onclick={() => onrate(1)}>Nochmal <kbd class="key">1</kbd></button>
+      <button class="btn good" onclick={() => onrate(3)}>Gewusst <kbd class="key">2</kbd></button>
     {/if}
   </div>
 </div>
@@ -105,5 +126,23 @@
   }
   .placeholder {
     color: var(--muted);
+  }
+  /* Querformat: Zeichen groß auf einer eigenen Fläche rechts */
+  @media (min-width: 900px) and (min-height: 560px) and (orientation: landscape) {
+    .q-stage {
+      width: 100%;
+      min-height: calc(100dvh - 160px);
+      justify-content: center;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .chars.l {
+      font-size: clamp(8rem, 28vh, 15rem);
+    }
+    .chars.m {
+      font-size: clamp(5rem, 14vh, 8rem);
+    }
   }
 </style>

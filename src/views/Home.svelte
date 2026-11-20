@@ -62,7 +62,8 @@
   <div class="inner">
     <div class="logo zh" aria-hidden="true">字</div>
     <div class="spacer">
-      <h1>Zeichenweise</h1>
+      <!-- mit Seitenleiste steht der App-Name schon links -->
+      <h1><span class="phone-title">Zeichenweise</span><span class="wide-title">Heute</span></h1>
       <p class="muted small">{dateLabel}</p>
     </div>
     <button
@@ -77,91 +78,101 @@
   </div>
 </header>
 
-<div class="page stack">
-  <div class="tiles">
-    <div class="tile">
-      <span class="num">{ov ? ov.due : '–'}</span>
-      <span class="lbl">fällig</span>
+<div class="page home">
+  <div class="col stack">
+    <div class="tiles">
+      <div class="tile">
+        <span class="num">{ov ? ov.due : '–'}</span>
+        <span class="lbl">fällig</span>
+      </div>
+      <div class="tile">
+        <span class="num">{ov ? ov.newToday : '–'}</span>
+        <span class="lbl">neue Wörter</span>
+      </div>
     </div>
-    <div class="tile">
-      <span class="num">{ov ? ov.newToday : '–'}</span>
-      <span class="lbl">neue Wörter</span>
-    </div>
+
+    {#if ov}
+      <div class="card">
+        <div class="row">
+          <span>Gelernt</span>
+          <span class="spacer"></span>
+          <span class="muted">{ov.learned} von {ov.total} Wörtern</span>
+        </div>
+        <div class="bar"><div class="fill" style:width="{ov.total ? (ov.learned / ov.total) * 100 : 0}%"></div></div>
+      </div>
+    {/if}
+    <div class="start-inline">{@render start()}</div>
   </div>
 
-  {#if ov}
+  <div class="col stack">
     <div class="card">
       <div class="row">
-        <span>Gelernt</span>
+        <span>Aktive Decks</span>
         <span class="spacer"></span>
-        <span class="muted">{ov.learned} von {ov.total} Wörtern</span>
+        <button class="btn ghost small" onclick={() => go('/decks')}>Ändern</button>
       </div>
-      <div class="bar"><div class="fill" style:width="{ov.total ? (ov.learned / ov.total) * 100 : 0}%"></div></div>
+      <div class="chips">
+        {#each app.settings.activeDecks as id (id)}
+          <span class="badge">{deckName(id)}</span>
+        {:else}
+          <span class="muted small">Kein Deck aktiv</span>
+        {/each}
+      </div>
     </div>
-  {/if}
 
-  <div class="card">
-    <div class="row">
-      <span>Aktive Decks</span>
-      <span class="spacer"></span>
-      <button class="btn ghost small" onclick={() => go('/decks')}>Ändern</button>
-    </div>
-    <div class="chips">
-      {#each app.settings.activeDecks as id (id)}
-        <span class="badge">{deckName(id)}</span>
-      {:else}
-        <span class="muted small">Kein Deck aktiv</span>
-      {/each}
-    </div>
-  </div>
-
-  {#if remind}
-    <div class="remind fade-in">
-      <button class="remind-open" onclick={() => go('/sicherung')}>
-        <Icon name="shield" size={22} />
-        <span class="grow">
-          <span class="remind-title">Lernstand sichern?</span>
-          <span class="muted small">
-            {remind.lastAt ? `Letzte Sicherung: ${formatDate(remind.lastAt)}` : 'Noch keine Sicherung'} · kurz erklärt
+    {#if remind}
+      <div class="remind fade-in">
+        <button class="remind-open" onclick={() => go('/sicherung')}>
+          <Icon name="shield" size={22} />
+          <span class="grow">
+            <span class="remind-title">Lernstand sichern?</span>
+            <span class="muted small">
+              {remind.lastAt ? `Letzte Sicherung: ${formatDate(remind.lastAt)}` : 'Noch keine Sicherung'} · kurz erklärt
+            </span>
           </span>
-        </span>
-      </button>
-      <button class="icon-btn" aria-label="Später erinnern" title="Später erinnern" onclick={snooze}>
-        <Icon name="close" size={18} />
-      </button>
-    </div>
-  {/if}
-
-  {#if install.event}
-    <div class="notice row">
-      <span class="spacer">Zeichenweise als App installieren?</span>
-      <button class="btn small primary" onclick={installApp}>Installieren</button>
-    </div>
-  {/if}
-
-  {#if showIosHint}
-    <div class="notice">
-      <strong>Tipp fürs iPhone:</strong> In Safari auf „Teilen“ und dann „Zum Home-Bildschirm“ tippen.
-      Achtung: Safari und die installierte App speichern den Fortschritt getrennt – am besten gleich die App nutzen.
-      <div class="row" style="margin-top:8px">
-        <span class="spacer"></span>
-        <button class="btn small" onclick={dismissHint}>Verstanden</button>
+        </button>
+        <button class="icon-btn" aria-label="Später erinnern" title="Später erinnern" onclick={snooze}>
+          <Icon name="close" size={18} />
+        </button>
       </div>
-    </div>
-  {/if}
+    {/if}
+
+    {#if install.event}
+      <div class="notice row">
+        <span class="spacer">Zeichenweise als App installieren?</span>
+        <button class="btn small primary" onclick={installApp}>Installieren</button>
+      </div>
+    {/if}
+
+    {#if showIosHint}
+      <div class="notice">
+        <strong>Tipp fürs iPhone:</strong> In Safari auf „Teilen“ und dann „Zum Home-Bildschirm“ tippen.
+        Achtung: Safari und die installierte App speichern den Fortschritt getrennt – am besten gleich die App nutzen.
+        <div class="row" style="margin-top:8px">
+          <span class="spacer"></span>
+          <button class="btn small" onclick={dismissHint}>Verstanden</button>
+        </div>
+      </div>
+    {/if}
+  </div>
 </div>
 
-<div class="dock">
+{#snippet start()}
+  {#if resumeLeft > 0}
+    <button class="btn primary" onclick={() => go('/ueben?fortsetzen=1')}>
+      Weiter üben{resumeDeck ? `: ${resumeDeck}` : ''} ({resumeLeft})
+    </button>
+  {:else if todo > 0}
+    <button class="btn primary" onclick={() => go('/ueben')}>Üben starten</button>
+  {:else}
+    <button class="btn" disabled>{ov ? 'Für heute erledigt' : 'Lädt …'}</button>
+  {/if}
+{/snippet}
+
+<!-- Handy: im Daumenbereich unten; Tablet/PC: direkt unter den Zahlen (siehe .start-inline) -->
+<div class="dock start-dock">
   <div class="dock-inner">
-    {#if resumeLeft > 0}
-      <button class="btn primary" onclick={() => go('/ueben?fortsetzen=1')}>
-        Weiter üben{resumeDeck ? `: ${resumeDeck}` : ''} ({resumeLeft})
-      </button>
-    {:else if todo > 0}
-      <button class="btn primary" onclick={() => go('/ueben')}>Üben starten</button>
-    {:else}
-      <button class="btn" disabled>{ov ? 'Für heute erledigt' : 'Lädt …'}</button>
-    {/if}
+    {@render start()}
   </div>
 </div>
 
@@ -170,7 +181,7 @@
     padding-top: var(--safe-top);
   }
   .hero .inner {
-    max-width: 560px;
+    max-width: var(--col);
     margin: 0 auto;
     padding: 18px 16px 6px;
     display: flex;
@@ -273,5 +284,42 @@
     flex-wrap: wrap;
     gap: 6px;
     margin-top: 4px;
+  }
+  .home {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .wide-title,
+  .start-inline {
+    display: none;
+  }
+  .start-inline :global(.btn) {
+    width: 100%;
+  }
+  @media (min-width: 700px) {
+    .logo,
+    .phone-title,
+    .start-dock {
+      display: none;
+    }
+    .start-inline {
+      display: block;
+      margin-top: 4px;
+    }
+    .wide-title {
+      display: inline;
+    }
+  }
+  @media (min-width: 1100px) {
+    .home {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+      gap: 16px;
+    }
+    .num {
+      font-size: 3.2rem;
+    }
   }
 </style>

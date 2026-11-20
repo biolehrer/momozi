@@ -49,7 +49,7 @@
 
 <div class="page">
   <p class="section-title">Fertige Sets</p>
-  <div class="list">
+  <div class="list cols">
     {#each app.sets as s (s.id)}
       <div class="list-item">
         <button class="grow open" onclick={() => go(`/deck?id=${s.id}`)}>
@@ -68,7 +68,7 @@
   </div>
 
   <p class="section-title">Eigene Decks</p>
-  <div class="list">
+  <div class="list cols">
     {#each app.decks as d (d.id)}
       <div class="list-item">
         <button class="grow open" onclick={() => go(`/deck?id=${d.id}`)}>

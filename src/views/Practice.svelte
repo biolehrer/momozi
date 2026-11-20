@@ -5,6 +5,7 @@
   import RevealQuiz from '../components/RevealQuiz.svelte'
   import ToneQuiz from '../components/ToneQuiz.svelte'
   import WriteQuiz from '../components/WriteQuiz.svelte'
+  import { consume, isPrimary, shortcut } from '../lib/keys'
   import { back, route } from '../lib/router.svelte'
   import { deckName } from '../lib/state.svelte'
   import { buildSession, clearSession, markIntroduced, rateCard, resumableSession, saveSession } from '../lib/srs'
@@ -67,6 +68,26 @@
     }
   }
 
+  // Kürzel für die ganze Übung; die einzelnen Abfragen haben ihre eigenen (siehe lib/keys.ts)
+  function onKey(e: KeyboardEvent) {
+    const k = shortcut(e)
+    if (!k) return
+    if (k === 'Escape') {
+      consume(e)
+      back('/')
+    } else if (k === 'p') {
+      // nur wenn die Aussprache gerade sichtbar ist (bei Pinyin-Abfragen erst nach dem Aufdecken)
+      const btn = document.querySelector<HTMLButtonElement>('.practice .body .speak')
+      if (btn) {
+        consume(e)
+        btn.click()
+      }
+    } else if (session && !item && isPrimary(k)) {
+      consume(e)
+      back('/')
+    }
+  }
+
   async function charProgress(i: number) {
     if (!session) return
     session.charIndex = i
@@ -74,9 +95,11 @@
   }
 </script>
 
+<svelte:window onkeydown={onKey} />
+
 <div class="practice">
   <header class="bar">
-    <button class="icon-btn" onclick={() => back('/')} aria-label="Übung beenden">
+    <button class="icon-btn" onclick={() => back('/')} aria-label="Übung beenden" title="Übung beenden (Esc)">
       <Icon name="close" />
     </button>
     <div class="progress" role="progressbar" aria-valuemin={0} aria-valuemax={total} aria-valuenow={session?.index ?? 0}>
@@ -109,9 +132,9 @@
           </div>
         {/if}
       </div>
-      <div class="dock bottom">
+      <div class="dock bottom solo">
         <div class="dock-inner">
-          <button class="btn primary" onclick={() => back('/')}>Fertig</button>
+          <button class="btn primary" onclick={() => back('/')}>Fertig <kbd class="key">↵</kbd></button>
         </div>
       </div>
     {:else}
@@ -128,12 +151,29 @@
       {/key}
     {/if}
   </main>
+  {#if item}
+    <p class="keys-help small muted" aria-hidden="true">
+      <kbd>↵</kbd> weiter · <kbd>1</kbd> <kbd>2</kbd> bewerten · <kbd>1</kbd>–<kbd>5</kbd> Töne · <kbd>P</kbd> anhören · <kbd>Esc</kbd> beenden
+    </p>
+  {/if}
 </div>
 
 <style>
   .practice {
     min-height: 100dvh;
   }
+  .keys-help {
+    display: none;
+  }
+
+  /* Abfragen bestehen aus .q-side (Aufgabe), .q-stage (Zeichenfläche/Zeichen) und .q-after (Ergebnis).
+     Handy und Hochformat: einfach untereinander, als wären die Hüllen nicht da. */
+  .body :global(.q-side),
+  .body :global(.q-stage),
+  .body :global(.q-after) {
+    display: contents;
+  }
+
   .bar {
     position: sticky;
     top: 0;
@@ -216,5 +256,97 @@
   .stats span {
     color: var(--muted);
     font-size: 0.85rem;
+  }
+
+  /* Tablet hochkant: etwas breitere Spalte für eine größere Zeichenfläche */
+  @media (min-width: 700px) {
+    .bar,
+    .body {
+      max-width: 720px;
+    }
+  }
+
+  /* Querformat (iPad quer, PC): Aufgabe und Tasten links, große Fläche rechts.
+     Gleiche Bedingung wie WIDE_PRACTICE in lib/layout.ts */
+  @media (min-width: 900px) and (min-height: 560px) and (orientation: landscape) {
+    .practice {
+      --wide-w: 1120px;
+      --side-w: 360px;
+      --wide-pad: 32px;
+    }
+    .bar,
+    .body {
+      max-width: var(--wide-w);
+    }
+    .bar {
+      padding-left: calc(var(--wide-pad) - 10px);
+      padding-right: var(--wide-pad);
+    }
+    .body {
+      padding: 4px var(--wide-pad) 24px;
+    }
+    .body :global(.quiz-layout) {
+      display: grid;
+      grid-template-columns: var(--side-w) minmax(0, 1fr);
+      grid-template-rows: auto 1fr;
+      grid-template-areas:
+        'side stage'
+        'after stage';
+      column-gap: 56px;
+      row-gap: 20px;
+      align-items: start;
+      min-height: calc(100dvh - 120px);
+      padding-top: 0;
+    }
+    .body :global(.q-side),
+    .body :global(.q-after),
+    .body :global(.q-stage) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+    .body :global(.q-side) {
+      grid-area: side;
+      padding-top: 8vh;
+    }
+    .body :global(.q-after) {
+      grid-area: after;
+    }
+    .body :global(.q-stage) {
+      grid-area: stage;
+      align-self: center;
+    }
+    /* Tasten in der linken Spalte unten statt über die ganze Breite */
+    .practice :global(.dock.bottom:not(.solo)) {
+      left: calc(max(0px, (100vw - var(--wide-w)) / 2) + var(--wide-pad));
+      right: auto;
+      width: var(--side-w);
+      bottom: calc(var(--safe-bottom) + 28px);
+      padding: 0;
+      background: none;
+    }
+    .practice :global(.dock.bottom:not(.solo) .dock-inner) {
+      max-width: none;
+    }
+  }
+
+  /* Kürzel-Übersicht unten rechts – nur im Querformat mit Maus/Trackpad */
+  @media (min-width: 900px) and (min-height: 560px) and (orientation: landscape) and (hover: hover) and (pointer: fine) {
+    .keys-help {
+      display: block;
+      position: fixed;
+      right: calc(max(0px, (100vw - var(--wide-w)) / 2) + var(--wide-pad));
+      bottom: calc(var(--safe-bottom) + 6px);
+      margin: 0;
+      font-size: 0.75rem;
+    }
+    .keys-help kbd {
+      font: 600 0.7rem/1 var(--font);
+      padding: 2px 5px;
+      border-radius: 5px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+    }
   }
 </style>

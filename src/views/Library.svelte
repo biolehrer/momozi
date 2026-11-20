@@ -264,7 +264,7 @@
   {/if}
 
   {#if results.length}
-    <div class="list results">
+    <div class="list results cols">
       {#each results.slice(0, limit) as it (it.key)}
         {@const isIn = inDeck.has(it.key)}
         {@const isSel = selected.has(it.key)}

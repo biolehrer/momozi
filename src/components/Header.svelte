@@ -36,7 +36,7 @@
     padding-top: var(--safe-top);
   }
   .inner {
-    max-width: 560px;
+    max-width: var(--col);
     margin: 0 auto;
     min-height: 60px;
     display: flex;

@@ -2,6 +2,7 @@
   // Neues Wort kennenlernen: Wort, Pinyin, Bedeutung; je Zeichen Strichfolge ansehen und nachzeichnen.
   import SpeakButton from './SpeakButton.svelte'
   import WritingPad from './WritingPad.svelte'
+  import { consume, isPrimary, shortcut } from '../lib/keys'
   import { displayPinyin } from '../lib/pinyin'
   import type { Word } from '../lib/types'
 
@@ -23,27 +24,52 @@
   }
 
   const last = $derived(idx === chars.length - 1)
+
+  function next() {
+    if (last) {
+      ondone()
+    } else {
+      idx++
+      traced = false
+    }
+  }
+
+  function onKey(e: KeyboardEvent) {
+    const k = shortcut(e)
+    if (k && isPrimary(k)) {
+      consume(e)
+      next()
+    }
+  }
 </script>
 
-<div class="learn fade-in">
-  <span class="badge accent">Neues Wort</span>
-  <div class="head">
-    <div class="word zh" lang="zh-Hans">{word.s}</div>
-    <div class="info">
-      {#if word.n}<div class="pinyin">{displayPinyin(word.n)}</div>{/if}
-      <div class="meaning">{word.m}</div>
+<svelte:window onkeydown={onKey} />
+
+<div class="learn quiz-layout fade-in">
+  <div class="q-side">
+    <span class="badge accent">Neues Wort</span>
+    <div class="head">
+      <div class="word zh" lang="zh-Hans">{word.s}</div>
+      <div class="info">
+        {#if word.n}<div class="pinyin">{displayPinyin(word.n)}</div>{/if}
+        <div class="meaning">{word.m}</div>
+      </div>
+      <SpeakButton {word} auto />
     </div>
-    <SpeakButton {word} auto />
+
+    {#if chars.length > 1}
+      <p class="muted small step">Zeichen {idx + 1} von {chars.length}: <span class="zh">{chars[idx]}</span></p>
+    {/if}
   </div>
 
-  {#if chars.length > 1}
-    <p class="muted small step">Zeichen {idx + 1} von {chars.length}: <span class="zh">{chars[idx]}</span></p>
-  {/if}
-
-  {#key `${idx}-${run}`}
-    <WritingPad char={chars[idx]} mode="learn" reserve={360} oncomplete={charDone} onerror={() => (traced = true)} />
-  {/key}
-  <p class="muted small hint">Erst zuschauen, dann nachzeichnen.</p>
+  <div class="q-stage">
+    {#key `${idx}-${run}`}
+      <WritingPad char={chars[idx]} mode="learn" reserve={360} oncomplete={charDone} onerror={() => (traced = true)} />
+    {/key}
+  </div>
+  <div class="q-after">
+    <p class="muted small hint">Erst zuschauen, dann nachzeichnen.</p>
+  </div>
 </div>
 
 <div class="dock bottom">
@@ -55,17 +81,9 @@
         run++
       }}>Nochmal zeigen</button
     >
-    {#if last}
-      <button class="btn" class:primary={traced} onclick={ondone}>Weiter</button>
-    {:else}
-      <button
-        class="btn"
-        onclick={() => {
-          idx++
-          traced = false
-        }}>Nächstes Zeichen</button
-      >
-    {/if}
+    <button class="btn" class:primary={last && traced} onclick={next}>
+      {last ? 'Weiter' : 'Nächstes Zeichen'} <kbd class="key">↵</kbd>
+    </button>
   </div>
 </div>
 
@@ -102,5 +120,25 @@
   .step,
   .hint {
     margin: 0;
+  }
+  /* Querformat: Wort groß in der linken Spalte, Zeichenfläche rechts */
+  @media (min-width: 900px) and (min-height: 560px) and (orientation: landscape) {
+    .head {
+      flex-direction: column;
+      gap: 10px;
+    }
+    .word {
+      font-size: 5rem;
+    }
+    .info {
+      text-align: center;
+    }
+    .pinyin {
+      font-size: 1.5rem;
+    }
+    .meaning {
+      max-width: none;
+      font-size: 1.15rem;
+    }
   }
 </style>

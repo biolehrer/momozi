@@ -2,6 +2,7 @@
   // Abfrage „Schreiben“: Bedeutung + Pinyin sehen, Zeichen für Zeichen aus dem Gedächtnis schreiben.
   import SpeakButton from './SpeakButton.svelte'
   import WritingPad from './WritingPad.svelte'
+  import { consume, isPrimary, shortcut } from '../lib/keys'
   import { displayPinyin } from '../lib/pinyin'
   import type { Word } from '../lib/types'
 
@@ -47,63 +48,94 @@
     hinted = true
     pad?.reveal()
   }
+
+  function onKey(e: KeyboardEvent) {
+    const k = shortcut(e)
+    if (!k) return
+    if (noData && !paperRevealed) {
+      if (isPrimary(k)) {
+        consume(e)
+        paperRevealed = true
+      }
+    } else if (!finished && !noData) {
+      if (isPrimary(k)) {
+        consume(e)
+        showSolution()
+      }
+    } else if (k === '1' || k === '2') {
+      consume(e)
+      onrate(k === '1' ? 1 : 3)
+    } else if (finished && isPrimary(k)) {
+      consume(e)
+      onrate(suggested)
+    }
+  }
 </script>
 
-<div class="quiz fade-in">
-  <p class="label">Schreiben</p>
-  <div class="prompt">
-    <div class="meaning">{word.m}</div>
-    <div class="pinyin-row">
-      {#if word.n}<span class="pinyin">{displayPinyin(word.n)}</span>{/if}
-      <SpeakButton {word} auto size={40} />
+<svelte:window onkeydown={onKey} />
+
+<div class="quiz quiz-layout fade-in">
+  <div class="q-side">
+    <p class="label">Schreiben</p>
+    <div class="prompt">
+      <div class="meaning">{word.m}</div>
+      <div class="pinyin-row">
+        {#if word.n}<span class="pinyin">{displayPinyin(word.n)}</span>{/if}
+        <SpeakButton {word} auto size={40} />
+      </div>
     </div>
+
+    {#if chars.length > 1}
+      <div class="slots zh" aria-hidden="true">
+        {#each chars as c, i (i)}
+          <span class="slot" class:current={i === idx && !finished} class:filled={i < idx || finished}>
+            {i < idx || finished ? c : ''}
+          </span>
+        {/each}
+      </div>
+    {/if}
   </div>
 
-  {#if chars.length > 1}
-    <div class="slots zh" aria-hidden="true">
-      {#each chars as c, i (i)}
-        <span class="slot" class:current={i === idx && !finished} class:filled={i < idx || finished}>
-          {i < idx || finished ? c : ''}
-        </span>
-      {/each}
-    </div>
-  {/if}
+  <div class="q-stage">
+    {#if noData}
+      <div class="card center">
+        {#if paperRevealed}
+          <div class="big zh">{word.s}</div>
+        {:else}
+          <p>Für dieses Wort gibt es keine Strichdaten. Schreib es auf Papier und deck dann auf.</p>
+        {/if}
+      </div>
+    {:else}
+      {#key idx}
+        <WritingPad bind:this={pad} char={chars[idx]} mode="test" oncomplete={charDone} onerror={() => (noData = true)} />
+      {/key}
+    {/if}
+  </div>
 
-  {#if noData}
-    <div class="card center">
-      {#if paperRevealed}
-        <div class="big zh">{word.s}</div>
-      {:else}
-        <p>Für dieses Wort gibt es keine Strichdaten. Schreib es auf Papier und deck dann auf.</p>
-      {/if}
-    </div>
-  {:else}
-    {#key idx}
-      <WritingPad bind:this={pad} char={chars[idx]} mode="test" oncomplete={charDone} onerror={() => (noData = true)} />
-    {/key}
-  {/if}
-  {#if finished}
-    <div class="result fade-in">
-      {#if hinted}
-        <span class="badge accent">mit Hilfe</span>
-      {:else if mistakes === 0}
-        <span class="badge good">fehlerfrei</span>
-      {:else}
-        <span class="badge">{mistakes} {mistakes === 1 ? 'Fehler' : 'Fehler'}</span>
-      {/if}
-    </div>
-  {/if}
+  <div class="q-after">
+    {#if finished}
+      <div class="result fade-in">
+        {#if hinted}
+          <span class="badge accent">mit Hilfe</span>
+        {:else if mistakes === 0}
+          <span class="badge good">fehlerfrei</span>
+        {:else}
+          <span class="badge">{mistakes} {mistakes === 1 ? 'Fehler' : 'Fehler'}</span>
+        {/if}
+      </div>
+    {/if}
+  </div>
 </div>
 
 <div class="dock bottom">
   <div class="dock-inner">
     {#if noData && !paperRevealed}
-      <button class="btn primary" onclick={() => (paperRevealed = true)}>Aufdecken</button>
+      <button class="btn primary" onclick={() => (paperRevealed = true)}>Aufdecken <kbd class="key">↵</kbd></button>
     {:else if !finished && !noData}
-      <button class="btn" onclick={showSolution}>Lösung zeigen</button>
+      <button class="btn" onclick={showSolution}>Lösung zeigen <kbd class="key">↵</kbd></button>
     {:else}
-      <button class="btn" class:bad={finished && suggested === 1} onclick={() => onrate(1)}>Nochmal</button>
-      <button class="btn" class:good={!finished || suggested === 3} onclick={() => onrate(3)}>Gewusst</button>
+      <button class="btn" class:bad={finished && suggested === 1} onclick={() => onrate(1)}>Nochmal <kbd class="key">1</kbd></button>
+      <button class="btn" class:good={!finished || suggested === 3} onclick={() => onrate(3)}>Gewusst <kbd class="key">2</kbd></button>
     {/if}
   </div>
 </div>
@@ -173,5 +205,19 @@
     min-height: 40px;
     display: flex;
     align-items: center;
+  }
+  /* Querformat: linke Spalte mit größerer Schrift */
+  @media (min-width: 900px) and (min-height: 560px) and (orientation: landscape) {
+    .meaning {
+      font-size: 1.9rem;
+    }
+    .pinyin {
+      font-size: 1.35rem;
+    }
+    .slot {
+      width: 56px;
+      height: 56px;
+      font-size: 2.3rem;
+    }
   }
 </style>

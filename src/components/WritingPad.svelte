@@ -5,6 +5,7 @@
   //  mode "view":  Zeichen anzeigen, Animation auf Wunsch
   import HanziWriter from 'hanzi-writer'
   import { onMount } from 'svelte'
+  import { isTablet, isWidePractice } from '../lib/layout'
   import { loadStrokes } from '../lib/strokes'
 
   type Mode = 'learn' | 'test' | 'view'
@@ -97,8 +98,32 @@
     writer.animateCharacter()
   }
 
+  /** Kantenlänge: so groß wie möglich, ohne dass die Ansicht scrollen muss */
+  function computeSize(): number {
+    if (fixedSize !== undefined) return fixedSize
+    if (mode !== 'view' && isWidePractice()) {
+      // zweispaltiges Üben (iPad quer, PC): Spalte rechts, volle Höhe abzüglich Kopfzeile
+      return Math.round(Math.max(240, Math.min(680, wrap.clientWidth, window.innerHeight - 150)))
+    }
+    const max = isTablet() ? Math.max(maxSize, 600) : maxSize
+    return Math.round(Math.max(200, Math.min(max, wrap.clientWidth, window.innerHeight - reserve)))
+  }
+
+  // Drehen des Tablets / Fenstergröße ändern: Fläche mitwachsen lassen
+  let frame = 0
+  function onResize() {
+    cancelAnimationFrame(frame)
+    frame = requestAnimationFrame(() => {
+      if (!writer || destroyed || fixedSize !== undefined) return
+      const next = computeSize()
+      if (Math.abs(next - size) < 4) return
+      size = next
+      writer.updateDimensions({ width: next, height: next, padding: Math.round(next * 0.07) })
+    })
+  }
+
   onMount(() => {
-    size = fixedSize ?? Math.round(Math.max(200, Math.min(maxSize, wrap.clientWidth, window.innerHeight - reserve)))
+    size = computeSize()
     writer = HanziWriter.create(host, char, {
       width: size,
       height: size,
@@ -124,6 +149,7 @@
     else if (mode === 'test') startQuiz(false)
     return () => {
       destroyed = true
+      cancelAnimationFrame(frame)
       try {
         writer?.cancelQuiz()
       } catch {
@@ -134,6 +160,8 @@
     }
   })
 </script>
+
+<svelte:window onresize={onResize} />
 
 <div class="pad-wrap" class:inline={fixedSize !== undefined} bind:this={wrap}>
   <div class="pad" style:width="{size}px" style:height="{size}px" class:interactive={mode !== 'view'}>

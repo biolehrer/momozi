@@ -15,6 +15,8 @@ Web-App zum Üben chinesischer Schriftzeichen (Kurzzeichen) – für das Handy g
 - **Offline nutzbar** (Service Worker): App und HSK-Sets fest gespeichert, Strichfolgen und Aussprache der eigenen/aktiven Decks werden im Hintergrund vorgeladen, das Wörterbuch beim ersten Suchen; Updates nach Tippen auf „Aktualisieren“
 - **Eigene Decks zusammenstellen:** HSK-Wörter ankreuzen, im Wörterbuch suchen oder die Vokabelliste aus dem Kurs einfügen; Decks als Datei teilen und importieren
 - **Sicherung** des Lernstands als Datei (Teilen-Menü), Laden mit Zusammenführen oder Ersetzen; dezente Erinnerung
+- **Handy, Tablet und PC:** auf dem Handy Leiste unten, auf dem iPad hochkant eine Icon-Leiste links, im Querformat und am Rechner eine Seitenleiste; Üben im Querformat zweispaltig mit großer Zeichenfläche
+- **Tastenkürzel** beim Üben: Leertaste/Enter weiter, 1/2 bewerten, 1–5 Töne, P anhören, Esc beenden
 - Alle Daten bleiben lokal auf dem Gerät (IndexedDB), kein Konto, kein Server
 
 ## Entwickeln

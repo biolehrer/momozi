@@ -30,8 +30,10 @@
   })
 
   const chars = $derived(word ? [...word.s] : [])
+  // verfügbare Breite der Zeichen-Karte: Handy bis 560 px, Tablet 720 px, breit halbe Spalte (zweispaltig)
+  const cardWidth = window.innerWidth >= 1100 ? 500 : window.innerWidth >= 700 ? 680 : Math.min(window.innerWidth, 560)
   const padSize = $derived(
-    Math.max(72, Math.min(170, Math.floor((Math.min(window.innerWidth, 560) - 72) / Math.max(1, chars.length)) - 8)),
+    Math.max(72, Math.min(window.innerWidth >= 700 ? 220 : 170, Math.floor((cardWidth - 72) / Math.max(1, chars.length)) - 8)),
   )
 
   function status(t: QuizType): string {
@@ -74,42 +76,46 @@
   {:else if !word}
     <p>Wort nicht gefunden.</p>
   {:else}
-    <div class="card stack center">
-      <div class="pads">
-        {#each chars as c, i (i)}
-          <button class="pad-btn" onclick={() => pads[i]?.animate()} aria-label="Strichfolge von {c} abspielen">
-            <WritingPad bind:this={pads[i]} char={c} mode="view" fixedSize={padSize} />
-          </button>
-        {/each}
-      </div>
-      <button class="btn small" onclick={playAll}><Icon name="play" size={18} /> Strichfolge abspielen</button>
-      <div class="pinyin-row">
-        {#if word.n}<span class="pinyin">{displayPinyin(word.n)}</span>{/if}
-        <SpeakButton {word} size={44} />
-      </div>
-      {#if audioFor(word)?.s === 'ai'}
-        <div class="muted small"><span class="badge ai">KI</span> Aussprache von einer KI-Stimme – keine echte Aufnahme</div>
-      {/if}
-      <div class="meaning">{word.m}</div>
-    </div>
-
-    {#if word.x && word.x !== word.m}
-      <p class="section-title">Weitere Bedeutungen</p>
-      <ul class="card senses">
-        {#each word.x.split(SENSE_SEP) as sense, i (i)}
-          <li>{sense}</li>
-        {/each}
-      </ul>
-    {/if}
-
-    <p class="section-title">Lernstand</p>
-    <div class="list">
-      {#each typesFor(word) as t (t)}
-        <div class="list-item">
-          <span class="grow">{QUIZ_LABEL[t]}</span>
-          <span class="badge" class:good={status(t).startsWith('in') || status(t) === 'morgen'}>{status(t)}</span>
+    <div class="word-layout">
+      <div class="card stack center">
+        <div class="pads">
+          {#each chars as c, i (i)}
+            <button class="pad-btn" onclick={() => pads[i]?.animate()} aria-label="Strichfolge von {c} abspielen">
+              <WritingPad bind:this={pads[i]} char={c} mode="view" fixedSize={padSize} />
+            </button>
+          {/each}
         </div>
-      {/each}
+        <button class="btn small" onclick={playAll}><Icon name="play" size={18} /> Strichfolge abspielen</button>
+        <div class="pinyin-row">
+          {#if word.n}<span class="pinyin">{displayPinyin(word.n)}</span>{/if}
+          <SpeakButton {word} size={44} />
+        </div>
+        {#if audioFor(word)?.s === 'ai'}
+          <div class="muted small"><span class="badge ai">KI</span> Aussprache von einer KI-Stimme – keine echte Aufnahme</div>
+        {/if}
+        <div class="meaning">{word.m}</div>
+      </div>
+
+      <div class="details stack">
+        {#if word.x && word.x !== word.m}
+          <p class="section-title">Weitere Bedeutungen</p>
+          <ul class="card senses">
+            {#each word.x.split(SENSE_SEP) as sense, i (i)}
+              <li>{sense}</li>
+            {/each}
+          </ul>
+        {/if}
+
+        <p class="section-title">Lernstand</p>
+        <div class="list">
+          {#each typesFor(word) as t (t)}
+            <div class="list-item">
+              <span class="grow">{QUIZ_LABEL[t]}</span>
+              <span class="badge" class:good={status(t).startsWith('in') || status(t) === 'morgen'}>{status(t)}</span>
+            </div>
+          {/each}
+        </div>
+      </div>
     </div>
 
     {#if custom}
@@ -119,6 +125,22 @@
 </div>
 
 <style>
+  .word-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  @media (min-width: 1100px) {
+    .word-layout {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+      gap: 24px;
+    }
+    .details > .section-title:first-child {
+      margin-top: 0;
+    }
+  }
   .center {
     align-items: center;
     text-align: center;
