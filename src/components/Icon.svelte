@@ -16,6 +16,7 @@
     replay: 'M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5V9H9',
     brush: 'M14.5 4.5 19.5 9.5 11 18l-5-5 8.5-8.5ZM6 13l-2.5 7.5L11 18',
     chevron: 'M9 5l7 7-7 7',
+    speaker: 'M4 9.5h3.5L12 5.5v13l-4.5-4H4v-5ZM15.5 9a4.5 4.5 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11',
   } as const
 
   let { name, size = 24, stroke = 2 }: { name: keyof typeof PATHS; size?: number; stroke?: number } = $props()

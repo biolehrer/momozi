@@ -55,6 +55,22 @@
     </div>
   </div>
 
+  <label class="card row autoplay">
+    <span class="spacer">
+      <span>Aussprache automatisch abspielen</span>
+      <span class="muted small block">Für Bus und Bahn ausschalten – die Lautsprecher-Taste funktioniert weiter.</span>
+    </span>
+    <input
+      type="checkbox"
+      class="switch"
+      checked={app.settings.autoplay}
+      onchange={async (e) => {
+        app.settings.autoplay = e.currentTarget.checked
+        await saveSettings()
+      }}
+    />
+  </label>
+
   <p class="section-title">Abfragearten</p>
   <div class="list">
     {#each QUIZ_TYPES as t (t)}
@@ -126,6 +142,10 @@
   }
   .block {
     display: block;
+  }
+  .autoplay {
+    margin-top: 12px;
+    cursor: pointer;
   }
   .card p {
     margin: 0;

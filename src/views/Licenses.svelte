@@ -1,9 +1,22 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import Header from '../components/Header.svelte'
+  import { audio } from '../lib/audio.svelte'
   import { loadSources, type Sources } from '../lib/data'
 
   let sources = $state<Sources | null>(null)
+
+  const llSpeakers = $derived.by(() => {
+    const m = new Map<string, { name: string; license: string; count: number }>()
+    for (const e of Object.values(audio.index?.words ?? {})) {
+      if (e.s !== 'll' || !e.a) continue
+      const k = `${e.a}|${e.l}`
+      const cur = m.get(k) ?? { name: e.a, license: e.l ?? '', count: 0 }
+      cur.count++
+      m.set(k, cur)
+    }
+    return [...m.values()].sort((a, b) => b.count - a.count)
+  })
   onMount(async () => {
     try {
       sources = await loadSources()
@@ -46,6 +59,31 @@
       <a href="strokes/ARPHICPL.TXT" target="_blank" rel="noopener">Arphic Public License</a>.
     </p>
     <p><a href="https://github.com/chanind/hanzi-writer-data" target="_blank" rel="noopener">github.com/chanind/hanzi-writer-data</a></p>
+  </section>
+
+  <section class="card">
+    <h2>Aussprache</h2>
+    <p>
+      Alle Aussprachen sind echte Aufnahmen. Wörter, für die es keine freie Aufnahme gibt, haben keine Lautsprecher-Taste.
+    </p>
+    <p>
+      <strong>Yue Tan</strong> (Universität Caen, Shtooka-Projekt), © 2009, Lizenz
+      <a href="https://creativecommons.org/licenses/by-sa/3.0/us/" target="_blank" rel="noopener">CC BY-SA 3.0 US</a>. In MP3
+      umgewandelt vom Projekt
+      <a href="https://github.com/hugolpz/audio-cmn" target="_blank" rel="noopener">audio-cmn</a>.
+    </p>
+    {#if llSpeakers.length}
+      <p>
+        Ergänzt durch Aufnahmen von <a href="https://lingualibre.org" target="_blank" rel="noopener">Lingua Libre</a> (Wikimedia
+        Commons), MP3-Fassung von Commons:
+      </p>
+      <ul>
+        {#each llSpeakers as sp (sp.name + sp.license)}
+          <li>{sp.name} – {sp.license} ({sp.count} {sp.count === 1 ? 'Wort' : 'Wörter'})</li>
+        {/each}
+      </ul>
+    {/if}
+    <p class="muted small">Die Zuordnung jeder Datei steht in <a href="audio/CREDITS.txt" target="_blank" rel="noopener">audio/CREDITS.txt</a>.</p>
   </section>
 
   <section class="card">

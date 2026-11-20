@@ -1,6 +1,7 @@
 // Globaler App-Zustand: Einstellungen, eigene Decks, verfügbare HSK-Sets.
 import { allDecks, deleteDeck, getMeta, putDeck, setMeta } from './db'
 import { loadSetIndex } from './data'
+import { loadAudioIndex } from './audio.svelte'
 import type { CustomDeck, Settings, SetInfo } from './types'
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -8,6 +9,7 @@ export const DEFAULT_SETTINGS: Settings = {
   types: { write: true, pinyin: true, tone: true, meaning: true },
   theme: 'auto',
   activeDecks: ['hsk1'],
+  autoplay: true,
 }
 
 export const app = $state({
@@ -51,7 +53,7 @@ export async function initApp() {
     await saveSettings()
   }
   app.decks = decks.sort((a, b) => a.createdAt - b.createdAt)
-  app.sets = await loadSetIndex()
+  ;[app.sets] = await Promise.all([loadSetIndex(), loadAudioIndex()])
   applyTheme()
   app.ready = true
   // Browser bitten, die Daten nicht automatisch zu löschen

@@ -1,5 +1,6 @@
 <script lang="ts">
   // Abfrage „Schreiben“: Bedeutung + Pinyin sehen, Zeichen für Zeichen aus dem Gedächtnis schreiben.
+  import SpeakButton from './SpeakButton.svelte'
   import WritingPad from './WritingPad.svelte'
   import { displayPinyin } from '../lib/pinyin'
   import type { Word } from '../lib/types'
@@ -52,7 +53,10 @@
   <p class="label">Schreiben</p>
   <div class="prompt">
     <div class="meaning">{word.m}</div>
-    {#if word.n}<div class="pinyin">{displayPinyin(word.n)}</div>{/if}
+    <div class="pinyin-row">
+      {#if word.n}<span class="pinyin">{displayPinyin(word.n)}</span>{/if}
+      <SpeakButton {word} auto size={40} />
+    </div>
   </div>
 
   {#if chars.length > 1}
@@ -124,10 +128,17 @@
     font-size: 1.35rem;
     font-weight: 650;
   }
+  .pinyin-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 4px;
+    min-height: 40px;
+  }
   .pinyin {
     color: var(--muted);
     font-size: 1.1rem;
-    margin-top: 2px;
   }
   .slots {
     display: flex;

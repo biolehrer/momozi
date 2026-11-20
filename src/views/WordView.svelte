@@ -2,6 +2,7 @@
   import { onMount } from 'svelte'
   import Header from '../components/Header.svelte'
   import Icon from '../components/Icon.svelte'
+  import SpeakButton from '../components/SpeakButton.svelte'
   import WritingPad from '../components/WritingPad.svelte'
   import { loadSet } from '../lib/data'
   import { SENSE_SEP } from '../lib/meaning'
@@ -81,7 +82,10 @@
         {/each}
       </div>
       <button class="btn small" onclick={playAll}><Icon name="play" size={18} /> Strichfolge abspielen</button>
-      {#if word.n}<div class="pinyin">{displayPinyin(word.n)}</div>{/if}
+      <div class="pinyin-row">
+        {#if word.n}<span class="pinyin">{displayPinyin(word.n)}</span>{/if}
+        <SpeakButton {word} size={44} />
+      </div>
       <div class="meaning">{word.m}</div>
     </div>
 
@@ -126,6 +130,11 @@
     background: transparent;
     padding: 0;
     cursor: pointer;
+  }
+  .pinyin-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
   .pinyin {
     font-size: 1.4rem;

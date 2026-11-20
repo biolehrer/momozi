@@ -10,7 +10,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
-    "data": "node scripts/build-data.mjs"
+    "data": "node scripts/build-data.mjs",
+    "audio": "node scripts/build-audio.mjs"
   },
   "dependencies": {
     "hanzi-writer": "^3.7.3",

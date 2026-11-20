@@ -1,5 +1,6 @@
 <script lang="ts">
   // Neues Wort kennenlernen: Wort, Pinyin, Bedeutung; je Zeichen Strichfolge ansehen und nachzeichnen.
+  import SpeakButton from './SpeakButton.svelte'
   import WritingPad from './WritingPad.svelte'
   import { displayPinyin } from '../lib/pinyin'
   import type { Word } from '../lib/types'
@@ -32,6 +33,7 @@
       {#if word.n}<div class="pinyin">{displayPinyin(word.n)}</div>{/if}
       <div class="meaning">{word.m}</div>
     </div>
+    <SpeakButton {word} auto />
   </div>
 
   {#if chars.length > 1}

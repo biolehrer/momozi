@@ -1,5 +1,6 @@
 <script lang="ts">
   // Abfragen „Pinyin“ und „Bedeutung“: Zeichen sehen, Antwort erinnern, aufdecken, selbst bewerten.
+  import SpeakButton from './SpeakButton.svelte'
   import { displayPinyin } from '../lib/pinyin'
   import type { Word } from '../lib/types'
 
@@ -12,6 +13,15 @@
 <div class="quiz fade-in">
   <p class="label">{type === 'pinyin' ? 'Wie spricht man das aus?' : 'Was bedeutet das?'}</p>
   <div class="chars zh {size}" lang="zh-Hans">{word.s}</div>
+
+  <!-- Bei der Pinyin-Abfrage erst nach dem Aufdecken – sonst wäre die Antwort hörbar -->
+  <div class="speak-slot">
+    {#if type === 'meaning' || shown}
+      {#key shown}
+        <SpeakButton {word} auto={shown} />
+      {/key}
+    {/if}
+  </div>
 
   <div class="answer" class:shown>
     {#if shown}
@@ -65,6 +75,10 @@
   }
   .chars.m {
     font-size: clamp(3rem, 15vw, 4.5rem);
+  }
+  .speak-slot {
+    min-height: 48px;
+    margin-top: -6px;
   }
   .answer {
     min-height: 120px;

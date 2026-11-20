@@ -79,6 +79,8 @@ export interface Settings {
   types: Record<QuizType, boolean>
   theme: Theme
   activeDecks: string[]
+  /** Aussprache automatisch abspielen (aus z. B. in Bus und Bahn) */
+  autoplay: boolean
 }
 
 export type SessionItem =

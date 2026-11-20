@@ -1,6 +1,7 @@
 <script lang="ts">
   // Abfrage „Töne“: Zeichen sehen, Ton jeder Silbe angeben – per Taste oder Wischgeste
   // (waagerecht = 1, nach oben = 2, Haken ˇ = 3, nach unten = 4, Tippen = neutral).
+  import SpeakButton from './SpeakButton.svelte'
   import { displayPinyin, markedSyllables, tonesOf } from '../lib/pinyin'
   import type { Word } from '../lib/types'
 
@@ -112,7 +113,10 @@
 
   {#if finished}
     <div class="summary card">
-      <div class="pinyin">{displayPinyin(word.n)}</div>
+      <div class="pinyin-row">
+        <span class="pinyin">{displayPinyin(word.n)}</span>
+        <SpeakButton {word} auto size={40} />
+      </div>
       <div class="muted">{word.m}</div>
       <div class="verdict" class:ok={wrongCount === 0}>
         {wrongCount === 0 ? 'Alle Töne richtig' : `${wrongCount} von ${order.length} falsch`}
@@ -232,6 +236,12 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
+  }
+  .pinyin-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
   }
   .pinyin {
     font-size: 1.4rem;
