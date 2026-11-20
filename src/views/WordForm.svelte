@@ -11,7 +11,7 @@
   const deck = app.decks.find((d) => d.id === deckId)
   const original = editKey ? deck?.words.find((w) => wordKey(w) === editKey) : undefined
 
-  let chars = $state(original?.s ?? '')
+  let chars = $state(original?.s ?? route.query.get('s') ?? '')
   let pinyin = $state(original?.n ? displayPinyin(original.n) : '')
   let meaning = $state(original?.m ?? '')
   let error = $state('')

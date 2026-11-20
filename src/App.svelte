@@ -7,8 +7,8 @@
   import Decks from './views/Decks.svelte'
   import Home from './views/Home.svelte'
   import Licenses from './views/Licenses.svelte'
+  import Library from './views/Library.svelte'
   import Practice from './views/Practice.svelte'
-  import Search from './views/Search.svelte'
   import Settings from './views/Settings.svelte'
   import WordForm from './views/WordForm.svelte'
   import WordView from './views/WordView.svelte'
@@ -50,8 +50,8 @@
       <WordView />
     {:else if route.path === '/neu' || route.path === '/bearbeiten'}
       <WordForm />
-    {:else if route.path === '/suche'}
-      <Search />
+    {:else if route.path === '/suche' || route.path === '/auswahl'}
+      <Library />
     {:else if route.path === '/einstellungen'}
       <Settings />
     {:else if route.path === '/lizenzen'}

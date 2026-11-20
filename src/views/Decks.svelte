@@ -16,7 +16,9 @@
     await setActive(d.id, true)
     creating = false
     name = ''
+    // direkt zur Wortauswahl; „Zurück“ führt dann ins neue Deck
     go(`/deck?id=${d.id}`)
+    go(`/auswahl?deck=${d.id}`)
   }
 </script>
 

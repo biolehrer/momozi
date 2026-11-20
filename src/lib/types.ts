@@ -89,6 +89,8 @@ export type SessionItem =
 
 export interface Session {
   date: string
+  /** gesetzt, wenn nur ein einzelnes Deck geübt wird */
+  deckId?: string
   items: SessionItem[]
   index: number
   /** Fortschritt innerhalb eines Wortes beim Schreiben (gespeichert nach jedem Zeichen) */

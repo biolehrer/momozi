@@ -5,7 +5,7 @@
   import { loadSet } from '../lib/data'
   import { displayPinyin, searchKey } from '../lib/pinyin'
   import { back, go, route } from '../lib/router.svelte'
-  import { introducedKeys } from '../lib/srs'
+  import { introducedKeys, overview, type Overview } from '../lib/srs'
   import { app, isActive, removeDeck, saveDeck, setActive } from '../lib/state.svelte'
   import { wordKey, type Word } from '../lib/types'
 
@@ -19,9 +19,11 @@
   let renaming = $state(false)
   let newName = $state('')
 
+  let deckOv = $state<Overview | null>(null)
+
   onMount(async () => {
     if (set) setWords = (await loadSet(id)).words
-    known = await introducedKeys()
+    ;[known, deckOv] = await Promise.all([introducedKeys(), overview(id)])
   })
 
   const words = $derived(custom ? custom.words : setWords)
@@ -92,9 +94,24 @@
         <span>{words.length} {words.length === 1 ? 'Wort' : 'Wörter'} · {learnedCount} gelernt</span>
       </div>
       <label class="row">
-        <span class="spacer">In Übungen aufnehmen</span>
+        <span class="spacer">
+          <span>In tägliche Übung aufnehmen</span>
+          <span class="muted small sub">Gilt für „Üben starten“ auf der Startseite</span>
+        </span>
         <input type="checkbox" class="switch" checked={isActive(id)} onchange={(e) => setActive(id, e.currentTarget.checked)} />
       </label>
+      {#if words.length}
+        {@const todo = deckOv ? deckOv.due + deckOv.newToday : 0}
+        <button class="btn primary block" disabled={!deckOv || todo === 0} onclick={() => go(`/ueben?deck=${encodeURIComponent(id)}`)}>
+          {#if !deckOv}
+            Dieses Deck üben
+          {:else if todo === 0}
+            Dieses Deck: gerade nichts zu üben
+          {:else}
+            Dieses Deck üben · {deckOv.due} fällig, {deckOv.newToday} neu
+          {/if}
+        </button>
+      {/if}
     </div>
 
     {#if words.length > 12}
@@ -117,7 +134,9 @@
     {:else}
       <div class="card empty">
         <p>Noch keine Wörter in diesem Deck.</p>
-        <p class="muted small">Über „Suchen“ Wörter aus dem Wörterbuch hinzufügen oder fehlende selbst anlegen.</p>
+        <p class="muted small">
+          Über „Wörter hinzufügen“ HSK-Vokabeln ankreuzen, im Wörterbuch suchen oder die Vokabelliste aus dem Kurs einfügen.
+        </p>
       </div>
     {/if}
   {/if}
@@ -126,8 +145,10 @@
 {#if custom}
   <div class="dock">
     <div class="dock-inner">
-      <button class="btn primary" onclick={() => go(`/suche?deck=${id}`)}><Icon name="search" /> Suchen</button>
-      <button class="btn" onclick={() => go(`/neu?deck=${id}`)}>Selbst anlegen</button>
+      <button class="btn" class:primary={!words.length} onclick={() => go(`/auswahl?deck=${encodeURIComponent(id)}`)}>
+        Wörter hinzufügen
+      </button>
+      <button class="btn" onclick={() => go(`/neu?deck=${encodeURIComponent(id)}`)}>Selbst anlegen</button>
     </div>
   </div>
 {/if}
@@ -135,6 +156,9 @@
 <style>
   .filter {
     margin: 14px 0 10px;
+  }
+  .sub {
+    display: block;
   }
   .words {
     margin-top: 14px;

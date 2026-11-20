@@ -6,6 +6,7 @@
   import ToneQuiz from '../components/ToneQuiz.svelte'
   import WriteQuiz from '../components/WriteQuiz.svelte'
   import { back, route } from '../lib/router.svelte'
+  import { deckName } from '../lib/state.svelte'
   import { buildSession, clearSession, markIntroduced, rateCard, resumableSession, saveSession } from '../lib/srs'
   import type { Session, SessionItem } from '../lib/types'
 
@@ -14,7 +15,7 @@
 
   onMount(async () => {
     let s = route.query.get('fortsetzen') ? await resumableSession() : undefined
-    s ??= await buildSession()
+    s ??= await buildSession(route.query.get('deck') ?? undefined)
     session = s
     if (s.items.length) await persist()
   })
@@ -83,6 +84,7 @@
     </div>
     <span class="count small muted">{Math.min(session?.index ?? 0, total)}/{total}</span>
   </header>
+  {#if session?.deckId}<p class="deck-label small muted">{deckName(session.deckId)}</p>{/if}
 
   <main class="body">
     {#if !session}
@@ -92,7 +94,11 @@
         {#if total === 0}
           <div class="seal zh">休</div>
           <h2>Gerade gibt es nichts zu üben</h2>
-          <p class="muted">Alle fälligen Karten sind erledigt und das Tageslimit für neue Wörter ist erreicht – oder es ist kein Deck aktiv.</p>
+          {#if session.deckId}
+            <p class="muted">In „{deckName(session.deckId)}“ ist gerade nichts fällig und alle Wörter sind schon eingeführt.</p>
+          {:else}
+            <p class="muted">Alle fälligen Karten sind erledigt und das Tageslimit für neue Wörter ist erreicht – oder es ist kein Deck aktiv.</p>
+          {/if}
         {:else}
           <div class="seal zh">好</div>
           <h2>Geschafft!</h2>
@@ -152,6 +158,10 @@
     background: var(--accent);
     border-radius: 4px;
     transition: width 0.25s ease;
+  }
+  .deck-label {
+    text-align: center;
+    margin: -2px 0 0;
   }
   .count {
     min-width: 3.5em;

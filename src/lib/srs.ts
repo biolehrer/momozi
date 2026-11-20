@@ -49,15 +49,24 @@ export function typesFor(w: Word): QuizType[] {
   })
 }
 
+/** Wörter eines Decks (eigenes Deck oder HSK-Set) */
+export async function wordsOfDeck(id: string): Promise<Word[]> {
+  const custom = app.decks.find((d) => d.id === id)
+  if (custom) return custom.words
+  if (app.sets.some((s) => s.id === id)) return (await loadSet(id)).words
+  return []
+}
+
 /** Alle Wörter der aktiven Decks, ohne Doppelte */
 export async function activeWords(): Promise<Word[]> {
+  return wordsOfDecks(app.settings.activeDecks)
+}
+
+async function wordsOfDecks(ids: string[]): Promise<Word[]> {
   const out: Word[] = []
   const seen = new Set<string>()
-  for (const id of app.settings.activeDecks) {
-    let words: Word[] = []
-    const custom = app.decks.find((d) => d.id === id)
-    if (custom) words = custom.words
-    else if (app.sets.some((s) => s.id === id)) words = (await loadSet(id)).words
+  for (const id of ids) {
+    const words = await wordsOfDeck(id)
     for (const w of words) {
       const k = wordKey(w)
       if (!seen.has(k)) {
@@ -84,8 +93,9 @@ export interface Overview {
   total: number
 }
 
-export async function overview(): Promise<Overview> {
-  const [words, cards, intro] = await Promise.all([activeWords(), cardMap(), introducedToday()])
+/** Überblick über die aktiven Decks – oder nur über ein Deck (dann ohne Tageslimit für neue Wörter) */
+export async function overview(deckId?: string): Promise<Overview> {
+  const [words, cards, intro] = await Promise.all([deckId ? wordsOfDecks([deckId]) : activeWords(), cardMap(), introducedToday()])
   const end = endOfToday()
   const now = Date.now()
   let due = 0
@@ -102,7 +112,8 @@ export async function overview(): Promise<Overview> {
     learned++
     for (const c of existing) if (isDue(c, now, end)) due++
   }
-  return { due, newToday: Math.max(0, Math.min(fresh, app.settings.newPerDay - intro)), learned, total: words.length }
+  const newToday = deckId ? fresh : Math.max(0, Math.min(fresh, app.settings.newPerDay - intro))
+  return { due, newToday, learned, total: words.length }
 }
 
 function shuffle<T>(a: T[]): T[] {
@@ -123,8 +134,12 @@ function spreadSameWord(items: SessionItem[]): SessionItem[] {
   return items
 }
 
-export async function buildSession(): Promise<Session> {
-  const [words, cards, intro] = await Promise.all([activeWords(), cardMap(), introducedToday()])
+/**
+ * Übungssitzung: fällige Karten + neue Wörter.
+ * Mit deckId nur dieses Deck – dann alle neuen Wörter des Decks (z. B. Vokabeln der letzten Kursstunde).
+ */
+export async function buildSession(deckId?: string): Promise<Session> {
+  const [words, cards, intro] = await Promise.all([deckId ? wordsOfDecks([deckId]) : activeWords(), cardMap(), introducedToday()])
   const end = endOfToday()
   const now = Date.now()
   const due: { item: SessionItem; at: number }[] = []
@@ -146,7 +161,7 @@ export async function buildSession(): Promise<Session> {
   const items = spreadSameWord(due.map((d) => d.item))
 
   // Neue Wörter: erst kennenlernen, die Abfragen dazu kommen versetzt nach dem nächsten neuen Wort
-  const limit = Math.max(0, app.settings.newPerDay - intro)
+  const limit = deckId ? Infinity : Math.max(0, app.settings.newPerDay - intro)
   let pending: SessionItem[] = []
   for (const w of fresh.slice(0, limit)) {
     items.push({ kind: 'learn', word: w })
@@ -154,7 +169,7 @@ export async function buildSession(): Promise<Session> {
     pending = shuffle(typesFor(w).map((type): SessionItem => ({ kind: 'quiz', word: w, type })))
   }
   items.push(...pending)
-  return { date: today(), items, index: 0, charIndex: 0, stats: { good: 0, again: 0, learned: 0 } }
+  return { date: today(), deckId, items, index: 0, charIndex: 0, stats: { good: 0, again: 0, learned: 0 } }
 }
 
 export async function loadSession(): Promise<Session | undefined> {

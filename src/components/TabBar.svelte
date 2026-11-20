@@ -10,7 +10,7 @@
   ] as const
 
   function isCurrent(path: string) {
-    if (path === '/decks') return ['/decks', '/deck', '/wort', '/neu', '/bearbeiten'].includes(route.path)
+    if (path === '/decks') return ['/decks', '/deck', '/wort', '/neu', '/bearbeiten', '/auswahl'].includes(route.path)
     if (path === '/einstellungen') return ['/einstellungen', '/lizenzen'].includes(route.path)
     return route.path === path
   }

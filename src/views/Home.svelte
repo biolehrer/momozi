@@ -7,6 +7,7 @@
 
   let ov = $state<Overview | null>(null)
   let resumeLeft = $state(0)
+  let resumeDeck = $state('')
   let showIosHint = $state(false)
 
   const HINT_KEY = 'zw-ios-hint-dismissed'
@@ -15,6 +16,7 @@
     const [o, s] = await Promise.all([overview(), resumableSession()])
     ov = o
     resumeLeft = s ? s.items.length - s.index : 0
+    resumeDeck = s?.deckId ? deckName(s.deckId) : ''
     let dismissed = false
     try {
       dismissed = localStorage.getItem(HINT_KEY) === '1'
@@ -114,7 +116,9 @@
 <div class="dock">
   <div class="dock-inner">
     {#if resumeLeft > 0}
-      <button class="btn primary" onclick={() => go('/ueben?fortsetzen=1')}>Weiter üben ({resumeLeft})</button>
+      <button class="btn primary" onclick={() => go('/ueben?fortsetzen=1')}>
+        Weiter üben{resumeDeck ? `: ${resumeDeck}` : ''} ({resumeLeft})
+      </button>
     {:else if todo > 0}
       <button class="btn primary" onclick={() => go('/ueben')}>Üben starten</button>
     {:else}
