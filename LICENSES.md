@@ -8,7 +8,7 @@ Zeichenweise besteht aus eigenem Code (MIT-Lizenz, siehe `LICENSE`) und Daten bz
 | --- | --- | --- | --- |
 | Chinesisch-deutsches Wörterbuch | `public/data/dict.json` | [HanDeDict](https://github.com/gugray/HanDeDict), veröffentlicht von Gábor L. Ugray, ursprünglich mit Unterstützung der Chinesisch-Deutschen Gesellschaft e. V. Hamburg | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/deed.de) laut Datenkopf (die README des Projekts nennt CC BY-SA 2.0) |
 | HSK-Sets mit deutschen Kurzbedeutungen | `public/data/sets/*.json` | Wortliste: [complete-hsk-vocabulary](https://github.com/drkameleon/complete-hsk-vocabulary) (Yanis Zafirópulos, MIT); Lesungen dort ursprünglich aus [CC-CEDICT](https://cc-cedict.org/) (CC BY-SA 4.0); Bedeutungen aus HanDeDict | CC BY-SA (wegen HanDeDict) |
-| Handkorrekturen für HSK-Wörter | `data/hsk-overrides.json` | eigene Bearbeitung | CC BY-SA (wie HanDeDict) |
+| Handkorrekturen für HSK-Wörter | `data/overrides/*` (je Stufe) | eigene Bearbeitung | CC BY-SA (wie HanDeDict) |
 | Strichfolgen | wird beim Bauen aus `node_modules/hanzi-writer-data` nach `dist/strokes/` kopiert | [hanzi-writer-data](https://github.com/chanind/hanzi-writer-data), abgeleitet aus [Make Me a Hanzi](https://github.com/skishore/makemeahanzi), ursprünglich aus Schriften von Arphic Technology | [Arphic Public License](https://github.com/chanind/hanzi-writer-data/blob/master/ARPHICPL.TXT) (Lizenztext liegt in `dist/strokes/ARPHICPL.TXT`) |
 | App-Symbole | `public/icons/` | aus den Strichdaten von 字 (siehe oben) | Arphic Public License |
 | Aussprache (Hauptstimme) | `public/audio/*.mp3` mit Quelle `tan` in `public/data/audio.json` | Yue Tan, Universität Caen, Shtooka-Projekt (© 2009, Sammlung „cmn-caen-tan“); als MP3 (64 kbit/s) aus [audio-cmn](https://github.com/hugolpz/audio-cmn) | [CC BY-SA 3.0 US](https://creativecommons.org/licenses/by-sa/3.0/us/) |
@@ -21,7 +21,7 @@ Sprecher, Lizenz und Originalseite jeder Audiodatei stehen in `public/audio/CRED
 
 ### Bearbeitung der HanDeDict-Daten
 
-`scripts/build-data.mjs` kürzt die Einträge auf vereinfachte Zeichen, Pinyin und Bedeutungen (ohne Beispielsätze und Wortart-Kürzel). Für HSK-Wörter wählt es die passende Lesung und eine Kurzbedeutung; `data/hsk-overrides.json` enthält von Hand überarbeitete Kurzbedeutungen. Diese abgeleiteten Daten stehen nach dem Share-Alike-Prinzip ebenfalls unter CC BY-SA.
+`scripts/build-data.mjs` kürzt die Einträge auf vereinfachte Zeichen, Pinyin und Bedeutungen (ohne Beispielsätze und Wortart-Kürzel). Für HSK-Wörter wählt es die passende Lesung und eine Kurzbedeutung; `data/overrides/` enthält je Stufe von Hand überarbeitete Kurzbedeutungen und Lesungen. Diese abgeleiteten Daten stehen nach dem Share-Alike-Prinzip ebenfalls unter CC BY-SA.
 
 ## Bibliotheken
 

@@ -12,3 +12,695 @@
 这儿	zhèr	hsk1	KI
 中学生	zhōng xué shēng	hsk1	KI
 做饭	zuò fàn	hsk1	KI
+白色	bái sè	hsk2	KI
+出国	chū guó	hsk2	KI
+打车	dǎ chē	hsk2	KI
+打开	dǎ kāi	hsk2	KI
+地	de	hsk2	KI
+得	de	hsk2	KI
+公交车	gōng jiāo chē	hsk2	KI
+黑色	hēi sè	hsk2	KI
+机票	jī piào	hsk2	KI
+快要	kuài yào	hsk2	KI
+绿色	lǜ sè	hsk2	KI
+门票	mén piào	hsk2	KI
+奶茶	nǎi chá	hsk2	KI
+男孩儿	nán háir	hsk2	KI
+女孩儿	nǚ háir	hsk2	KI
+网上	wǎng shàng	hsk2	KI
+洗手间	xǐ shǒu jiān	hsk2	KI
+小时候	xiǎo shí hou	hsk2	KI
+药店	yào diàn	hsk2	KI
+长	cháng	hsk2	KI
+走路	zǒu lù	hsk2	KI
+班级	bān jí	hsk3	KI
+搬家	bān jiā	hsk3	KI
+大熊猫	dà xióng māo	hsk3	KI
+的话	de huà	hsk3	KI
+得分	dé fēn	hsk3	KI
+短裤	duǎn kù	hsk3	KI
+耳机	ěr jī	hsk3	KI
+方便面	fāng biàn miàn	hsk3	KI
+高铁	gāo tiě	hsk3	KI
+工作日	gōng zuò rì	hsk3	KI
+关机	guān jī	hsk3	KI
+关注	guān zhù	hsk3	KI
+过节	guò jié	hsk3	KI
+姐妹	jiě mèi	hsk3	KI
+开花	kāi huā	hsk3	KI
+开机	kāi jī	hsk3	KI
+聊天儿	liáo tiānr	hsk3	KI
+路边	lù biān	hsk3	KI
+男生	nán shēng	hsk3	KI
+难听	nán tīng	hsk3	KI
+女生	nǚ shēng	hsk3	KI
+身高	shēn gāo	hsk3	KI
+收到	shōu dào	hsk3	KI
+外卖	wài mài	hsk3	KI
+晚点	wǎn diǎn	hsk3	KI
+相机	xiàng jī	hsk3	KI
+小区	xiǎo qū	hsk3	KI
+休假	xiū jià	hsk3	KI
+银行卡	yín háng kǎ	hsk3	KI
+邮件	yóu jiàn	hsk3	KI
+邮箱	yóu xiāng	hsk3	KI
+怎么办	zěn me bàn	hsk3	KI
+爱心	ài xīn	hsk4	KI
+安检	ān jiǎn	hsk4	KI
+本科	běn kē	hsk4	KI
+毕业生	bì yè shēng	hsk4	KI
+不便	bù biàn	hsk4	KI
+不光	bù guāng	hsk4	KI
+参赛	cān sài	hsk4	KI
+查看	chá kàn	hsk4	KI
+查找	chá zhǎo	hsk4	KI
+厂	chǎng	hsk4	KI
+车速	chē sù	hsk4	KI
+车位	chē wèi	hsk4	KI
+出行	chū xíng	hsk4	KI
+此次	cǐ cì	hsk4	KI
+村	cūn	hsk4	KI
+错过	cuò guò	hsk4	KI
+打印机	dǎ yìn jī	hsk4	KI
+大巴	dà bā	hsk4	KI
+大赛	dà sài	hsk4	KI
+大厅	dà tīng	hsk4	KI
+待	dāi	hsk4	KI
+登机	dēng jī	hsk4	KI
+低价	dī jià	hsk4	KI
+低于	dī yú	hsk4	KI
+底下	dǐ xia	hsk4	KI
+点头	diǎn tóu	hsk4	KI
+电动车	diàn dòng chē	hsk4	KI
+电视剧	diàn shì jù	hsk4	KI
+度假	dù jià	hsk4	KI
+多样	duō yàng	hsk4	KI
+发送	fā sòng	hsk4	KI
+分为	fēn wéi	hsk4	KI
+父母	fù mǔ	hsk4	KI
+父女	fù nǚ	hsk4	KI
+父子	fù zǐ	hsk4	KI
+负责人	fù zé rén	hsk4	KI
+感人	gǎn rén	hsk4	KI
+高价	gāo jià	hsk4	KI
+高于	gāo yú	hsk4	KI
+歌声	gē shēng	hsk4	KI
+各地	gè dì	hsk4	KI
+各个	gè gè	hsk4	KI
+各位	gè wèi	hsk4	KI
+咳	ké	hsk4	KI
+好好	hǎo hǎo	hsk4	KI
+好笑	hǎo xiào	hsk4	KI
+红包	hóng bāo	hsk4	KI
+环保	huán bǎo	hsk4	KI
+回复	huí fù	hsk4	KI
+获奖	huò jiǎng	hsk4	KI
+基本上	jī běn shang	hsk4	KI
+加快	jiā kuài	hsk4	KI
+加上	jiā shàng	hsk4	KI
+假日	jià rì	hsk4	KI
+健身房	jiàn shēn fáng	hsk4	KI
+降温	jiàng wēn	hsk4	KI
+交警	jiāo jǐng	hsk4	KI
+叫作	jiào zuò	hsk4	KI
+节假日	jié jià rì	hsk4	KI
+结账	jié zhàng	hsk4	KI
+景点	jǐng diǎn	hsk4	KI
+景区	jǐng qū	hsk4	KI
+举例	jǔ lì	hsk4	KI
+考生	kǎo shēng	hsk4	KI
+快递	kuài dì	hsk4	KI
+量	liàng	hsk4	KI
+零花钱	líng huā qián	hsk4	KI
+零食	líng shí	hsk4	KI
+零下	líng xià	hsk4	KI
+留下	liú xià	hsk4	KI
+毛衣	máo yī	hsk4	KI
+美景	měi jǐng	hsk4	KI
+美食	měi shí	hsk4	KI
+面试	miàn shì	hsk4	KI
+母女	mǔ nǚ	hsk4	KI
+母子	mǔ zǐ	hsk4	KI
+目的地	mù dì dì	hsk4	KI
+嗯	en	hsk4	KI
+男士	nán shì	hsk4	KI
+难忘	nán wàng	hsk4	KI
+能否	néng fǒu	hsk4	KI
+年底	nián dǐ	hsk4	KI
+葡萄酒	pú tao jiǔ	hsk4	KI
+期末	qī mò	hsk4	KI
+期中	qī zhōng	hsk4	KI
+起到	qǐ dào	hsk4	KI
+全球	quán qiú	hsk4	KI
+全身	quán shēn	hsk4	KI
+人数	rén shù	hsk4	KI
+上门	shàng mén	hsk4	KI
+少见	shǎo jiàn	hsk4	KI
+身份证	shēn fèn zhèng	hsk4	KI
+师生	shī shēng	hsk4	KI
+十字路口	shí zì lù kǒu	hsk4	KI
+时间表	shí jiān biǎo	hsk4	KI
+实际上	shí jì shàng	hsk4	KI
+市区	shì qū	hsk4	KI
+试题	shì tí	hsk4	KI
+收费	shōu fèi	hsk4	KI
+收听	shōu tīng	hsk4	KI
+说明书	shuō míng shū	hsk4	KI
+酸奶	suān nǎi	hsk4	KI
+抬头	tái tóu	hsk4	KI
+提出	tí chū	hsk4	KI
+提到	tí dào	hsk4	KI
+体检	tǐ jiǎn	hsk4	KI
+停车	tíng chē	hsk4	KI
+停车场	tíng chē chǎng	hsk4	KI
+推出	tuī chū	hsk4	KI
+晚安	wǎn ān	hsk4	KI
+网页	wǎng yè	hsk4	KI
+网友	wǎng yǒu	hsk4	KI
+网址	wǎng zhǐ	hsk4	KI
+现有	xiàn yǒu	hsk4	KI
+血	xuè	hsk4	KI
+用来	yòng lái	hsk4	KI
+用于	yòng yú	hsk4	KI
+游玩	yóu wán	hsk4	KI
+有着	yǒu zhe	hsk4	KI
+远离	yuǎn lí	hsk4	KI
+月饼	yuè bǐng	hsk4	KI
+再次	zài cì	hsk4	KI
+暂停	zàn tíng	hsk4	KI
+之间	zhī jiān	hsk4	KI
+转	zhuǎn	hsk4	KI
+转机	zhuǎn jī	hsk4	KI
+最终	zuì zhōng	hsk4	KI
+熬夜	áo yè	hsk5	KI
+保安	bǎo ān	hsk5	KI
+保质期	bǎo zhì qī	hsk5	KI
+本地	běn dì	hsk5	KI
+便利店	biàn lì diàn	hsk5	KI
+拨打	bō dǎ	hsk5	KI
+餐饮	cān yǐn	hsk5	KI
+超速	chāo sù	hsk5	KI
+车祸	chē huò	hsk5	KI
+车库	chē kù	hsk5	KI
+车主	chē zhǔ	hsk5	KI
+称为	chēng wéi	hsk5	KI
+成年	chéng nián	hsk5	KI
+城区	chéng qū	hsk5	KI
+充电	chōng diàn	hsk5	KI
+出自	chū zì	hsk5	KI
+此前	cǐ qián	hsk5	KI
+从不	cóng bù	hsk5	KI
+促销	cù xiāo	hsk5	KI
+打断	dǎ duàn	hsk5	KI
+大妈	dà mā	hsk5	KI
+大事	dà shì	hsk5	KI
+大爷	dà ye	hsk5	KI
+单一	dān yī	hsk5	KI
+胆小	dǎn xiǎo	hsk5	KI
+当成	dàng chéng	hsk5	KI
+当作	dàng zuò	hsk5	KI
+灯光	dēng guāng	hsk5	KI
+低头	dī tóu	hsk5	KI
+电动	diàn dòng	hsk5	KI
+电子版	diàn zǐ bǎn	hsk5	KI
+调	tiáo	hsk5	KI
+调研	diào yán	hsk5	KI
+动画	dòng huà	hsk5	KI
+读音	dú yīn	hsk5	KI
+二手	èr shǒu	hsk5	KI
+二维码	èr wéi mǎ	hsk5	KI
+飞行员	fēi xíng yuán	hsk5	KI
+分享	fēn xiǎng	hsk5	KI
+丰富多彩	fēng fù duō cǎi	hsk5	KI
+刚好	gāng hǎo	hsk5	KI
+高大	gāo dà	hsk5	KI
+高度	gāo dù	hsk5	KI
+高科技	gāo kē jì	hsk5	KI
+高效	gāo xiào	hsk5	KI
+歌词	gē cí	hsk5	KI
+工艺	gōng yì	hsk5	KI
+公务员	gōng wù yuán	hsk5	KI
+共享	gòng xiǎng	hsk5	KI
+国画	guó huà	hsk5	KI
+国庆	guó qìng	hsk5	KI
+过敏	guò mǐn	hsk5	KI
+过期	guò qī	hsk5	KI
+海鲜	hǎi xiān	hsk5	KI
+汗水	hàn shuǐ	hsk5	KI
+好评	hǎo píng	hsk5	KI
+好运	hǎo yùn	hsk5	KI
+盒饭	hé fàn	hsk5	KI
+互动	hù dòng	hsk5	KI
+户外	hù wài	hsk5	KI
+划	huá	hsk5	KI
+话费	huà fèi	hsk5	KI
+缓解	huǎn jiě	hsk5	KI
+灰色	huī sè	hsk5	KI
+火锅	huǒ guō	hsk5	KI
+机器人	jī qì rén	hsk5	KI
+急诊	jí zhěn	hsk5	KI
+纪录	jì lù	hsk5	KI
+纪录片	jì lù piàn	hsk5	KI
+纪念日	jì niàn rì	hsk5	KI
+家电	jiā diàn	hsk5	KI
+驾照	jià zhào	hsk5	KI
+简历	jiǎn lì	hsk5	KI
+键	jiàn	hsk5	KI
+角色	jué sè	hsk5	KI
+近年来	jìn nián lái	hsk5	KI
+近日	jìn rì	hsk5	KI
+惊喜	jīng xǐ	hsk5	KI
+酒吧	jiǔ bā	hsk5	KI
+救护车	jiù hù chē	hsk5	KI
+开幕式	kāi mù shì	hsk5	KI
+开通	kāi tōng	hsk5	KI
+开业	kāi yè	hsk5	KI
+宽度	kuān dù	hsk5	KI
+老公	lǎo gōng	hsk5	KI
+姥爷	lǎo ye	hsk5	KI
+泪	lèi	hsk5	KI
+泪水	lèi shuǐ	hsk5	KI
+离职	lí zhí	hsk5	KI
+领带	lǐng dài	hsk5	KI
+领取	lǐng qǔ	hsk5	KI
+浏览	liú lǎn	hsk5	KI
+流感	liú gǎn	hsk5	KI
+留言	liú yán	hsk5	KI
+路人	lù rén	hsk5	KI
+旅行社	lǚ xíng shè	hsk5	KI
+没法儿	méi fǎr	hsk5	KI
+媒体	méi tǐ	hsk5	KI
+美味	měi wèi	hsk5	KI
+面向	miàn xiàng	hsk5	KI
+闹钟	nào zhōng	hsk5	KI
+年初	nián chū	hsk5	KI
+年夜饭	nián yè fàn	hsk5	KI
+牛仔裤	niú zǎi kù	hsk5	KI
+哦	ó	hsk5	KI
+陪伴	péi bàn	hsk5	KI
+配送	pèi sòng	hsk5	KI
+品牌	pǐn pái	hsk5	KI
+平台	píng tái	hsk5	KI
+凭借	píng jiè	hsk5	KI
+签	qiān	hsk5	KI
+前来	qián lái	hsk5	KI
+亲朋好友	qīn péng hǎo yǒu	hsk5	KI
+亲情	qīn qíng	hsk5	KI
+全新	quán xīn	hsk5	KI
+日历	rì lì	hsk5	KI
+赛场	sài chǎng	hsk5	KI
+扇	shàn	hsk5	KI
+烧烤	shāo kǎo	hsk5	KI
+升级	shēng jí	hsk5	KI
+升温	shēng wēn	hsk5	KI
+失恋	shī liàn	hsk5	KI
+时差	shí chā	hsk5	KI
+实验	shí yàn	hsk5	KI
+实验室	shí yàn shì	hsk5	KI
+视为	shì wéi	hsk5	KI
+适用	shì yòng	hsk5	KI
+收看	shōu kàn	hsk5	KI
+首次	shǒu cì	hsk5	KI
+售价	shòu jià	hsk5	KI
+书房	shū fáng	hsk5	KI
+熟人	shú rén	hsk5	KI
+鼠标	shǔ biāo	hsk5	KI
+酸甜苦辣	suān tián kǔ là	hsk5	KI
+台灯	tái dēng	hsk5	KI
+特有	tè yǒu	hsk5	KI
+疼痛	téng tòng	hsk5	KI
+提起	tí qǐ	hsk5	KI
+图书	tú shū	hsk5	KI
+团队	tuán duì	hsk5	KI
+拖鞋	tuō xié	hsk5	KI
+完美	wán měi	hsk5	KI
+问卷	wèn juàn	hsk5	KI
+无关	wú guān	hsk5	KI
+无奈	wú nài	hsk5	KI
+五颜六色	wǔ yán liù sè	hsk5	KI
+物业	wù yè	hsk5	KI
+吸管	xī guǎn	hsk5	KI
+西装	xī zhuāng	hsk5	KI
+相处	xiāng chǔ	hsk5	KI
+向上	xiàng shàng	hsk5	KI
+消费者	xiāo fèi zhě	hsk5	KI
+销量	xiāo liàng	hsk5	KI
+小于	xiǎo yú	hsk5	KI
+心态	xīn tài	hsk5	KI
+行走	xíng zǒu	hsk5	KI
+学分	xué fēn	hsk5	KI
+押金	yā jīn	hsk5	KI
+研发	yán fā	hsk5	KI
+阳台	yáng tái	hsk5	KI
+样式	yàng shì	hsk5	KI
+夜市	yè shì	hsk5	KI
+一次性	yī cì xìng	hsk5	KI
+一代	yī dài	hsk5	KI
+一路	yī lù	hsk5	KI
+音量	yīn liàng	hsk5	KI
+应对	yìng duì	hsk5	KI
+影视	yǐng shì	hsk5	KI
+由此	yóu cǐ	hsk5	KI
+有助于	yǒu zhù yú	hsk5	KI
+原有	yuán yǒu	hsk5	KI
+约定	yuē dìng	hsk5	KI
+在场	zài chǎng	hsk5	KI
+在内	zài nèi	hsk5	KI
+在线	zài xiàn	hsk5	KI
+造成	zào chéng	hsk5	KI
+赠	zèng	hsk5	KI
+炸	zhá	hsk5	KI
+站台	zhàn tái	hsk5	KI
+账号	zhàng hào	hsk5	KI
+折扣	zhé kòu	hsk5	KI
+正如	zhèng rú	hsk5	KI
+知名	zhī míng	hsk5	KI
+中华	Zhōng huá	hsk5	KI
+中华民族	Zhōng huá mín zú	hsk5	KI
+中级	zhōng jí	hsk5	KI
+中期	zhōng qī	hsk5	KI
+中外	zhōng wài	hsk5	KI
+住宿	zhù sù	hsk5	KI
+住址	zhù zhǐ	hsk5	KI
+装修	zhuāng xiū	hsk5	KI
+子女	zǐ nǚ	hsk5	KI
+总部	zǒng bù	hsk5	KI
+总体	zǒng tǐ	hsk5	KI
+足够	zú gòu	hsk5	KI
+最佳	zuì jiā	hsk5	KI
+作出	zuò chū	hsk5	KI
+白领	bái lǐng	hsk6	KI
+百分点	bǎi fēn diǎn	hsk6	KI
+摆放	bǎi fàng	hsk6	KI
+保暖	bǎo nuǎn	hsk6	KI
+保修	bǎo xiū	hsk6	KI
+本土	běn tǔ	hsk6	KI
+编写	biān xiě	hsk6	KI
+便捷	biàn jié	hsk6	KI
+不成	bù chéng	hsk6	KI
+不适	bù shì	hsk6	KI
+不已	bù yǐ	hsk6	KI
+才华	cái huá	hsk6	KI
+财物	cái wù	hsk6	KI
+参展	cān zhǎn	hsk6	KI
+层面	céng miàn	hsk6	KI
+查询	chá xún	hsk6	KI
+拆除	chāi chú	hsk6	KI
+常温	cháng wēn	hsk6	KI
+场馆	chǎng guǎn	hsk6	KI
+场景	chǎng jǐng	hsk6	KI
+炒股	chǎo gǔ	hsk6	KI
+称作	chēng zuò	hsk6	KI
+诚信	chéng xìn	hsk6	KI
+持有	chí yǒu	hsk6	KI
+抽奖	chōu jiǎng	hsk6	KI
+出场	chū chǎng	hsk6	KI
+出游	chū yóu	hsk6	KI
+出于	chū yú	hsk6	KI
+初等	chū děng	hsk6	KI
+穿过	chuān guò	hsk6	KI
+传承	chuán chéng	hsk6	KI
+传染病	chuán rǎn bìng	hsk6	KI
+传输	chuán shū	hsk6	KI
+创意	chuàng yì	hsk6	KI
+瓷器	cí qì	hsk6	KI
+从业	cóng yè	hsk6	KI
+打动	dǎ dòng	hsk6	KI
+打雷	dǎ léi	hsk6	KI
+打造	dǎ zào	hsk6	KI
+大吃一惊	dà chī yī jīng	hsk6	KI
+大都	dà dōu	hsk6	KI
+大师	dà shī	hsk6	KI
+弹性	tán xìng	hsk6	KI
+当今	dāng jīn	hsk6	KI
+当下	dāng xià	hsk6	KI
+倒车	dǎo chē	hsk6	KI
+地域	dì yù	hsk6	KI
+得了	dé le	hsk6	KI
+得知	dé zhī	hsk6	KI
+低碳	dī tàn	hsk6	KI
+电饭锅	diàn fàn guō	hsk6	KI
+订单	dìng dān	hsk6	KI
+定时	dìng shí	hsk6	KI
+定位	dìng wèi	hsk6	KI
+动听	dòng tīng	hsk6	KI
+短缺	duǎn quē	hsk6	KI
+多媒体	duō méi tǐ	hsk6	KI
+多元	duō yuán	hsk6	KI
+儿科	ér kē	hsk6	KI
+耳环	ěr huán	hsk6	KI
+发放	fā fàng	hsk6	KI
+发光	fā guāng	hsk6	KI
+方方面面	fāng fāng miàn miàn	hsk6	KI
+方言	fāng yán	hsk6	KI
+房价	fáng jià	hsk6	KI
+访谈	fǎng tán	hsk6	KI
+飞速	fēi sù	hsk6	KI
+肥胖	féi pàng	hsk6	KI
+氛围	fēn wéi	hsk6	KI
+风雨	fēng yǔ	hsk6	KI
+服用	fú yòng	hsk6	KI
+负面	fù miàn	hsk6	KI
+概率	gài lǜ	hsk6	KI
+高层	gāo céng	hsk6	KI
+高手	gāo shǒu	hsk6	KI
+高新技术	gāo xīn jì shù	hsk6	KI
+公益	gōng yì	hsk6	KI
+公众	gōng zhòng	hsk6	KI
+古迹	gǔ jì	hsk6	KI
+股市	gǔ shì	hsk6	KI
+拐弯	guǎi wān	hsk6	KI
+关爱	guān ài	hsk6	KI
+关联	guān lián	hsk6	KI
+国宝	guó bǎo	hsk6	KI
+国歌	guó gē	hsk6	KI
+过时	guò shí	hsk6	KI
+海内外	hǎi nèi wài	hsk6	KI
+海域	hǎi yù	hsk6	KI
+毫升	háo shēng	hsk6	KI
+好学	hào xué	hsk6	KI
+衡量	héng liáng	hsk6	KI
+后人	hòu rén	hsk6	KI
+后者	hòu zhě	hsk6	KI
+绘画	huì huà	hsk6	KI
+货车	huò chē	hsk6	KI
+机动车	jī dòng chē	hsk6	KI
+机制	jī zhì	hsk6	KI
+极为	jí wéi	hsk6	KI
+急救	jí jiù	hsk6	KI
+技艺	jì yì	hsk6	KI
+季军	jì jūn	hsk6	KI
+家家户户	jiā jiā hù hù	hsk6	KI
+家园	jiā yuán	hsk6	KI
+艰辛	jiān xīn	hsk6	KI
+监测	jiān cè	hsk6	KI
+减压	jiǎn yā	hsk6	KI
+简介	jiǎn jiè	hsk6	KI
+建筑物	jiàn zhù wù	hsk6	KI
+奖牌	jiǎng pái	hsk6	KI
+郊外	jiāo wài	hsk6	KI
+胶带	jiāo dài	hsk6	KI
+胶水	jiāo shuǐ	hsk6	KI
+焦虑	jiāo lǜ	hsk6	KI
+脚印	jiǎo yìn	hsk6	KI
+结尾	jié wěi	hsk6	KI
+截至	jié zhì	hsk6	KI
+解读	jiě dú	hsk6	KI
+解说	jiě shuō	hsk6	KI
+戒指	jiè zhi	hsk6	KI
+金子	jīn zi	hsk6	KI
+进度	jìn dù	hsk6	KI
+景观	jǐng guān	hsk6	KI
+酒水	jiǔ shuǐ	hsk6	KI
+救命	jiù mìng	hsk6	KI
+救援	jiù yuán	hsk6	KI
+救助	jiù zhù	hsk6	KI
+就读	jiù dú	hsk6	KI
+开创	kāi chuàng	hsk6	KI
+开启	kāi qǐ	hsk6	KI
+看得起	kàn de qǐ	hsk6	KI
+看好	kàn hǎo	hsk6	KI
+看似	kàn sì	hsk6	KI
+看中	kàn zhòng	hsk6	KI
+看重	kàn zhòng	hsk6	KI
+康复	kāng fù	hsk6	KI
+科幻	kē huàn	hsk6	KI
+空地	kòng dì	hsk6	KI
+空闲	kòng xián	hsk6	KI
+口感	kǒu gǎn	hsk6	KI
+酷	kù	hsk6	KI
+夸张	kuā zhāng	hsk6	KI
+快捷	kuài jié	hsk6	KI
+款式	kuǎn shì	hsk6	KI
+困扰	kùn rǎo	hsk6	KI
+栏	lán	hsk6	KI
+类别	lèi bié	hsk6	KI
+理财	lǐ cái	hsk6	KI
+理科	lǐ kē	hsk6	KI
+理念	lǐ niàn	hsk6	KI
+理性	lǐ xìng	hsk6	KI
+力度	lì dù	hsk6	KI
+历经	lì jīng	hsk6	KI
+联合国	Lián hé guó	hsk6	KI
+联网	lián wǎng	hsk6	KI
+两岸	liǎng àn	hsk6	KI
+浏览器	liú lǎn qì	hsk6	KI
+流程	liú chéng	hsk6	KI
+流量	liú liàng	hsk6	KI
+流入	liú rù	hsk6	KI
+漏洞	lòu dòng	hsk6	KI
+录制	lù zhì	hsk6	KI
+路况	lù kuàng	hsk6	KI
+露	lù	hsk6	KI
+旅程	lǚ chéng	hsk6	KI
+率先	shuài xiān	hsk6	KI
+轮	lún	hsk6	KI
+轮椅	lún yǐ	hsk6	KI
+论坛	lùn tán	hsk6	KI
+麦克风	mài kè fēng	hsk6	KI
+密集	mì jí	hsk6	KI
+面部	miàn bù	hsk6	KI
+民歌	mín gē	hsk6	KI
+民俗	mín sú	hsk6	KI
+名气	míng qì	hsk6	KI
+模拟	mó nǐ	hsk6	KI
+模特儿	mó tèr	hsk6	KI
+难点	nán diǎn	hsk6	KI
+内外	nèi wài	hsk6	KI
+内衣	nèi yī	hsk6	KI
+年终	nián zhōng	hsk6	KI
+排放	pái fàng	hsk6	KI
+排名	pái míng	hsk6	KI
+碰撞	pèng zhuàng	hsk6	KI
+骗子	piàn zi	hsk6	KI
+频道	pín dào	hsk6	KI
+平方米	píng fāng mǐ	hsk6	KI
+棋子	qí zǐ	hsk6	KI
+启动	qǐ dòng	hsk6	KI
+千家万户	qiān jiā wàn hù	hsk6	KI
+前者	qián zhě	hsk6	KI
+强壮	qiáng zhuàng	hsk6	KI
+亲属	qīn shǔ	hsk6	KI
+青春期	qīng chūn qī	hsk6	KI
+清淡	qīng dàn	hsk6	KI
+清洗	qīng xǐ	hsk6	KI
+求婚	qiú hūn	hsk6	KI
+求救	qiú jiù	hsk6	KI
+求职	qiú zhí	hsk6	KI
+求助	qiú zhù	hsk6	KI
+曲	qū	hsk6	KI
+全程	quán chéng	hsk6	KI
+热点	rè diǎn	hsk6	KI
+热水器	rè shuǐ qì	hsk6	KI
+热线	rè xiàn	hsk6	KI
+人工智能	rén gōng zhì néng	hsk6	KI
+人行道	rén xíng dào	hsk6	KI
+认错	rèn cuò	hsk6	KI
+认同	rèn tóng	hsk6	KI
+认知	rèn zhī	hsk6	KI
+日后	rì hòu	hsk6	KI
+日前	rì qián	hsk6	KI
+融合	róng hé	hsk6	KI
+融入	róng rù	hsk6	KI
+入门	rù mén	hsk6	KI
+入选	rù xuǎn	hsk6	KI
+扫描	sǎo miáo	hsk6	KI
+鲨鱼	shā yú	hsk6	KI
+筛选	shāi xuǎn	hsk6	KI
+山顶	shān dǐng	hsk6	KI
+山坡	shān pō	hsk6	KI
+伤亡	shāng wáng	hsk6	KI
+上市	shàng shì	hsk6	KI
+少儿	shào ér	hsk6	KI
+摄像	shè xiàng	hsk6	KI
+身心	shēn xīn	hsk6	KI
+生成	shēng chéng	hsk6	KI
+盛	shèng	hsk6	KI
+师父	shī fu	hsk6	KI
+时尚	shí shàng	hsk6	KI
+时速	shí sù	hsk6	KI
+事后	shì hòu	hsk6	KI
+适度	shì dù	hsk6	KI
+收取	shōu qǔ	hsk6	KI
+手臂	shǒu bì	hsk6	KI
+受灾	shòu zāi	hsk6	KI
+薯片	shǔ piàn	hsk6	KI
+水面	shuǐ miàn	hsk6	KI
+思路	sī lù	hsk6	KI
+台球	tái qiú	hsk6	KI
+汤圆	tāng yuán	hsk6	KI
+套餐	tào cān	hsk6	KI
+添加	tiān jiā	hsk6	KI
+跳水	tiào shuǐ	hsk6	KI
+贴近	tiē jìn	hsk6	KI
+通话	tōng huà	hsk6	KI
+铜牌	tóng pái	hsk6	KI
+透过	tòu guò	hsk6	KI
+突发	tū fā	hsk6	KI
+图像	tú xiàng	hsk6	KI
+外来	wài lái	hsk6	KI
+违规	wéi guī	hsk6	KI
+为此	wèi cǐ	hsk6	KI
+未成年人	wèi chéng nián rén	hsk6	KI
+文具	wén jù	hsk6	KI
+文科	wén kē	hsk6	KI
+污水	wū shuǐ	hsk6	KI
+喜剧	xǐ jù	hsk6	KI
+戏曲	xì qǔ	hsk6	KI
+下功夫	xià gōng fu	hsk6	KI
+相传	xiāng chuán	hsk6	KI
+相连	xiāng lián	hsk6	KI
+香水	xiāng shuǐ	hsk6	KI
+象棋	xiàng qí	hsk6	KI
+小偷儿	xiǎo tōur	hsk6	KI
+效应	xiào yìng	hsk6	KI
+新款	xīn kuǎn	hsk6	KI
+性价比	xìng jià bǐ	hsk6	KI
+学员	xué yuán	hsk6	KI
+炎症	yán zhèng	hsk6	KI
+研讨	yán tǎo	hsk6	KI
+仰	yǎng	hsk6	KI
+养老	yǎng lǎo	hsk6	KI
+养老院	yǎng lǎo yuàn	hsk6	KI
+也好	yě hǎo	hsk6	KI
+业	yè	hsk6	KI
+一模一样	yī mú yī yàng	hsk6	KI
+衣食住行	yī shí zhù xíng	hsk6	KI
+艺人	yì rén	hsk6	KI
+益处	yì chu	hsk6	KI
+音节	yīn jié	hsk6	KI
+银牌	yín pái	hsk6	KI
+引发	yǐn fā	hsk6	KI
+饮用水	yǐn yòng shuǐ	hsk6	KI
+用餐	yòng cān	hsk6	KI
+优化	yōu huà	hsk6	KI
+由来	yóu lái	hsk6	KI
+有序	yǒu xù	hsk6	KI
+余额	yú é	hsk6	KI
+原本	yuán běn	hsk6	KI
+源于	yuán yú	hsk6	KI
+远程	yuǎn chéng	hsk6	KI
+晕车	yùn chē	hsk6	KI
+运营	yùn yíng	hsk6	KI
+杂	zá	hsk6	KI
+灾区	zāi qū	hsk6	KI
+再生	zài shēng	hsk6	KI
+噪声	zào shēng	hsk6	KI
+粘贴	zhān tiē	hsk6	KI
+账单	zhàng dān	hsk6	KI
+之所以	zhī suǒ yǐ	hsk6	KI
+职责	zhí zé	hsk6	KI
+至关重要	zhì guān zhòng yào	hsk6	KI
+质疑	zhì yí	hsk6	KI
+中毒	zhòng dú	hsk6	KI
+中奖	zhòng jiǎng	hsk6	KI
+重建	chóng jiàn	hsk6	KI
+珠宝	zhū bǎo	hsk6	KI
+诸多	zhū duō	hsk6	KI
+主角	zhǔ jué	hsk6	KI
+主演	zhǔ yǎn	hsk6	KI
+专注	zhuān zhù	hsk6	KI
+转身	zhuǎn shēn	hsk6	KI
+字幕	zì mù	hsk6	KI
+自助	zì zhù	hsk6	KI
+粽子	zòng zi	hsk6	KI

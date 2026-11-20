@@ -92,13 +92,15 @@ def main():
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
 
-    # Lesungen fest vorgeben, Wörter als Ganzes segmentieren lassen
+    model = KModel(repo_id=REPO_ID).eval()
+    pipeline = KPipeline(lang_code='z', repo_id=REPO_ID, model=model)
+
+    # Lesungen fest vorgeben, Wörter als Ganzes segmentieren lassen.
+    # Erst NACH dem Pipeline-Start: Kokoros Frontend lädt dabei ein eigenes großes
+    # Phrasenwörterbuch, das sonst unsere Lesungen überschreibt (z. B. 大都 → dàdū, 倒车 → dàochē).
     for w in words:
         load_phrases_dict({w['s']: [[numeric_to_marked(s)] for s in w['n'].split()]})
         jieba.add_word(w['s'], freq=10_000_000)
-
-    model = KModel(repo_id=REPO_ID).eval()
-    pipeline = KPipeline(lang_code='z', repo_id=REPO_ID, model=model)
 
     for w in words:
         chunks, phonemes = [], []

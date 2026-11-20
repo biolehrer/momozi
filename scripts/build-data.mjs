@@ -31,15 +31,13 @@ const SOURCES = {
   },
 }
 
-/** HSK 3.0, Prüfungsfassung 2026 ("newest" in der Quelle) */
-const SETS = [
-  {
-    id: 'hsk1',
-    name: 'HSK 1',
-    description: 'HSK 3.0 · Prüfungsfassung 2026 · Stufe 1',
-    tag: 'newest-1',
-  },
-]
+/** HSK 3.0, Prüfungsfassung 2026 ("newest" in der Quelle). Handkorrekturen je Stufe in data/overrides/<id>.json */
+const SETS = [1, 2, 3, 4, 5, 6].map((n) => ({
+  id: `hsk${n}`,
+  name: `HSK ${n}`,
+  description: 'HSK 3.0 · Prüfungsfassung 2026',
+  tag: `newest-${n}`,
+}))
 
 const refresh = process.argv.includes('--refresh')
 
@@ -85,6 +83,17 @@ function cleanSense(sense) {
     .join('; ')
 }
 
+/** Eigennamen (Familien-, Vor-, Orts-/Personennamen) und Radikal-Angaben ans Ende der Bedeutungen */
+const LOW_TAGS = new Set(['Eig', 'Fam', 'Pers', 'Vorn', 'Org'])
+
+function isLowPriority(raw) {
+  const head = raw.split(/;?\s*Bsp\.:/)[0]
+  for (const m of head.matchAll(/\(([^()]*)\)/g)) {
+    if (m[1].split(/\s*,\s*/).some((t) => LOW_TAGS.has(t))) return true
+  }
+  return /^\s*Radikal Nr\./.test(head)
+}
+
 function parseHanDeDict(text) {
   const entries = new Map() // key: simp|numeric -> { s, n, senses[] }
   let dataDate = ''
@@ -99,15 +108,21 @@ function parseHanDeDict(text) {
     if (!m) continue
     const [, , simp, pinyin, body] = m
     const n = normalizeNumeric(pinyin)
-    const senses = body.split('/').map(cleanSense).filter(Boolean)
+    const senses = body
+      .split('/')
+      .map((raw) => ({ text: cleanSense(raw), low: isLowPriority(raw) }))
+      .filter((x) => x.text)
     if (!senses.length) continue
     const key = `${simp}|${n}`
     const prev = entries.get(key)
     if (prev) {
-      for (const s of senses) if (!prev.senses.includes(s)) prev.senses.push(s)
+      for (const x of senses) if (!prev.senses.some((p) => p.text === x.text)) prev.senses.push(x)
     } else {
       entries.set(key, { s: simp, n, senses })
     }
+  }
+  for (const e of entries.values()) {
+    e.senses = [...e.senses.filter((x) => !x.low), ...e.senses.filter((x) => x.low)].map((x) => x.text)
   }
   return { entries, dataDate }
 }
@@ -137,17 +152,45 @@ for (const e of dict.values()) {
   bySimp.get(e.s).push(e)
 }
 
-const overrides = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'hsk-overrides.json'), 'utf8'))
 const hsk = JSON.parse(fs.readFileSync(hskFile, 'utf8'))
+
+/**
+ * Handkorrekturen je Stufe: data/overrides/<id>.json und/oder <id>.tsv.
+ * TSV-Zeilen: Wort <TAB> Bedeutung [<TAB> Pinyin in Zahlen]; Bedeutung "=" behält die automatische.
+ */
+function loadOverrides(setId) {
+  const dir = path.join(ROOT, 'data', 'overrides')
+  const out = {}
+  const json = path.join(dir, `${setId}.json`)
+  if (fs.existsSync(json)) Object.assign(out, JSON.parse(fs.readFileSync(json, 'utf8')))
+  const tsv = path.join(dir, `${setId}.tsv`)
+  if (fs.existsSync(tsv)) {
+    for (const line of fs.readFileSync(tsv, 'utf8').split('\n')) {
+      if (!line.trim() || line.startsWith('#')) continue
+      const [s, meaning, pinyin] = line.split('\t').map((x) => x?.trim())
+      const ov = { ...out[s] }
+      if (meaning && meaning !== '=') ov.meaning = meaning
+      if (pinyin) ov.pinyin = pinyin
+      out[s] = ov
+    }
+  }
+  return out
+}
 
 const setIndex = []
 const problems = []
+const REVIEW_DIR = path.join(SRC_DIR, 'review')
+fs.mkdirSync(REVIEW_DIR, { recursive: true })
 
 for (const set of SETS) {
+  const overrides = loadOverrides(set.id)
   const words = []
+  // Prüfliste: Wort, Pinyin, deutsche Kurzbedeutung, englische Bedeutung (CC-CEDICT), Markierung
+  const review = []
   for (const e of hsk.filter((x) => x.level.includes(set.tag))) {
     const s = e.simplified
     const ov = overrides[s] ?? {}
+    let flag = ov.meaning ? 'HAND' : 'AUTO'
     const readings = []
     for (const f of e.forms) {
       const n = f.transcriptions.numeric
@@ -158,7 +201,10 @@ for (const set of SETS) {
       const lower = readings.filter((r) => r[0] === r[0].toLowerCase())
       const candidates = lower.length ? lower : readings
       reading = candidates.find((r) => dict.has(`${s}|${normalizeNumeric(r)}`)) ?? candidates[0]
-      if (candidates.length > 1) problems.push(`${s}: mehrere Lesungen ${candidates.join(', ')} -> ${reading} (bitte prüfen)`)
+      if (candidates.length > 1 && !ov.meaning) {
+        problems.push(`${set.id} ${s}: mehrere Lesungen ${candidates.join(', ')} -> ${reading} (bitte prüfen)`)
+        flag = 'LESUNG?'
+      }
     }
     const n = normalizeNumeric(reading)
     // Großschreibung (Eigennamen wie Zhōngguó) für die Anzeige erhalten
@@ -171,13 +217,21 @@ for (const set of SETS) {
       const alt = bySimp.get(s)
       if (alt?.length) {
         entry = alt[0]
-        if (!ov.meaning) problems.push(`${s} [${n}]: keine passende Lesung in HanDeDict, nehme [${entry.n}]`)
+        if (!ov.meaning) {
+          problems.push(`${set.id} ${s} [${n}]: keine passende Lesung in HanDeDict, nehme [${entry.n}]`)
+          flag = 'ANDERE-LESUNG'
+        }
       }
     }
     const meaning = ov.meaning ?? (entry ? shortMeaning(entry.senses.join(SENSE_SEP)) : '')
-    if (!meaning) problems.push(`${s} [${n}]: keine deutsche Bedeutung gefunden`)
-    if (splitNumeric(n).length !== [...s].length) problems.push(`${s} [${n}]: Silbenzahl ≠ Zeichenzahl`)
-    for (const ch of s) if (!hasStrokeData(ch)) problems.push(`${s}: keine Strichdaten für ${ch}`)
+    if (!meaning) {
+      problems.push(`${set.id} ${s} [${n}]: keine deutsche Bedeutung gefunden`)
+      flag = 'FEHLT'
+    }
+    if (splitNumeric(n).length !== [...s].length) problems.push(`${set.id} ${s} [${n}]: Silbenzahl ≠ Zeichenzahl`)
+    for (const ch of s) if (!hasStrokeData(ch)) problems.push(`${set.id} ${s}: keine Strichdaten für ${ch}`)
+    const english = (e.forms.find((f) => normalizeNumeric(f.transcriptions.numeric) === n) ?? e.forms[0]).meanings.slice(0, 3).join('; ')
+    review.push([s, reading, meaning, english, flag].join('\t'))
 
     words.push({
       s,
@@ -193,7 +247,9 @@ for (const set of SETS) {
     words,
   })
   setIndex.push({ id: set.id, name: set.name, description: set.description, count: words.length })
-  console.log(`${set.name}: ${words.length} Wörter`)
+  fs.writeFileSync(path.join(REVIEW_DIR, `${set.id}.tsv`), review.join('\n') + '\n')
+  const flags = review.reduce((acc, line) => ((acc[line.split('\t')[4]] = (acc[line.split('\t')[4]] ?? 0) + 1), acc), {})
+  console.log(`${set.name}: ${words.length} Wörter ${JSON.stringify(flags)}`)
 }
 writeJson(path.join(OUT_DIR, 'sets', 'index.json'), setIndex)
 

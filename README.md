@@ -2,7 +2,7 @@
 
 Web-App zum Üben chinesischer Schriftzeichen (Kurzzeichen) – für das Handy gemacht, installierbar, auf Deutsch.
 
-- **Fertige Sets:** HSK 1 (HSK 3.0, Prüfungsfassung 2026), weitere Stufen folgen
+- **Fertige Sets:** HSK 1–6 (HSK 3.0, Prüfungsfassung 2026) mit von Hand geprüften deutschen Bedeutungen und Lesungen; in „Decks“ einzeln zuschaltbar
 - **Eigene Decks:** Wörter im Wörterbuch suchen (Zeichen, Pinyin oder Deutsch) oder selbst anlegen
 - **Vier Abfragearten**, einzeln abschaltbar:
   - **Schreiben** – Bedeutung und Pinyin sehen, Zeichen aus dem Gedächtnis schreiben; jeder Strich wird geprüft
@@ -42,7 +42,7 @@ Die aufbereiteten Daten liegen fertig in `public/data/`. Neu erzeugen (lädt Han
 npm run data -- --refresh
 ```
 
-Eine weitere HSK-Stufe kommt dazu, indem man in `scripts/build-data.mjs` einen Eintrag in `SETS` ergänzt und mehrdeutige Lesungen oder unpassende Bedeutungen in `data/hsk-overrides.json` korrigiert. Das Skript listet alle Wörter auf, die geprüft werden sollten.
+Handkorrekturen liegen je Stufe in `data/overrides/` (`hsk1.json` bzw. `hsk2.tsv` … `hsk6.tsv`). TSV-Zeilen: `Wort<TAB>Bedeutung[<TAB>Pinyin in Zahlen]`, `=` als Bedeutung behält die automatische. Das Skript meldet alles, was noch geprüft werden sollte (mehrdeutige Lesungen, fehlende Bedeutungen), und schreibt pro Stufe eine Prüfliste nach `data-src/review/<stufe>.tsv` (Wort, Lesung, deutsche Kurzbedeutung, englische Bedeutung, Markierung).
 
 ### Aussprache
 
