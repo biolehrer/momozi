@@ -2,7 +2,7 @@
   // Abfragen „Pinyin“ und „Bedeutung“: Zeichen sehen, Antwort erinnern, aufdecken, selbst bewerten.
   import SpeakButton from './SpeakButton.svelte'
   import { consume, isPrimary, shortcut } from '../lib/keys'
-  import { displayPinyin } from '../lib/pinyin'
+  import { alsoPinyin, displayPinyin } from '../lib/pinyin'
   import type { Word } from '../lib/types'
 
   let { word, type, onrate }: { word: Word; type: 'pinyin' | 'meaning'; onrate: (grade: 1 | 3) => void } = $props()
@@ -47,6 +47,7 @@
       {#if shown}
         {#if type === 'pinyin'}
           <div class="main">{displayPinyin(word.n)}</div>
+          {#if word.a?.length}<div class="sub">{alsoPinyin(word.a)}</div>{/if}
           <div class="sub">{word.m}</div>
         {:else}
           <div class="main">{word.m}</div>

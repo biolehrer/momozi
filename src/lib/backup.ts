@@ -3,6 +3,7 @@
 // oder wird heruntergeladen.
 import { allCards, allDecks, db, getMeta, setMeta } from './db'
 import { app, createDeck, DEFAULT_SETTINGS, saveDeck, saveSettings, setActive } from './state.svelte'
+import { migrateData, migrateWords } from './migrate'
 import { today } from './srs'
 import { wordKey, type CardRecord, type CustomDeck, type ReviewLogRecord, type Settings, type Word } from './types'
 
@@ -109,6 +110,10 @@ function cleanWords(list: unknown): Word[] {
     if (!w || typeof w.s !== 'string' || !CJK.test(w.s) || typeof w.m !== 'string') continue
     const word: Word = { s: w.s, n: typeof w.n === 'string' ? w.n : '', m: w.m.slice(0, 200) }
     if (typeof w.x === 'string') word.x = w.x.slice(0, 600)
+    if (Array.isArray(w.a)) {
+      const a = w.a.filter((x): x is string => typeof x === 'string' && x.length <= 40).slice(0, 6)
+      if (a.length) word.a = a
+    }
     if (w.noTones) word.noTones = true
     out.push(word)
   }
@@ -231,6 +236,8 @@ export async function importBackup(b: BackupFile, mode: 'merge' | 'replace'): Pr
     app.settings.activeDecks = [...active]
   }
   await saveSettings()
+  // Sicherungen aus älteren Versionen auf den aktuellen Datenstand bringen
+  await migrateData(true).catch((e) => console.warn('Datenanpassung übersprungen:', e))
   app.decks = (await allDecks()).sort((a, b2) => a.createdAt - b2.createdAt)
   return sum
 }
@@ -244,7 +251,7 @@ export async function importDeck(f: DeckFile): Promise<CustomDeck> {
     while (names.has(`${name} (${i})`)) i++
     name = `${name} (${i})`
   }
-  const deck = { ...createDeck(name), words: f.deck.words }
+  const deck = { ...createDeck(name), words: await migrateWords(f.deck.words).catch(() => f.deck.words) }
   await saveDeck(deck)
   await setActive(deck.id, true)
   return deck

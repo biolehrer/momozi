@@ -2,6 +2,7 @@
 import { allDecks, deleteDeck, getMeta, putDeck, setMeta } from './db'
 import { loadSetIndex } from './data'
 import { loadAudioIndex } from './audio.svelte'
+import { migrateData } from './migrate'
 import type { CustomDeck, Settings, SetInfo } from './types'
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -41,6 +42,8 @@ export async function initApp() {
     ...saved,
     types: { ...DEFAULT_SETTINGS.types, ...saved?.types },
   }
+  // Lernstand an korrigierte Wortdaten anpassen (einmal je Datenstand); ohne Netz beim nächsten Start
+  await migrateData().catch((e) => console.warn('Datenanpassung übersprungen:', e))
   let decks = await allDecks()
   if (!(await getMeta('initialized'))) {
     // Beim allerersten Start ein leeres eigenes Deck anlegen

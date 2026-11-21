@@ -46,6 +46,14 @@ npm run data -- --refresh
 
 Handkorrekturen liegen je Stufe in `data/overrides/` (`hsk1.json` bzw. `hsk2.tsv` … `hsk6.tsv`). TSV-Zeilen: `Wort<TAB>Bedeutung[<TAB>Pinyin in Zahlen]`, `=` als Bedeutung behält die automatische. Das Skript meldet alles, was noch geprüft werden sollte (mehrdeutige Lesungen, fehlende Bedeutungen), und schreibt pro Stufe eine Prüfliste nach `data-src/review/<stufe>.tsv` (Wort, Lesung, deutsche Kurzbedeutung, englische Bedeutung, Markierung).
 
+Weitere Handdaten in `data/`:
+
+- `additions/<stufe>.tsv` – Wörter der HSK-Prüfungsliste 2025/2026, die in der Quelle fehlen, auch zweite Lesungen eines Zeichens (`Wort<TAB>Pinyin<TAB>Bedeutung`)
+- `alternatives.tsv` – Schreibweise wie in der Prüfungsliste (z. B. 一起 yìqǐ) und weitere richtige Lesungen, die die Ton-Abfrage gelten lässt (wahlweise neutraler Ton, Grundform von 一/不)
+- `extras.tsv` – „Weitere Bedeutungen“ von Hand, wo die automatischen aus HanDeDict falsch sind
+
+Ändert sich dabei die Lesung eines Wortes, bleibt der Lernstand nur erhalten, wenn danach `node scripts/build-migrations.mjs <git-Stand der letzten Veröffentlichung>` läuft: Es schreibt `public/data/migrations.json`, mit der die App alte Wortschlüssel beim Start umschreibt.
+
 ### Aussprache
 
 ```bash
@@ -54,7 +62,7 @@ npm run audio
 
 Lädt echte Aufnahmen für alle Wörter der HSK-Sets (Yue Tan / Universität Caen über audio-cmn, ergänzt durch Lingua Libre), prüft Lesung und Lizenz und schreibt `public/audio/`, `public/data/audio.json` und die Namensnennung `public/audio/CREDITS.txt`. Wörter ohne freie Aufnahme landen in `data/audio-missing.txt` – sie können z. B. auf [Lingua Libre](https://lingualibre.org) eingesprochen werden und werden beim nächsten Lauf übernommen.
 
-Bis dahin spricht sie eine **KI-Stimme** ([Kokoro v1.1-zh](https://huggingface.co/hexgrad/Kokoro-82M-v1.1-zh), Apache 2.0), in der App mit „KI“ gekennzeichnet. Die Lesung wird aus unserem Pinyin vorgegeben. Dafür braucht es einmalig eine Python-Umgebung (sonst überspringt das Skript diesen Schritt, mit `--no-ai` auch absichtlich):
+Bis dahin spricht sie eine **KI-Stimme** ([Kokoro v1.1-zh](https://huggingface.co/hexgrad/Kokoro-82M-v1.1-zh), Apache 2.0), in der App mit „KI“ gekennzeichnet. Die Aussprache wird direkt aus unserem Pinyin in Kokoros Lautschrift übersetzt, und jedes Wort wird genau am Wortanfang geschnitten (Kokoro setzt sonst einen stimmhaften Vorlaut davor); Wörter, die mit Vokal, w, y oder er beginnen, werden weich eingeblendet. Nach Änderungen am Skript alle KI-Dateien mit `npm run audio -- --ki-neu` neu erzeugen und mit `.venv-tts/bin/python scripts/tts/ki_pruefen.py --alle --nachbessern` prüfen: Vorlaut-Messung und Spracherkennung (Whisper, braucht zusätzlich `transformers`, `torch` und `pypinyin`). Wörter, die die Erkennung nicht genau so hört – als das Wort selbst oder mit denselben Silben samt Tönen – oder die doch einen Vorlaut haben, werden in Varianten neu erzeugt (Anlauf und Tempo; trifft die Hauptstimme das Wort in keiner Variante genau, auch mit den anderen Stimmen des Modells zf_002, zm_010 und zm_009). Behalten wird die beste Variante, bewertet nach der MP3-Umwandlung; welche Datei eine andere Stimme spricht, steht in `data/ki-stimmen.tsv`. Danach noch einmal `npm run audio`, damit die Namensnennung stimmt. Für die KI braucht es einmalig eine Python-Umgebung (sonst überspringt das Skript diesen Schritt, mit `--no-ai` auch absichtlich):
 
 ```bash
 uv venv .venv-tts --python 3.12

@@ -6,12 +6,15 @@
 // Aufruf:  npm run data              (nutzt vorhandene Downloads in data-src/)
 //          npm run data -- --refresh (lädt die Quellen neu herunter)
 //
-// Neue HSK-Stufe hinzufügen: Eintrag in SETS ergänzen und ggf. Lesungen/Bedeutungen
-// in data/hsk-overrides.json korrigieren.
+// Handdaten (alle in data/):
+//   overrides/<set>.json|.tsv  Lesung/Bedeutung vorhandener Wörter korrigieren (Wort <TAB> Bedeutung [<TAB> Pinyin])
+//   additions/<set>.tsv        Wörter der Prüfungsliste, die in der Quelle fehlen (Wort <TAB> Pinyin <TAB> Bedeutung)
+//   alternatives.tsv           Schreibweise wie in der Prüfungsliste + weitere richtige Formen für die Ton-Abfrage
+//   extras.tsv                 „Weitere Bedeutungen“ von Hand ersetzen (Wort <TAB> Pinyin <TAB> Text, "-" = keine)
 
 import fs from 'node:fs'
 import path from 'node:path'
-import { normalizeNumeric, splitNumeric } from '../src/lib/pinyin.ts'
+import { isToneVariant, normalizeNumeric, searchKey, splitNumeric } from '../src/lib/pinyin.ts'
 import { shortMeaning, SENSE_SEP } from '../src/lib/meaning.ts'
 
 const ROOT = path.resolve(import.meta.dirname, '..')
@@ -65,12 +68,55 @@ function stripTags(text) {
   })
 }
 
-// "ZEW:個|个[ge4]" -> "ZEW: 个"
+// Langzeichen erkennen. HanDeDict hat fehlerhafte Zeilen (z. B. Langzeichen auch in der Spalte „vereinfacht“),
+// deshalb wird gezählt: Ein Zeichen gilt als Langzeichen, wenn es weit häufiger als Abweichung in der Spalte
+// „traditionell“ vorkommt als in der Spalte „vereinfacht“; umgewandelt wird in das häufigste Kurzzeichen.
+const SIMP_COUNT = new Map()
+const TRAD_TARGETS = new Map() // Langzeichen -> Map(Kurzzeichen -> Anzahl)
+const TRAD2SIMP = new Map()
+
+function collectTradOnly(text) {
+  for (const line of text.split('\n')) {
+    const m = line.match(/^(\S+) (\S+) \[/)
+    if (!m) continue
+    const trad = [...m[1]]
+    const simp = [...m[2]]
+    simp.forEach((c) => SIMP_COUNT.set(c, (SIMP_COUNT.get(c) ?? 0) + 1))
+    if (trad.length !== simp.length) continue
+    trad.forEach((c, i) => {
+      if (c === simp[i]) return
+      if (!TRAD_TARGETS.has(c)) TRAD_TARGETS.set(c, new Map())
+      const t = TRAD_TARGETS.get(c)
+      t.set(simp[i], (t.get(simp[i]) ?? 0) + 1)
+    })
+  }
+  for (const [c, targets] of TRAD_TARGETS) {
+    const total = [...targets.values()].reduce((a, b) => a + b, 0)
+    if (total > 3 * (SIMP_COUNT.get(c) ?? 0)) TRAD2SIMP.set(c, [...targets].sort((a, b) => b[1] - a[1])[0][0])
+  }
+}
+
+const toSimp = (w) => [...w].map((c) => TRAD2SIMP.get(c) ?? c).join('')
+
+/** Von zwei Schreibungen ("条|條", "個|个") die vereinfachte wählen */
+function pickSimplified(a, b) {
+  if (a !== b && toSimp(a) === b) return b
+  if (a !== b && toSimp(b) === a) return a
+  return toSimp(a) === a ? a : b
+}
+
+// "ZEW: 条|條[tiao2],头|頭[tou2]" -> "Zählwort: 条, 头" (die Reihenfolge Kurz-/Langzeichen wechselt in HanDeDict)
 function simplifyMeasureWords(text) {
   return text
-    .replace(/ZEW:\s*/g, 'ZEW: ')
-    .replace(/\S+?\|(\S+?)\[[^\]]*\]/g, '$1')
-    .replace(/(\S+?)\[[^\]]*\]/g, '$1')
+    .replace(/\bZEW\b\s*:\s*/g, 'Zählwort: ')
+    .replace(/\bZEW\b/g, 'Zählwort')
+    .replace(/([^\s,|[\]]+)\|([^\s,|[\]]+)\[[^\]]*\]/g, (_, a, b) => pickSimplified(a, b))
+    .replace(/([^\s,|[\]]+)\[[^\]]*\]/g, '$1')
+    .replace(/([㐀-鿿]),(?=[㐀-鿿])/g, '$1, ')
+    // fehlerhafte Zeilen ohne Kurzzeichen ("條条", "頭"): zeichenweise umwandeln, Doppelte entfernen
+    .replace(/Zählwort: ([^/;(]*)/g, (_, list) =>
+      'Zählwort: ' + list.split(/,\s*/).map((x) => [...new Set(toSimp(x))].join('')).join(', '),
+    )
 }
 
 function cleanSense(sense) {
@@ -122,10 +168,13 @@ function parseHanDeDict(text) {
     }
   }
   for (const e of entries.values()) {
+    // high: ohne Eigennamen und Radikal-Angaben (für „Weitere Bedeutungen“ in den HSK-Sets)
+    e.high = e.senses.filter((x) => !x.low).map((x) => x.text)
     e.senses = [...e.senses.filter((x) => !x.low), ...e.senses.filter((x) => x.low)].map((x) => x.text)
   }
   return { entries, dataDate }
 }
+
 
 // ---------- Hilfen ----------
 
@@ -143,7 +192,9 @@ function hasStrokeData(ch) {
 const hskFile = await ensureSource(SOURCES.hsk)
 const dictFile = await ensureSource(SOURCES.handedict)
 
-const { entries: dict, dataDate } = parseHanDeDict(fs.readFileSync(dictFile, 'utf8'))
+const dictText = fs.readFileSync(dictFile, 'utf8')
+collectTradOnly(dictText)
+const { entries: dict, dataDate } = parseHanDeDict(dictText)
 console.log(`HanDeDict: ${dict.size} Einträge (Datenstand ${dataDate})`)
 
 const bySimp = new Map()
@@ -151,6 +202,58 @@ for (const e of dict.values()) {
   if (!bySimp.has(e.s)) bySimp.set(e.s, [])
   bySimp.get(e.s).push(e)
 }
+
+/** HanDeDict-Eintrag mit derselben Lesung (Neutralton/一不-Schreibung dürfen abweichen), sonst undefined */
+function findEntry(s, n) {
+  return dict.get(`${s}|${n}`) ?? (bySimp.get(s) ?? []).find((e) => isToneVariant(s, e.n, n))
+}
+
+const DATA_DIR = path.join(ROOT, 'data')
+
+function readTsv(file) {
+  if (!fs.existsSync(file)) return []
+  return fs
+    .readFileSync(file, 'utf8')
+    .split('\n')
+    .filter((line) => line.trim() && !line.startsWith('#'))
+    .map((line) => line.split('\t').map((x) => x.trim()))
+}
+
+/** alternatives.tsv: Wort, Anzeige-Lesung, weitere richtige Lesungen (durch | getrennt), Grund */
+const ALTERNATIVES = new Map()
+for (const [s, main, alts] of readTsv(path.join(DATA_DIR, 'alternatives.tsv'))) {
+  if (!ALTERNATIVES.has(s)) ALTERNATIVES.set(s, [])
+  const row = { s, main: normalizeNumeric(main), alts: (alts ?? '').split('|').filter(Boolean).map(normalizeNumeric), used: false }
+  row.alts = row.alts.filter((x) => x !== row.main)
+  ALTERNATIVES.get(s).push(row)
+}
+
+/** Passende Zeile aus alternatives.tsv, wenn die Lesung eine der dort genannten Formen ist */
+function alternativesFor(s, n) {
+  const row = (ALTERNATIVES.get(s) ?? []).find((r) => r.main === n || r.alts.includes(n))
+  if (row) row.used = true
+  return row
+}
+
+/** extras.tsv: Wort, Lesung, „Weitere Bedeutungen“ ("-" = keine anzeigen) */
+const EXTRAS = new Map()
+for (const [s, n, text] of readTsv(path.join(DATA_DIR, 'extras.tsv'))) {
+  EXTRAS.set(`${s}|${normalizeNumeric(n)}`, { text: text === '-' ? '' : text, used: false })
+}
+
+function extrasFor(s, n, alts = []) {
+  for (const k of [n, ...alts]) {
+    const e = EXTRAS.get(`${s}|${k}`)
+    if (e) {
+      e.used = true
+      return e.text
+    }
+  }
+  return undefined
+}
+
+/** Sortierschlüssel wie in der Quelle (alphabetisch nach Pinyin, dann Ton) */
+const sortKey = (n) => searchKey(n) + ' ' + normalizeNumeric(n).replace(/[^0-9]/g, '')
 
 const hsk = JSON.parse(fs.readFileSync(hskFile, 'utf8'))
 
@@ -206,24 +309,26 @@ for (const set of SETS) {
         flag = 'LESUNG?'
       }
     }
+    // Schreibweise wie in der Prüfungsliste und weitere richtige Formen (alternatives.tsv)
+    const altRow = alternativesFor(s, normalizeNumeric(reading))
+    if (altRow) reading = altRow.main
     const n = normalizeNumeric(reading)
     // Großschreibung (Eigennamen wie Zhōngguó) für die Anzeige erhalten
     const display = splitNumeric(reading)
       .map((syl, i) => (i === 0 && syl[0] !== syl[0].toLowerCase() ? syl[0].toUpperCase() + splitNumeric(n)[i].slice(1) : splitNumeric(n)[i]))
       .join(' ')
 
-    let entry = dict.get(`${s}|${n}`)
-    if (!entry) {
-      const alt = bySimp.get(s)
-      if (alt?.length) {
-        entry = alt[0]
-        if (!ov.meaning) {
-          problems.push(`${set.id} ${s} [${n}]: keine passende Lesung in HanDeDict, nehme [${entry.n}]`)
-          flag = 'ANDERE-LESUNG'
-        }
+    // Zusatzbedeutungen nur aus einem Eintrag mit derselben Lesung (sonst stünden z. B. bei 哦 ò Bedeutungen von é)
+    const entry = findEntry(s, n)
+    let fallback
+    if (!entry && !ov.meaning) {
+      fallback = bySimp.get(s)?.[0]
+      if (fallback) {
+        problems.push(`${set.id} ${s} [${n}]: keine passende Lesung in HanDeDict, Bedeutung aus [${fallback.n}]`)
+        flag = 'ANDERE-LESUNG'
       }
     }
-    const meaning = ov.meaning ?? (entry ? shortMeaning(entry.senses.join(SENSE_SEP)) : '')
+    const meaning = ov.meaning ?? (entry ?? fallback ? shortMeaning((entry ?? fallback).senses.join(SENSE_SEP)) : '')
     if (!meaning) {
       problems.push(`${set.id} ${s} [${n}]: keine deutsche Bedeutung gefunden`)
       flag = 'FEHLT'
@@ -233,13 +338,43 @@ for (const set of SETS) {
     const english = (e.forms.find((f) => normalizeNumeric(f.transcriptions.numeric) === n) ?? e.forms[0]).meanings.slice(0, 3).join('; ')
     review.push([s, reading, meaning, english, flag].join('\t'))
 
-    words.push({
+    const word = {
       s,
       n: display,
       m: meaning,
-      x: entry ? entry.senses.slice(0, 6).join(SENSE_SEP) : '',
-    })
+      x: extrasFor(s, n, altRow?.alts) ?? (entry ? entry.high.slice(0, 6).join(SENSE_SEP) : ''),
+    }
+    if (altRow?.alts.length) word.a = altRow.alts
+    words.push(word)
   }
+
+  // Wörter der Prüfungsliste, die in der Quelle fehlen (data/additions/<set>.tsv), passend einsortieren
+  for (const [s, pinyin, meaning, extra] of readTsv(path.join(DATA_DIR, 'additions', `${set.id}.tsv`))) {
+    let n = normalizeNumeric(pinyin)
+    const altRow = alternativesFor(s, n)
+    if (altRow) n = altRow.main
+    const display = altRow ? n : pinyin
+    if (words.some((w) => w.s === s && normalizeNumeric(w.n) === n)) {
+      problems.push(`${set.id} ${s} [${n}]: Ergänzung ist schon vorhanden`)
+      continue
+    }
+    if (splitNumeric(n).length !== [...s].length) problems.push(`${set.id} ${s} [${n}]: Silbenzahl ≠ Zeichenzahl`)
+    for (const ch of s) if (!hasStrokeData(ch)) problems.push(`${set.id} ${s}: keine Strichdaten für ${ch}`)
+    if (!meaning) problems.push(`${set.id} ${s} [${n}]: Ergänzung ohne Bedeutung`)
+    const entry = findEntry(s, n)
+    const word = {
+      s,
+      n: display,
+      m: meaning,
+      x: extra ? (extra === '-' ? '' : extra) : (extrasFor(s, n, altRow?.alts) ?? (entry ? entry.high.slice(0, 6).join(SENSE_SEP) : '')),
+    }
+    if (altRow?.alts.length) word.a = altRow.alts
+    const k = sortKey(display)
+    const at = words.findIndex((w) => sortKey(w.n) > k)
+    words.splice(at < 0 ? words.length : at, 0, word)
+    review.push([s, display, meaning, '', 'ERGÄNZT'].join('\t'))
+  }
+
   writeJson(path.join(OUT_DIR, 'sets', `${set.id}.json`), {
     id: set.id,
     name: set.name,
@@ -252,6 +387,12 @@ for (const set of SETS) {
   console.log(`${set.name}: ${words.length} Wörter ${JSON.stringify(flags)}`)
 }
 writeJson(path.join(OUT_DIR, 'sets', 'index.json'), setIndex)
+
+// Handdaten, die nirgends gegriffen haben (Tippfehler, geänderte Lesung …)
+for (const rows of ALTERNATIVES.values()) {
+  for (const r of rows) if (!r.used) problems.push(`alternatives.tsv: ${r.s} [${r.main}] passt zu keinem Wort`)
+}
+for (const [k, e] of EXTRAS) if (!e.used) problems.push(`extras.tsv: ${k} passt zu keinem Wort`)
 
 // Wörterbuch für die Suche: [vereinfacht, Pinyin (Zahlen), Bedeutungen]
 const dictOut = []

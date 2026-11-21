@@ -1,5 +1,7 @@
 # Wörter ohne echte freie Aufnahme – können z. B. auf https://lingualibre.org eingesprochen werden.
 # Spalten: Wort, Pinyin, Set, derzeit in der App (KI = KI-Stimme, - = ohne Ton)
+没事	méi shì	hsk1	KI
+不客气	bú kè qi	hsk1	KI
 超市	chāo shì	hsk1	KI
 大学生	dà xué shēng	hsk1	KI
 歌	gē	hsk1	KI
@@ -9,9 +11,13 @@
 那儿	nàr	hsk1	KI
 男朋友	nán péng you	hsk1	KI
 女朋友	nǚ péng you	hsk1	KI
+外边	wài bian	hsk1	KI
+玩	wán	hsk1	KI
 这儿	zhèr	hsk1	KI
+只	zhī	hsk1	KI
 中学生	zhōng xué shēng	hsk1	KI
 做饭	zuò fàn	hsk1	KI
+啊	a	hsk2	KI
 白色	bái sè	hsk2	KI
 出国	chū guó	hsk2	KI
 打车	dǎ chē	hsk2	KI
@@ -19,6 +25,7 @@
 地	de	hsk2	KI
 得	de	hsk2	KI
 公交车	gōng jiāo chē	hsk2	KI
+过	guo	hsk2	KI
 黑色	hēi sè	hsk2	KI
 机票	jī piào	hsk2	KI
 快要	kuài yào	hsk2	KI
@@ -27,7 +34,7 @@
 奶茶	nǎi chá	hsk2	KI
 男孩儿	nán háir	hsk2	KI
 女孩儿	nǚ háir	hsk2	KI
-网上	wǎng shàng	hsk2	KI
+网上	wǎng shang	hsk2	KI
 洗手间	xǐ shǒu jiān	hsk2	KI
 小时候	xiǎo shí hou	hsk2	KI
 药店	yào diàn	hsk2	KI
@@ -35,7 +42,10 @@
 走路	zǒu lù	hsk2	KI
 班级	bān jí	hsk3	KI
 搬家	bān jiā	hsk3	KI
+成绩	chéng jì	hsk3	KI
 大熊猫	dà xióng māo	hsk3	KI
+得	dé	hsk3	KI
+电子书	diàn zǐ shū	hsk3	KI
 的话	de huà	hsk3	KI
 得分	dé fēn	hsk3	KI
 短裤	duǎn kù	hsk3	KI
@@ -46,6 +56,9 @@
 关机	guān jī	hsk3	KI
 关注	guān zhù	hsk3	KI
 过节	guò jié	hsk3	KI
+红绿灯	hóng lǜ dēng	hsk3	KI
+还	huán	hsk3	KI
+检票	jiǎn piào	hsk3	KI
 姐妹	jiě mèi	hsk3	KI
 开花	kāi huā	hsk3	KI
 开机	kāi jī	hsk3	KI
@@ -65,11 +78,14 @@
 邮件	yóu jiàn	hsk3	KI
 邮箱	yóu xiāng	hsk3	KI
 怎么办	zěn me bàn	hsk3	KI
+子	zi	hsk3	KI
 爱心	ài xīn	hsk4	KI
 安检	ān jiǎn	hsk4	KI
+背	bēi	hsk4	KI
+背包	bēi bāo	hsk4	KI
 本科	běn kē	hsk4	KI
 毕业生	bì yè shēng	hsk4	KI
-不便	bù biàn	hsk4	KI
+不便	bú biàn	hsk4	KI
 不光	bù guāng	hsk4	KI
 参赛	cān sài	hsk4	KI
 查看	chá kàn	hsk4	KI
@@ -77,15 +93,27 @@
 厂	chǎng	hsk4	KI
 车速	chē sù	hsk4	KI
 车位	chē wèi	hsk4	KI
+重	chóng	hsk4	KI
 出行	chū xíng	hsk4	KI
 此次	cǐ cì	hsk4	KI
 村	cūn	hsk4	KI
 错过	cuò guò	hsk4	KI
+袋子	dài zi	hsk4	KI
 打印机	dǎ yìn jī	hsk4	KI
 大巴	dà bā	hsk4	KI
 大赛	dà sài	hsk4	KI
 大厅	dà tīng	hsk4	KI
 待	dāi	hsk4	KI
+动车	dòng chē	hsk4	KI
+干	gān	hsk4	KI
+换乘	huàn chéng	hsk4	KI
+聚餐	jù cān	hsk4	KI
+空	kòng	hsk4	KI
+入住	rù zhù	hsk4	KI
+扫码	sǎo mǎ	hsk4	KI
+使馆	shǐ guǎn	hsk4	KI
+售票员	shòu piào yuán	hsk4	KI
+倒	dào	hsk4	KI
 登机	dēng jī	hsk4	KI
 低价	dī jià	hsk4	KI
 低于	dī yú	hsk4	KI
@@ -115,7 +143,7 @@
 环保	huán bǎo	hsk4	KI
 回复	huí fù	hsk4	KI
 获奖	huò jiǎng	hsk4	KI
-基本上	jī běn shang	hsk4	KI
+基本上	jī běn shàng	hsk4	KI
 加快	jiā kuài	hsk4	KI
 加上	jiā shàng	hsk4	KI
 假日	jià rì	hsk4	KI
@@ -130,11 +158,10 @@
 举例	jǔ lì	hsk4	KI
 考生	kǎo shēng	hsk4	KI
 快递	kuài dì	hsk4	KI
-量	liàng	hsk4	KI
 零花钱	líng huā qián	hsk4	KI
 零食	líng shí	hsk4	KI
 零下	líng xià	hsk4	KI
-留下	liú xià	hsk4	KI
+留下	liú xia	hsk4	KI
 毛衣	máo yī	hsk4	KI
 美景	měi jǐng	hsk4	KI
 美食	měi shí	hsk4	KI
@@ -142,7 +169,7 @@
 母女	mǔ nǚ	hsk4	KI
 母子	mǔ zǐ	hsk4	KI
 目的地	mù dì dì	hsk4	KI
-嗯	en	hsk4	KI
+嗯	ǹg	hsk4	KI
 男士	nán shì	hsk4	KI
 难忘	nán wàng	hsk4	KI
 能否	néng fǒu	hsk4	KI
@@ -161,10 +188,12 @@
 十字路口	shí zì lù kǒu	hsk4	KI
 时间表	shí jiān biǎo	hsk4	KI
 实际上	shí jì shàng	hsk4	KI
+使	shǐ	hsk4	KI
 市区	shì qū	hsk4	KI
 试题	shì tí	hsk4	KI
 收费	shōu fèi	hsk4	KI
 收听	shōu tīng	hsk4	KI
+数	shù	hsk4	KI
 说明书	shuō míng shū	hsk4	KI
 酸奶	suān nǎi	hsk4	KI
 抬头	tái tóu	hsk4	KI
@@ -173,45 +202,61 @@
 体检	tǐ jiǎn	hsk4	KI
 停车	tíng chē	hsk4	KI
 停车场	tíng chē chǎng	hsk4	KI
+头痛	tóu tòng	hsk4	KI
 推出	tuī chū	hsk4	KI
+网购	wǎng gòu	hsk4	KI
 晚安	wǎn ān	hsk4	KI
 网页	wǎng yè	hsk4	KI
 网友	wǎng yǒu	hsk4	KI
 网址	wǎng zhǐ	hsk4	KI
+为	wéi	hsk4	KI
+线上	xiàn shàng	hsk4	KI
+线下	xiàn xià	hsk4	KI
 现有	xiàn yǒu	hsk4	KI
-血	xuè	hsk4	KI
 用来	yòng lái	hsk4	KI
 用于	yòng yú	hsk4	KI
 游玩	yóu wán	hsk4	KI
 有着	yǒu zhe	hsk4	KI
 远离	yuǎn lí	hsk4	KI
-月饼	yuè bǐng	hsk4	KI
+月饼	yuè bing	hsk4	KI
 再次	zài cì	hsk4	KI
 暂停	zàn tíng	hsk4	KI
+着	zháo	hsk4	KI
+纸巾	zhǐ jīn	hsk4	KI
+种	zhòng	hsk4	KI
+转发	zhuǎn fā	hsk4	KI
 之间	zhī jiān	hsk4	KI
 转	zhuǎn	hsk4	KI
 转机	zhuǎn jī	hsk4	KI
+自习	zì xí	hsk4	KI
 最终	zuì zhōng	hsk4	KI
+唉	ài	hsk5	KI
+安全带	ān quán dài	hsk5	KI
 熬夜	áo yè	hsk5	KI
 保安	bǎo ān	hsk5	KI
 保质期	bǎo zhì qī	hsk5	KI
 本地	běn dì	hsk5	KI
 便利店	biàn lì diàn	hsk5	KI
 拨打	bō dǎ	hsk5	KI
+不符	bù fú	hsk5	KI
 餐饮	cān yǐn	hsk5	KI
 超速	chāo sù	hsk5	KI
 车祸	chē huò	hsk5	KI
 车库	chē kù	hsk5	KI
+橙子	chéng zi	hsk5	KI
 车主	chē zhǔ	hsk5	KI
 称为	chēng wéi	hsk5	KI
 成年	chéng nián	hsk5	KI
 城区	chéng qū	hsk5	KI
 充电	chōng diàn	hsk5	KI
+充值	chōng zhí	hsk5	KI
+处	chǔ	hsk5	KI
 出自	chū zì	hsk5	KI
 此前	cǐ qián	hsk5	KI
 从不	cóng bù	hsk5	KI
 促销	cù xiāo	hsk5	KI
 打断	dǎ duàn	hsk5	KI
+当	dàng	hsk5	KI
 大妈	dà mā	hsk5	KI
 大事	dà shì	hsk5	KI
 大爷	dà ye	hsk5	KI
@@ -219,10 +264,29 @@
 胆小	dǎn xiǎo	hsk5	KI
 当成	dàng chéng	hsk5	KI
 当作	dàng zuò	hsk5	KI
+电商	diàn shāng	hsk5	KI
+点赞	diǎn zàn	hsk5	KI
 灯光	dēng guāng	hsk5	KI
 低头	dī tóu	hsk5	KI
 电动	diàn dòng	hsk5	KI
 电子版	diàn zǐ bǎn	hsk5	KI
+发音	fā yīn	hsk5	KI
+改天	gǎi tiān	hsk5	KI
+行	háng	hsk5	KI
+好	hào	hsk5	KI
+系	jì	hsk5	KI
+降水	jiàng shuǐ	hsk5	KI
+久远	jiǔ yuǎn	hsk5	KI
+看	kān	hsk5	KI
+客服	kè fú	hsk5	KI
+量	liàng	hsk5	KI
+轻重	qīng zhòng	hsk5	KI
+人际	rén jì	hsk5	KI
+上传	shàng chuán	hsk5	KI
+商家	shāng jiā	hsk5	KI
+省份	shěng fèn	hsk5	KI
+生肖	shēng xiào	hsk5	KI
+甜品	tián pǐn	hsk5	KI
 调	tiáo	hsk5	KI
 调研	diào yán	hsk5	KI
 动画	dòng huà	hsk5	KI
@@ -245,6 +309,7 @@
 国庆	guó qìng	hsk5	KI
 过敏	guò mǐn	hsk5	KI
 过期	guò qī	hsk5	KI
+哈	hā	hsk5	KI
 海鲜	hǎi xiān	hsk5	KI
 汗水	hàn shuǐ	hsk5	KI
 好评	hǎo píng	hsk5	KI
@@ -267,6 +332,7 @@
 简历	jiǎn lì	hsk5	KI
 键	jiàn	hsk5	KI
 角色	jué sè	hsk5	KI
+尽量	jǐn liàng	hsk5	KI
 近年来	jìn nián lái	hsk5	KI
 近日	jìn rì	hsk5	KI
 惊喜	jīng xǐ	hsk5	KI
@@ -296,7 +362,6 @@
 年初	nián chū	hsk5	KI
 年夜饭	nián yè fàn	hsk5	KI
 牛仔裤	niú zǎi kù	hsk5	KI
-哦	ó	hsk5	KI
 陪伴	péi bàn	hsk5	KI
 配送	pèi sòng	hsk5	KI
 品牌	pǐn pái	hsk5	KI
@@ -309,7 +374,7 @@
 全新	quán xīn	hsk5	KI
 日历	rì lì	hsk5	KI
 赛场	sài chǎng	hsk5	KI
-扇	shàn	hsk5	KI
+扇	shān	hsk5	KI
 烧烤	shāo kǎo	hsk5	KI
 升级	shēng jí	hsk5	KI
 升温	shēng wēn	hsk5	KI
@@ -330,17 +395,22 @@
 特有	tè yǒu	hsk5	KI
 疼痛	téng tòng	hsk5	KI
 提起	tí qǐ	hsk5	KI
+体会	tǐ huì	hsk5	KI
+头	tou	hsk5	KI
 图书	tú shū	hsk5	KI
 团队	tuán duì	hsk5	KI
 拖鞋	tuō xié	hsk5	KI
 完美	wán měi	hsk5	KI
 问卷	wèn juàn	hsk5	KI
+握手	wò shǒu	hsk5	KI
 无关	wú guān	hsk5	KI
 无奈	wú nài	hsk5	KI
 五颜六色	wǔ yán liù sè	hsk5	KI
 物业	wù yè	hsk5	KI
+相册	xiàng cè	hsk5	KI
 吸管	xī guǎn	hsk5	KI
 西装	xī zhuāng	hsk5	KI
+下载	xià zài	hsk5	KI
 相处	xiāng chǔ	hsk5	KI
 向上	xiàng shàng	hsk5	KI
 消费者	xiāo fèi zhě	hsk5	KI
@@ -348,20 +418,23 @@
 小于	xiǎo yú	hsk5	KI
 心态	xīn tài	hsk5	KI
 行走	xíng zǒu	hsk5	KI
+雪糕	xuě gāo	hsk5	KI
 学分	xué fēn	hsk5	KI
 押金	yā jīn	hsk5	KI
 研发	yán fā	hsk5	KI
 阳台	yáng tái	hsk5	KI
 样式	yàng shì	hsk5	KI
 夜市	yè shì	hsk5	KI
-一次性	yī cì xìng	hsk5	KI
-一代	yī dài	hsk5	KI
-一路	yī lù	hsk5	KI
+一次性	yí cì xìng	hsk5	KI
+一代	yí dài	hsk5	KI
+一路	yí lù	hsk5	KI
 音量	yīn liàng	hsk5	KI
 应对	yìng duì	hsk5	KI
 影视	yǐng shì	hsk5	KI
+油条	yóu tiáo	hsk5	KI
 由此	yóu cǐ	hsk5	KI
 有助于	yǒu zhù yú	hsk5	KI
+运费	yùn fèi	hsk5	KI
 原有	yuán yǒu	hsk5	KI
 约定	yuē dìng	hsk5	KI
 在场	zài chǎng	hsk5	KI
@@ -374,6 +447,7 @@
 账号	zhàng hào	hsk5	KI
 折扣	zhé kòu	hsk5	KI
 正如	zhèng rú	hsk5	KI
+职场	zhí chǎng	hsk5	KI
 知名	zhī míng	hsk5	KI
 中华	Zhōng huá	hsk5	KI
 中华民族	Zhōng huá mín zú	hsk5	KI
@@ -392,29 +466,39 @@
 白领	bái lǐng	hsk6	KI
 百分点	bǎi fēn diǎn	hsk6	KI
 摆放	bǎi fàng	hsk6	KI
+北美洲	Běi měi zhōu	hsk6	KI
+倍增	bèi zēng	hsk6	KI
 保暖	bǎo nuǎn	hsk6	KI
 保修	bǎo xiū	hsk6	KI
 本土	běn tǔ	hsk6	KI
 编写	biān xiě	hsk6	KI
 便捷	biàn jié	hsk6	KI
+播种	bō zhǒng	hsk6	KI
 不成	bù chéng	hsk6	KI
-不适	bù shì	hsk6	KI
+不适	bú shì	hsk6	KI
 不已	bù yǐ	hsk6	KI
 才华	cái huá	hsk6	KI
 财物	cái wù	hsk6	KI
+材质	cái zhì	hsk6	KI
 参展	cān zhǎn	hsk6	KI
 层面	céng miàn	hsk6	KI
+产出	chǎn chū	hsk6	KI
+场次	chǎng cì	hsk6	KI
 查询	chá xún	hsk6	KI
 拆除	chāi chú	hsk6	KI
 常温	cháng wēn	hsk6	KI
 场馆	chǎng guǎn	hsk6	KI
 场景	chǎng jǐng	hsk6	KI
 炒股	chǎo gǔ	hsk6	KI
+插座	chā zuò	hsk6	KI
+撤回	chè huí	hsk6	KI
 称作	chēng zuò	hsk6	KI
 诚信	chéng xìn	hsk6	KI
 持有	chí yǒu	hsk6	KI
+冲	chòng	hsk6	KI
 抽奖	chōu jiǎng	hsk6	KI
 出场	chū chǎng	hsk6	KI
+出力	chū lì	hsk6	KI
 出游	chū yóu	hsk6	KI
 出于	chū yú	hsk6	KI
 初等	chū děng	hsk6	KI
@@ -425,16 +509,60 @@
 创意	chuàng yì	hsk6	KI
 瓷器	cí qì	hsk6	KI
 从业	cóng yè	hsk6	KI
+存储	cún chǔ	hsk6	KI
+大幅	dà fú	hsk6	KI
+打卡	dǎ kǎ	hsk6	KI
 打动	dǎ dòng	hsk6	KI
 打雷	dǎ léi	hsk6	KI
+大洋洲	Dà yáng zhōu	hsk6	KI
 打造	dǎ zào	hsk6	KI
-大吃一惊	dà chī yī jīng	hsk6	KI
-大都	dà dōu	hsk6	KI
+大吃一惊	dà chī yì jīng	hsk6	KI
 大师	dà shī	hsk6	KI
+点击	diǎn jī	hsk6	KI
+店铺	diàn pù	hsk6	KI
+定制	dìng zhì	hsk6	KI
+动漫	dòng màn	hsk6	KI
+对接	duì jiē	hsk6	KI
+多才多艺	duō cái duō yì	hsk6	KI
+放飞	fàng fēi	hsk6	KI
+分级	fēn jí	hsk6	KI
+高端	gāo duān	hsk6	KI
+寒冬	hán dōng	hsk6	KI
+好不	hǎo bù	hsk6	KI
+滑行	huá xíng	hsk6	KI
+加倍	jiā bèi	hsk6	KI
+家居	jiā jū	hsk6	KI
+较为	jiào wéi	hsk6	KI
+击败	jī bài	hsk6	KI
+结	jiē	hsk6	KI
+结果	jiē guǒ	hsk6	KI
+精准	jīng zhǔn	hsk6	KI
+卷	juàn	hsk6	KI
+落	là	hsk6	KI
+乐于	lè yú	hsk6	KI
+链接	liàn jiē	hsk6	KI
+免税	miǎn shuì	hsk6	KI
+民宿	mín sù	hsk6	KI
+南极洲	Nán jí zhōu	hsk6	KI
+南美洲	Nán měi zhōu	hsk6	KI
+清扫	qīng sǎo	hsk6	KI
+热度	rè dù	hsk6	KI
+人山人海	rén shān rén hǎi	hsk6	KI
+热议	rè yì	hsk6	KI
+赛事	sài shì	hsk6	KI
+散	sǎn	hsk6	KI
+扇	shàn	hsk6	KI
+摄像头	shè xiàng tóu	hsk6	KI
+诗词	shī cí	hsk6	KI
+实时	shí shí	hsk6	KI
+书画	shū huà	hsk6	KI
+水流	shuǐ liú	hsk6	KI
+数字化	shù zì huà	hsk6	KI
 弹性	tán xìng	hsk6	KI
 当今	dāng jīn	hsk6	KI
 当下	dāng xià	hsk6	KI
 倒车	dǎo chē	hsk6	KI
+地道	dì dao	hsk6	KI
 地域	dì yù	hsk6	KI
 得了	dé le	hsk6	KI
 得知	dé zhī	hsk6	KI
@@ -534,6 +662,25 @@
 款式	kuǎn shì	hsk6	KI
 困扰	kùn rǎo	hsk6	KI
 栏	lán	hsk6	KI
+听觉	tīng jué	hsk6	KI
+退税	tuì shuì	hsk6	KI
+外甥	wài sheng	hsk6	KI
+万物	wàn wù	hsk6	KI
+味觉	wèi jué	hsk6	KI
+文档	wén dàng	hsk6	KI
+乌龟	wū guī	hsk6	KI
+下单	xià dān	hsk6	KI
+现存	xiàn cún	hsk6	KI
+现货	xiàn huò	hsk6	KI
+下线	xià xiàn	hsk6	KI
+心底	xīn dǐ	hsk6	KI
+新媒体	xīn méi tǐ	hsk6	KI
+新能源	xīn néng yuán	hsk6	KI
+洗漱	xǐ shù	hsk6	KI
+血型	xuè xíng	hsk6	KI
+易于	yì yú	hsk6	KI
+有劲	yǒu jìn	hsk6	KI
+元宵	yuán xiāo	hsk6	KI
 类别	lèi bié	hsk6	KI
 理财	lǐ cái	hsk6	KI
 理科	lǐ kē	hsk6	KI
@@ -562,7 +709,7 @@
 面部	miàn bù	hsk6	KI
 民歌	mín gē	hsk6	KI
 民俗	mín sú	hsk6	KI
-名气	míng qì	hsk6	KI
+名气	míng qi	hsk6	KI
 模拟	mó nǐ	hsk6	KI
 模特儿	mó tèr	hsk6	KI
 难点	nán diǎn	hsk6	KI
@@ -588,12 +735,13 @@
 求救	qiú jiù	hsk6	KI
 求职	qiú zhí	hsk6	KI
 求助	qiú zhù	hsk6	KI
-曲	qū	hsk6	KI
+曲	qǔ	hsk6	KI
 全程	quán chéng	hsk6	KI
 热点	rè diǎn	hsk6	KI
 热水器	rè shuǐ qì	hsk6	KI
 热线	rè xiàn	hsk6	KI
 人工智能	rén gōng zhì néng	hsk6	KI
+人家	rén jia	hsk6	KI
 人行道	rén xíng dào	hsk6	KI
 认错	rèn cuò	hsk6	KI
 认同	rèn tóng	hsk6	KI
@@ -604,6 +752,7 @@
 融入	róng rù	hsk6	KI
 入门	rù mén	hsk6	KI
 入选	rù xuǎn	hsk6	KI
+撒	sǎ	hsk6	KI
 扫描	sǎo miáo	hsk6	KI
 鲨鱼	shā yú	hsk6	KI
 筛选	shāi xuǎn	hsk6	KI
@@ -615,7 +764,6 @@
 摄像	shè xiàng	hsk6	KI
 身心	shēn xīn	hsk6	KI
 生成	shēng chéng	hsk6	KI
-盛	shèng	hsk6	KI
 师父	shī fu	hsk6	KI
 时尚	shí shàng	hsk6	KI
 时速	shí sù	hsk6	KI
@@ -638,6 +786,8 @@
 透过	tòu guò	hsk6	KI
 突发	tū fā	hsk6	KI
 图像	tú xiàng	hsk6	KI
+吐	tǔ	hsk6	KI
+哇	wā	hsk6	KI
 外来	wài lái	hsk6	KI
 违规	wéi guī	hsk6	KI
 为此	wèi cǐ	hsk6	KI
@@ -664,10 +814,10 @@
 养老院	yǎng lǎo yuàn	hsk6	KI
 也好	yě hǎo	hsk6	KI
 业	yè	hsk6	KI
-一模一样	yī mú yī yàng	hsk6	KI
+一模一样	yì mú yí yàng	hsk6	KI
 衣食住行	yī shí zhù xíng	hsk6	KI
 艺人	yì rén	hsk6	KI
-益处	yì chu	hsk6	KI
+益处	yì chù	hsk6	KI
 音节	yīn jié	hsk6	KI
 银牌	yín pái	hsk6	KI
 引发	yǐn fā	hsk6	KI
@@ -686,8 +836,13 @@
 灾区	zāi qū	hsk6	KI
 再生	zài shēng	hsk6	KI
 噪声	zào shēng	hsk6	KI
+占比	zhàn bǐ	hsk6	KI
 粘贴	zhān tiē	hsk6	KI
 账单	zhàng dān	hsk6	KI
+阵雨	zhèn yǔ	hsk6	KI
+中	zhòng	hsk6	KI
+中暑	zhòng shǔ	hsk6	KI
+主播	zhǔ bō	hsk6	KI
 之所以	zhī suǒ yǐ	hsk6	KI
 职责	zhí zé	hsk6	KI
 至关重要	zhì guān zhòng yào	hsk6	KI
@@ -701,6 +856,7 @@
 主演	zhǔ yǎn	hsk6	KI
 专注	zhuān zhù	hsk6	KI
 转身	zhuǎn shēn	hsk6	KI
+自律	zì lǜ	hsk6	KI
 字幕	zì mù	hsk6	KI
 自助	zì zhù	hsk6	KI
 粽子	zòng zi	hsk6	KI

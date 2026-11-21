@@ -7,7 +7,7 @@
   import WritingPad from '../components/WritingPad.svelte'
   import { loadSet } from '../lib/data'
   import { SENSE_SEP } from '../lib/meaning'
-  import { displayPinyin } from '../lib/pinyin'
+  import { alsoPinyin, displayPinyin } from '../lib/pinyin'
   import { back, go, route } from '../lib/router.svelte'
   import { typesFor, wordProgress } from '../lib/srs'
   import { app, saveDeck } from '../lib/state.svelte'
@@ -90,6 +90,7 @@
           {#if word.n}<span class="pinyin">{displayPinyin(word.n)}</span>{/if}
           <SpeakButton {word} size={44} />
         </div>
+        {#if word.a?.length}<div class="muted small">{alsoPinyin(word.a)}</div>{/if}
         {#if audioFor(word)?.s === 'ai'}
           <div class="muted small"><span class="badge ai">KI</span> Aussprache von einer KI-Stimme – keine echte Aufnahme</div>
         {/if}

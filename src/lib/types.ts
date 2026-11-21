@@ -25,6 +25,11 @@ export interface Word {
   m: string
   /** weitere Bedeutungen (Gruppen durch " / " getrennt) */
   x?: string
+  /**
+   * weitere richtige Lesungen in Zahlenschreibweise, z. B. wahlweise neutraler Ton ("tai4 yang5" zu "tai4 yang2")
+   * oder die Grundform von 一/不 ("yi1 qi3" zu "yi4 qi3"); die Ton-Abfrage wertet sie ebenfalls als richtig
+   */
+  a?: string[]
   /** true, wenn beim manuellen Anlegen keine Töne angegeben wurden */
   noTones?: boolean
 }

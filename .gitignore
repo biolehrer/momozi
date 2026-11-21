@@ -6,3 +6,4 @@ data-src
 .claude/
 .venv-tts/
 public/ai-samples/
+__pycache__/

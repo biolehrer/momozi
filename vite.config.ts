@@ -66,7 +66,7 @@ export default defineConfig({
       manifest: false, // eigenes public/manifest.webmanifest
       workbox: {
         // fest gespeichert: App, HSK-Sets, Audio-Index (klein)
-        globPatterns: ['**/*.{js,css,html,svg,png,webmanifest}', 'data/sets/*.json', 'data/audio.json', 'data/sources.json'],
+        globPatterns: ['**/*.{js,css,html,svg,png,webmanifest}', 'data/sets/*.json', 'data/audio.json', 'data/sources.json', 'data/migrations.json'],
         globIgnores: ['strokes/**', 'audio/**', 'ai-samples/**', 'data/dict.json'],
         navigateFallback: 'index.html',
         clientsClaim: true,

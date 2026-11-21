@@ -3,7 +3,7 @@
   // (waagerecht = 1, nach oben = 2, Haken ˇ = 3, nach unten = 4, Tippen = neutral).
   import SpeakButton from './SpeakButton.svelte'
   import { consume, isPrimary, shortcut } from '../lib/keys'
-  import { displayPinyin, markedSyllables, tonesOf } from '../lib/pinyin'
+  import { alsoPinyin, displayPinyin, markedSyllables, splitNumeric, tonesOf } from '../lib/pinyin'
   import type { Word } from '../lib/types'
 
   let { word, onrate }: { word: Word; onrate: (grade: 1 | 3) => void } = $props()
@@ -11,6 +11,8 @@
   const chars = $derived([...word.s])
   const tones = $derived(tonesOf(word.n))
   const syls = $derived(markedSyllables(word.n))
+  /** Hauptlesung und weitere richtige Lesungen (wahlweise neutral, Grundform von 一/不) mit gleicher Silbenzahl */
+  const variants = $derived([word.n, ...(word.a ?? [])].filter((v) => splitNumeric(v).length === tones.length))
   /** Positionen, die abgefragt werden (Erhua-„r“ nicht) */
   const order = $derived(tones.map((t, i) => (t === null ? -1 : i)).filter((i) => i >= 0))
 
@@ -18,7 +20,12 @@
   let answers = $state<(number | null)[]>([])
   let finished = $state(false)
   const current = $derived(finished ? -1 : order[pos])
-  const wrongCount = $derived(order.filter((i) => answers[i] !== tones[i]).length)
+
+  /** Lesung, zu der die Antwort an Stelle i passt (Hauptlesung bevorzugt), sonst null */
+  function matching(i: number): string | null {
+    return variants.find((v) => tonesOf(v)[i] === answers[i]) ?? null
+  }
+  const wrongCount = $derived(order.filter((i) => matching(i) === null).length)
 
   const BUTTONS = [
     { tone: 1, mark: 'ˉ', label: '1' },
@@ -109,13 +116,14 @@
       <div class="chars" lang="zh-Hans">
         {#each chars as c, i (i)}
           {@const answered = answers[i] != null}
-          {@const ok = answers[i] === tones[i]}
+          {@const hit = answered ? matching(i) : null}
+          {@const ok = hit !== null}
           <div class="cell" class:current={i === current} class:skip={tones[i] === null}>
             <div class="syl" class:ok={answered && ok} class:wrong={answered && !ok}>
               {#if tones[i] === null}
                 {finished ? syls[i] : ''}
               {:else if answered}
-                {syls[i]}
+                {hit ? markedSyllables(hit)[i] : syls[i]}
               {:else}
                 &nbsp;
               {/if}
@@ -137,6 +145,7 @@
           <span class="pinyin">{displayPinyin(word.n)}</span>
           <SpeakButton {word} auto size={40} />
         </div>
+        {#if word.a?.length}<div class="muted small">{alsoPinyin(word.a)}</div>{/if}
         <div class="muted">{word.m}</div>
         <div class="verdict" class:ok={wrongCount === 0}>
           {wrongCount === 0 ? 'Alle Töne richtig' : `${wrongCount} von ${order.length} falsch`}
@@ -144,7 +153,7 @@
       </div>
     {:else}
       <p class="muted small hint">
-        Ton auf das Zeichen wischen oder unten tippen<span class="fine-only"> – oder Taste 1–5</span>.<br />Töne in Grundform (ohne Tonsandhi).
+        Ton auf das Zeichen wischen oder unten tippen<span class="fine-only"> – oder Taste 1–5</span>.<br />Töne wie im Pinyin (3. Ton ohne Tonsandhi). Bei 一, 不 und wahlweise neutralen Silben zählen beide Formen.
       </p>
     {/if}
   </div>

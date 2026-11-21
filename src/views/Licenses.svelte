@@ -88,8 +88,8 @@
     {#if aiCount}
       <p>
         <strong>KI-Stimme</strong> ({aiCount} {aiCount === 1 ? 'Wort' : 'Wörter'}): synthetisch erzeugt mit
-        <a href="https://huggingface.co/hexgrad/Kokoro-82M-v1.1-zh" target="_blank" rel="noopener">Kokoro v1.1-zh</a> (Stimme
-        zf_001), Lizenz <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="noopener">Apache 2.0</a>. Die
+        <a href="https://huggingface.co/hexgrad/Kokoro-82M-v1.1-zh" target="_blank" rel="noopener">Kokoro v1.1-zh</a> (Hauptstimme
+        zf_001, einzelne Wörter mit weiteren Stimmen des Modells), Lizenz <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="noopener">Apache 2.0</a>. Die
         chinesischen Trainingsdaten stellte die Firma LongMaoData frei zur Verfügung. Die Lesung jedes Wortes ist aus unserem Pinyin
         vorgegeben. Keine echte Aufnahme.
       </p>
@@ -102,6 +102,10 @@
     <p>
       HSK 3.0 (Prüfungsfassung 2026) aus „complete-hsk-vocabulary“ von Yanis Zafirópulos, MIT-Lizenz. Die Lesungen dort stammen
       ursprünglich aus CC-CEDICT (CC BY-SA 4.0); die englischen Bedeutungen werden nicht verwendet.
+    </p>
+    <p>
+      Fehlende Wörter, zweite Lesungen und die Schreibweise der Töne sind mit der offiziellen HSK-Wortliste 2025/2026 (Chinese
+      Testing International) abgeglichen und von Hand ergänzt; als Abschrift der Liste diente „HSK-3.0-words-list“ von krmanik.
     </p>
     <p>
       <a href="https://github.com/drkameleon/complete-hsk-vocabulary" target="_blank" rel="noopener"

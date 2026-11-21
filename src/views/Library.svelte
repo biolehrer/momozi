@@ -291,7 +291,10 @@
       <button class="btn block more" onclick={() => (limit += PAGE)}>Mehr anzeigen ({results.length - limit} weitere)</button>
     {/if}
   {:else if filter === 'dict' && !q}
-    <p class="muted hint">Im Wörterbuch nach Zeichen, Pinyin oder Deutsch suchen – für Wörter, die in keiner HSK-Stufe vorkommen.</p>
+    <p class="muted hint">
+      Im Wörterbuch nach Zeichen, Pinyin oder Deutsch suchen – für Wörter, die in keiner HSK-Stufe vorkommen.<br />
+      Die Bedeutungen stammen aus dem freien Wörterbuch HanDeDict und sind nicht von Hand geprüft. Aussprache gibt es nur für HSK-Wörter.
+    </p>
   {:else if q && !dictLoading}
     <p class="muted hint">Nichts gefunden.</p>
   {/if}

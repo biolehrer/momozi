@@ -10,12 +10,14 @@
 //   data/audio-missing.txt      Wörter ohne Aufnahme (zum Einsprechen auf Lingua Libre)
 //
 // Aufruf: npm run audio            (nutzt Zwischenspeicher in data-src/)
-//         npm run audio -- --refresh
+//         npm run audio -- --refresh   (Quellen und alle Dateien neu laden)
+//         npm run audio -- --ki-neu    (alle KI-Dateien neu erzeugen, z. B. nach Änderungen an ki_aussprache.py)
+// Danach prüfen: .venv-tts/bin/python scripts/tts/ki_pruefen.py --alle
 
 import { spawnSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
-import { displayPinyin, inputToNumeric, normalizeNumeric, searchKey, splitNumeric, toneSearchKey } from '../src/lib/pinyin.ts'
+import { displayPinyin, inputToNumeric, isToneVariant, normalizeNumeric, splitNumeric, toneSearchKey } from '../src/lib/pinyin.ts'
 
 const ROOT = path.resolve(import.meta.dirname, '..')
 const SRC_DIR = path.join(ROOT, 'data-src')
@@ -24,7 +26,23 @@ const DATA_DIR = path.join(ROOT, 'public', 'data')
 const UA = 'open-data-build-script/0.1'
 const refresh = process.argv.includes('--refresh')
 const noAi = process.argv.includes('--no-ai')
+const refreshAi = process.argv.includes('--ki-neu')
 const AI = { model: 'Kokoro v1.1-zh', voice: 'zf_001', python: path.join(ROOT, '.venv-tts', 'bin', 'python') }
+
+/**
+ * Aufnahmen von Yue Tan, die trotz passendem Index nicht verwendet werden (Prüfbericht A03/A08).
+ * Die Tonprüfung unten würde die meisten davon inzwischen selbst aussortieren; die Liste ist die Absicherung.
+ */
+const TAN_BLOCK = {
+  地道: 'spricht dìdào (Tunnel) statt dìdao (echt)',
+  人家: 'spricht rénjiā (Haushalt) statt rénjia (andere)',
+  背包: 'spricht bèibāo statt bēibāo',
+  成绩: 'spricht chéngjī statt chéngjì',
+  尽量: 'spricht jìnliàng statt jǐnliàng',
+  播种: 'spricht bōzhòng statt bōzhǒng',
+  体会: 'Aufnahme unvollständig (nur „huì“, Anfang fehlt)',
+  握手: 'Aufnahme unvollständig (nur „wò“)',
+}
 
 const AUDIO_CMN = 'hugolpz/audio-cmn'
 const TAN_INDEX_URL = 'https://fsi-languages.yojik.eu/audiocollections/detailled/cmn-caen-tan/flac/index.tags.txt'
@@ -60,7 +78,6 @@ async function cached(file, producer) {
 const hex = (s) => [...s].map((c) => c.codePointAt(0).toString(16)).join('-')
 const keyOf = (w) => `${w.s}|${w.n ? normalizeNumeric(w.n) : ''}`
 const fileOf = (w) => `${hex(w.s)}_${toneSearchKey(w.n)}.mp3`
-const normMarked = (s) => s.normalize('NFC').toLowerCase().replace(/[\s'’]/g, '')
 
 // ---------- Quellen laden ----------
 
@@ -111,43 +128,71 @@ for (const t of llTitles) {
 const speakerCount = new Map()
 for (const list of llByWord.values()) for (const f of list) speakerCount.set(f.speaker, (speakerCount.get(f.speaker) ?? 0) + 1)
 
-/** Verschiedene Lesungen je Schreibung (für die Eindeutigkeitsprüfung): HanDeDict + HSK-Quelle (CC-CEDICT) + Tan-Index */
+/** Lesungen je Schreibung MIT Tönen (für die Eindeutigkeitsprüfung): HanDeDict + HSK-Quelle (CC-CEDICT) */
 const readingsBySimp = new Map()
-function addReading(s, pinyin) {
-  if (!readingsBySimp.has(s)) readingsBySimp.set(s, new Set())
-  readingsBySimp.get(s).add(searchKey(pinyin))
+const handedictReadings = new Map()
+function addReading(map, s, numeric) {
+  if (!map.has(s)) map.set(s, new Set())
+  map.get(s).add(normalizeNumeric(numeric))
 }
-for (const [s, n] of JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'dict.json'), 'utf8'))) addReading(s, n)
+for (const [s, n] of JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'dict.json'), 'utf8'))) {
+  addReading(readingsBySimp, s, n)
+  addReading(handedictReadings, s, n)
+}
 const hskSource = path.join(SRC_DIR, 'hsk-complete.json')
 if (fs.existsSync(hskSource)) {
   for (const e of JSON.parse(fs.readFileSync(hskSource, 'utf8'))) {
-    for (const f of e.forms) if (/^[a-z]/.test(f.transcriptions.numeric)) addReading(e.simplified, f.transcriptions.numeric)
+    for (const f of e.forms) if (/^[a-z]/.test(f.transcriptions.numeric)) addReading(readingsBySimp, e.simplified, f.transcriptions.numeric)
   }
 } else {
   console.warn('Hinweis: data-src/hsk-complete.json fehlt (npm run data), Eindeutigkeitsprüfung nur mit HanDeDict')
 }
-for (const [s, phons] of tanReadings) for (const p of phons) addReading(s, p)
 
 // ---------- Prüfungen ----------
 
-/** Passt die Lesung einer Tan-Aufnahme zu unserem Pinyin? */
+/**
+ * Gleiche Aussprache? Exakt gleich, eine der „auch richtig“-Formen des Wortes oder nur neutraler Ton bzw.
+ * 一/不 anders – Letzteres nicht, wenn HanDeDict beide Formen als verschiedene Wörter führt (地道 dìdao/dìdào).
+ */
+function sameReading(word, a, b) {
+  if (a === b) return true
+  const forms = [normalizeNumeric(word.n), ...(word.a ?? [])]
+  if (forms.includes(a) && forms.includes(b)) return true
+  const hd = handedictReadings.get(word.s)
+  if (hd?.has(a) && hd?.has(b)) return false
+  return isToneVariant(word.s, a, b)
+}
+
+/** Pinyin mit Tonzeichen ohne Leerzeichen ("wòshǒu") anhand unserer Silben in Zahlen-Pinyin umwandeln */
+function alignMarked(marked, ours) {
+  const bases = splitNumeric(ours).map((x) => x.slice(0, -1))
+  const src = marked.normalize('NFC').toLowerCase().replace(/[\s'’·-]/g, '')
+  let pos = 0
+  const out = []
+  for (const b of bases) {
+    const n = inputToNumeric(src.slice(pos, pos + b.length)).numeric
+    if (n.slice(0, -1) !== b) return null
+    out.push(n)
+    pos += b.length
+  }
+  return pos === src.length ? out.join(' ') : null
+}
+
+/** Passt die Lesung einer Tan-Aufnahme zu unserem Pinyin – inklusive Töne? */
 function tanMatches(word) {
   const phons = tanReadings.get(word.s)
   if (!phons) return false
-  const syllables = splitNumeric(word.n).length
   const ours = normalizeNumeric(word.n)
-  const oursMarked = normMarked(displayPinyin(word.n))
   return phons.some((p) => {
-    if (syllables === 1) return normalizeNumeric(inputToNumeric(p).numeric) === ours
-    // mehrsilbig: Abweichungen nur durch Tonsandhi / neutralen Ton sind in Ordnung
-    return normMarked(p) === oursMarked || searchKey(p) === searchKey(oursMarked)
+    const theirs = alignMarked(p, ours)
+    return theirs !== null && sameReading(word, normalizeNumeric(theirs), ours)
   })
 }
 
-/** Lingua-Libre-Aufnahmen tragen keine Lesung – nur nehmen, wenn das Wort eindeutig ist */
+/** Lingua-Libre-Aufnahmen tragen keine Lesung – nur nehmen, wenn das Wort keine andere Lesung haben kann */
 function unambiguous(word) {
-  const r = readingsBySimp.get(word.s)
-  return !r || r.size <= 1
+  const ours = normalizeNumeric(word.n)
+  return [...(readingsBySimp.get(word.s) ?? [])].every((r) => sameReading(word, r, ours))
 }
 
 async function llMetadata(titles) {
@@ -192,11 +237,13 @@ const chosen = new Map() // key -> entry
 const rejected = []
 const llCandidates = []
 for (const [key, w] of words) {
-  if (cmnWords.has(w.s) && tanMatches(w)) {
+  if (cmnWords.has(w.s) && TAN_BLOCK[w.s]) {
+    rejected.push(`${w.s} [${displayPinyin(w.n)}]: Aufnahme von Yue Tan gesperrt – ${TAN_BLOCK[w.s]}`)
+  } else if (cmnWords.has(w.s) && tanMatches(w)) {
     chosen.set(key, { word: w, src: 'tan', url: `https://raw.githubusercontent.com/${AUDIO_CMN}/${cmn.commit}/64k/hsk/cmn-${encodeURIComponent(w.s)}.mp3` })
     continue
   }
-  if (cmnWords.has(w.s)) rejected.push(`${w.s} [${displayPinyin(w.n)}]: Aufnahme von Yue Tan hat andere Lesung (${(tanReadings.get(w.s) ?? ['?']).join(', ')})`)
+  if (cmnWords.has(w.s) && !TAN_BLOCK[w.s]) rejected.push(`${w.s} [${displayPinyin(w.n)}]: Aufnahme von Yue Tan hat andere Lesung (${(tanReadings.get(w.s) ?? ['?']).join(', ')})`)
   const ll = llByWord.get(w.s)
   if (ll?.length && unambiguous(w)) llCandidates.push({ key, w, files: ll })
   else if (ll?.length) rejected.push(`${w.s}: Lingua-Libre-Aufnahme vorhanden, aber Lesung nicht eindeutig prüfbar`)
@@ -238,8 +285,20 @@ console.log(`${done} Audiodateien heruntergeladen`)
 
 const missingReal = [...words.values()].filter((w) => !chosen.has(keyOf(w)))
 const aiFile = (w) => `${hex(w.s)}_${toneSearchKey(w.n)}.ki.mp3`
+// KI-Dateien, die scripts/tts/ki_pruefen.py --nachbessern mit der Ersatzstimme erzeugt hat (Datei -> Stimme)
+const VOICE_LOG = path.join(ROOT, 'data', 'ki-stimmen.tsv')
+const voiceOf = new Map(
+  fs.existsSync(VOICE_LOG)
+    ? fs
+        .readFileSync(VOICE_LOG, 'utf8')
+        .split('\n')
+        .filter((l) => l && !l.startsWith('#'))
+        .map((l) => l.split('\t'))
+    : [],
+)
 if (!noAi) {
-  const todo = missingReal.filter((w) => refresh || !fs.existsSync(path.join(AUDIO_DIR, aiFile(w))))
+  const todo = missingReal.filter((w) => refresh || refreshAi || !fs.existsSync(path.join(AUDIO_DIR, aiFile(w))))
+  for (const w of todo) voiceOf.delete(aiFile(w)) // wird gleich mit der Hauptstimme neu erzeugt
   if (todo.length && fs.existsSync(AI.python)) {
     console.log(`KI-Stimme (${AI.model}, ${AI.voice}) für ${todo.length} Wörter …`)
     const r = spawnSync(AI.python, [path.join(ROOT, 'scripts', 'tts', 'ki_aussprache.py'), '--out', AUDIO_DIR, '--voice', AI.voice], {
@@ -258,6 +317,15 @@ if (!noAi) {
 
 // ---------- Index, Namensnennung, Fehlliste ----------
 
+const usedAiFiles = new Set([...chosen.values()].filter((e) => e.src === 'ai').map((e) => aiFile(e.word)))
+for (const f of voiceOf.keys()) if (!usedAiFiles.has(f)) voiceOf.delete(f)
+fs.writeFileSync(
+  VOICE_LOG,
+  '# KI-Dateien, die nicht mit der Hauptstimme gesprochen sind (von scripts/tts/ki_pruefen.py --nachbessern)\n' +
+    [...voiceOf].sort().map(([f, v]) => `${f}\t${v}\n`).join(''),
+)
+const otherVoices = [...new Set(voiceOf.values())].sort()
+
 const index = {
   sources: {
     tan: {
@@ -273,7 +341,7 @@ const index = {
       note: 'MP3-Fassung von Wikimedia Commons',
     },
     ai: {
-      name: `KI-Stimme: ${AI.model} (Stimme ${AI.voice})`,
+      name: `KI-Stimme: ${AI.model} (Stimme ${AI.voice}${otherVoices.length ? `, einzelne Wörter ${otherVoices.join(', ')}` : ''})`,
       license: 'Apache 2.0',
       licenseUrl: 'https://www.apache.org/licenses/LICENSE-2.0',
       url: 'https://huggingface.co/hexgrad/Kokoro-82M-v1.1-zh',
@@ -292,7 +360,7 @@ for (const [key, e] of [...chosen.entries()].sort()) {
       ? `${entry.f}\t${e.word.s}\tYue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)`
       : e.src === 'll'
         ? `${entry.f}\t${e.word.s}\t${e.author} – ${e.license} – ${e.page} (MP3-Fassung von Wikimedia Commons)`
-        : `${entry.f}\t${e.word.s}\tKI-Stimme ${AI.model} (${AI.voice}), Apache 2.0 – synthetisch erzeugt, keine echte Aufnahme`,
+        : `${entry.f}\t${e.word.s}\tKI-Stimme ${AI.model} (${voiceOf.get(entry.f) ?? AI.voice}), Apache 2.0 – synthetisch erzeugt, keine echte Aufnahme`,
   )
 }
 fs.writeFileSync(path.join(DATA_DIR, 'audio.json'), JSON.stringify(index))

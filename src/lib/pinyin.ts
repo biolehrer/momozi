@@ -13,6 +13,12 @@ const MARKS: Record<string, string[]> = {
 /** Ton 1–4, 5 = neutraler Ton, null = unbekannt bzw. Erhua-„r“ */
 export type Tone = 1 | 2 | 3 | 4 | 5 | null
 
+/** silbische Nasale ohne Vokal (嗯 ǹg, 呒 ḿ): Tonzeichen auf n bzw. m */
+const NASAL_MARKS: Record<string, string[]> = {
+  n: ['n', 'n̄', 'ń', 'ň', 'ǹ'],
+  m: ['m', 'm̄', 'ḿ', 'm̌', 'm̀'],
+}
+
 const MARK_TO_BASE: Record<string, [string, number]> = {}
 for (const [base, list] of Object.entries(MARKS)) {
   list.forEach((m, tone) => {
@@ -20,6 +26,11 @@ for (const [base, list] of Object.entries(MARKS)) {
       MARK_TO_BASE[m] = [base, tone]
       MARK_TO_BASE[m.toUpperCase()] = [base.toUpperCase(), tone]
     }
+  })
+}
+for (const [base, list] of Object.entries(NASAL_MARKS)) {
+  list.forEach((m, tone) => {
+    if (tone > 0 && m.length === 1) MARK_TO_BASE[m] = [base, tone]
   })
 }
 
@@ -48,7 +59,12 @@ export function numSyllableToMarked(syl: string): string {
       }
     }
   }
-  if (idx < 0) return base
+  if (idx < 0) {
+    // silbischer Nasal (ng, n, m, hm …): Zeichen auf das erste n bzw. m
+    const n = lower.search(/[nm]/)
+    if (n < 0) return base
+    return base.slice(0, n) + NASAL_MARKS[lower[n]][tone] + base.slice(n + 1)
+  }
   const ch = base[idx]
   const marked = MARKS[ch.toLowerCase()]?.[tone]
   if (!marked) return base
@@ -91,6 +107,30 @@ export function displayPinyin(numeric: string): string {
     else out.push(numSyllableToMarked(s))
   }
   return out.join(' ')
+}
+
+/**
+ * Zwei Lesungen desselben mehrsilbigen Wortes, die sich nur im neutralen Ton oder in der Tonänderung
+ * von 一/不 unterscheiden ("na4 bian1" ~ "na4 bian5", "yi4 qi3" ~ "yi1 qi3"). Einsilbig gilt das nicht:
+ * Dort ist ein anderer Ton meist ein anderes Wort (子 zi/zǐ, 过 guo/guò). a, b: normalisierte Zahlen-Pinyin.
+ */
+export function isToneVariant(s: string, a: string, b: string): boolean {
+  const A = splitNumeric(a)
+  const B = splitNumeric(b)
+  const chars = [...s]
+  if (A.length !== B.length || A.length < 2) return false
+  return A.every((x, i) => {
+    const y = B[i]
+    if (x.slice(0, -1) !== y.slice(0, -1)) return false
+    const tx = x.slice(-1)
+    const ty = y.slice(-1)
+    return tx === ty || tx === '5' || ty === '5' || chars[i] === '一' || chars[i] === '不'
+  })
+}
+
+/** Hinweis auf weitere richtige Lesungen, z. B. "auch tài yang" (leer, wenn es keine gibt) */
+export function alsoPinyin(alternatives: string[] | undefined): string {
+  return alternatives?.length ? 'auch ' + alternatives.map(displayPinyin).join(', ') : ''
 }
 
 /** Einheitliche Zahlenschreibweise als Schlüssel: Kleinbuchstaben, ü als "v", neutraler Ton = 5 */

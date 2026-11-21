@@ -1,7 +1,7 @@
 {
   "name": "zeichenweise",
   "private": true,
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Chinesische Schriftzeichen schreiben üben – Web-App (PWA) mit Spaced Repetition",
   "license": "MIT",
   "type": "module",

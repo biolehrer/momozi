@@ -3,7 +3,7 @@
   import SpeakButton from './SpeakButton.svelte'
   import WritingPad from './WritingPad.svelte'
   import { consume, isPrimary, shortcut } from '../lib/keys'
-  import { displayPinyin } from '../lib/pinyin'
+  import { alsoPinyin, displayPinyin } from '../lib/pinyin'
   import type { Word } from '../lib/types'
 
   let { word, ondone }: { word: Word; ondone: () => void } = $props()
@@ -52,6 +52,7 @@
       <div class="word zh" lang="zh-Hans">{word.s}</div>
       <div class="info">
         {#if word.n}<div class="pinyin">{displayPinyin(word.n)}</div>{/if}
+        {#if word.a?.length}<div class="muted small">{alsoPinyin(word.a)}</div>{/if}
         <div class="meaning">{word.m}</div>
       </div>
       <SpeakButton {word} auto />
