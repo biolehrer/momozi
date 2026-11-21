@@ -5,8 +5,10 @@ import { wordKey, type Word } from './types'
 export interface AudioEntry {
   /** Dateiname in ./audio/ */
   f: string
-  /** Quelle: tan = Yue Tan, ll = Lingua Libre, ai = KI-Stimme (später) */
+  /** Quelle: tan = Yue Tan, ll = Lingua Libre, ai = KI-Stimme */
   s: 'tan' | 'll' | 'ai'
+  /** einsilbiges Wort ohne eigene Aufnahme: Zeichen mit gleicher Aussprache, dessen Aufnahme verwendet wird */
+  h?: string
   /** Sprecher/in (Lingua Libre) */
   a?: string
   /** Lizenz (Lingua Libre) */

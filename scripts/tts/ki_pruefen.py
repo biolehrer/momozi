@@ -9,7 +9,8 @@ Aufruf:
   .venv-tts/bin/python scripts/tts/ki_pruefen.py --liste dateien.json
       [{"s": "超市", "n": "chao1 shi4", "f": "/pfad/datei.wav", "src": "ai"}, ...]
   --nachbessern: KI-Wörter, die die Erkennung nicht genau so (Wort oder Silben samt Ton) hört, und solche mit Vorlaut in
-      Varianten neu erzeugen (Anlauf, Tempo, notfalls andere Stimmen) und die beste behalten (echte Aufnahmen bleiben unberührt)
+      Varianten neu erzeugen (Anlauf, Tempo, notfalls andere Stimmen, zuletzt im Satzrahmen nach „我说“/„这是“) und die
+      beste behalten (echte Aufnahmen bleiben unberührt)
 
 Einrichtung zusätzlich zu ki_aussprache.py (Whisper lädt beim ersten Lauf ca. 1,6 GB):
   VIRTUAL_ENV=.venv-tts uv pip install transformers torch pypinyin
@@ -154,6 +155,11 @@ OTHER_VOICES = ('zf_002', 'zm_010', 'zm_009')
 VOICE_LOG = ROOT / 'data' / 'ki-stimmen.tsv'
 # Varianten je Stimme: Anlauf vor dem Wort × Tempo
 GRID = [(lead, speed) for lead in (',', '…', ';') for speed in (0.8, 0.9, 1.0, 1.1)]
+# letzte Stufe, Satzrahmen: das Wort nach einem kurzen Satzanfang sprechen und herausschneiden – die Stimme hat so eine
+# Tonhöhe als Bezug (half bei 10 von 11 Wörtern, die zuvor in keiner Variante sicher gehört wurden, v. a. 3. Ton vorn).
+# „ps“ steht für das Wort selbst („doppelt“: das zweite von zweien wird behalten).
+FRAMES = {'woshuo': ['wo3 shuo1'], 'woshuo-pause': ['wo3 shuo1', ','], 'zheshi': ['zhe4 shi4'], 'doppelt': ['ps', ',']}
+FRAME_SPEEDS = (0.8, 0.9, 1.0)
 
 
 def no_prevoice(r):
@@ -180,11 +186,17 @@ def clearly_better(b, c):
     return db < dc - 0.3 or (abs(db - dc) <= 0.3 and rank(b)[4] > rank(c)[4])
 
 
+def lead_for(K, frame, ps):
+    """Anlauf in Kokoro-Lautschrift: Satzanfang aus FRAMES, Wort selbst für „ps“, Satzzeichen bleiben"""
+    return ''.join(ps if p == 'ps' else p if p in ',…;' else K.pinyin_to_phonemes(p) for p in frame)
+
+
 def improve(rows, evaluate, voice):
     """Wörter, die die Erkennung nicht sicher hört, in Varianten neu erzeugen: erst mit der Hauptstimme, und wenn keine
-    Variante genau das Wort ergibt, auch mit den anderen Stimmen. Die beste Variante ersetzt die Datei, wenn sie deutlich
-    besser ist – welche Stimme, ist egal, Hauptsache das Wort stimmt. Bewertet wird nach MP3-Kodierung, also so, wie die
-    Datei später klingt. Welche Dateien eine andere Stimme sprechen, steht in data/ki-stimmen.tsv."""
+    Variante genau das Wort ergibt, auch mit den anderen Stimmen, zuletzt im Satzrahmen. Die beste Variante ersetzt die
+    Datei, wenn sie deutlich besser ist – welche Stimme, ist egal, Hauptsache das Wort stimmt; bei gleicher Bewertung
+    gewinnt ein Anlauf mit Pause (saubere Schnittstelle). Bewertet wird nach MP3-Kodierung, also so, wie die Datei später
+    klingt. Welche Dateien eine andere Stimme sprechen, steht in data/ki-stimmen.tsv."""
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     import ki_aussprache as K
     from kokoro import KModel, KPipeline
@@ -216,32 +228,36 @@ def improve(rows, evaluate, voice):
             continue
         mp3 = Path(r['f']).suffix == '.mp3'
         meta = {k: r[k] for k in ('s', 'n', 'f', 'src') if k in r}
-        cands = []  # (Stimme, Audio, MP3-Daten, Ergebnis)
-        for stage in ([voice], others):
+        stages = [
+            [(voice, lead, speed) for lead, speed in GRID],
+            [(v, lead, speed) for v in others for lead, speed in GRID],
+            [(v, lead_for(K, fr, ps), speed) for v in (voice, *others) for fr in FRAMES.values() for speed in FRAME_SPEEDS],
+        ]
+        cands = []  # (Stimme, Anlauf, Audio, MP3-Daten, Ergebnis)
+        for stage in stages:
             batch = []
-            for v in stage:
-                for lead, speed in GRID:
-                    K.LEAD = lead
-                    try:
-                        y = K.tidy(K.synthesize(kmodel, packs[v], ps, speed))
-                    except Exception as e:
-                        print(f"  ! {r['s']} ({v}): {e}", file=sys.stderr)
-                        continue
-                    finally:
-                        K.LEAD = ','
-                    batch.append((v, y, K.to_mp3(y) if mp3 else None))
+            for v, lead, speed in stage:
+                K.LEAD = lead
+                try:
+                    y = K.tidy(K.synthesize(kmodel, packs[v], ps, speed))
+                except Exception as e:
+                    print(f"  ! {r['s']} ({v}): {e}", file=sys.stderr)
+                    continue
+                finally:
+                    K.LEAD = ','
+                batch.append((v, lead, y, K.to_mp3(y) if mp3 else None))
             if not batch:
                 continue
             # so bewerten, wie die Datei später klingt: Bei knappen Wörtern verschiebt schon die MP3-Kodierung das Ergebnis
-            heard = [sf.read(io.BytesIO(b), dtype='float32')[0] if mp3 else y for _, y, b in batch]
+            heard = [sf.read(io.BytesIO(b), dtype='float32')[0] if mp3 else y for _, _, y, b in batch]
             res = evaluate([meta] * len(batch), [resample_16k(h, K.SAMPLE_RATE) for h in heard])
-            cands += [(v, y, b, x) for (v, y, b), x in zip(batch, res)]
+            cands += [(v, lead, y, b, x) for (v, lead, y, b), x in zip(batch, res)]
             if any(no_prevoice(x) and x['cls'] == 'gleich' for *_, x in cands):
-                break  # genau das Wort: andere Stimmen könnten es nur gleich gut
+                break  # genau das Wort: weitere Stimmen oder ein Satzrahmen könnten es nur gleich gut
         if not cands:
             out.append(r)
             continue
-        v, y, b, best = max(cands, key=lambda c: (rank(c[3]), c[0] == voice))
+        v, lead, y, b, best = max(cands, key=lambda c: (rank(c[4]), c[1][-1] in ',…;', c[0] == voice))
         if clearly_better(best, r):
             path = Path(r['f'])
             if mp3:

@@ -18,6 +18,7 @@
     return [...m.values()].sort((a, b) => b.count - a.count)
   })
   const aiCount = $derived(Object.values(audio.index?.words ?? {}).filter((e) => e.s === 'ai').length)
+  const homophoneCount = $derived(Object.values(audio.index?.words ?? {}).filter((e) => e.h).length)
   onMount(async () => {
     try {
       sources = await loadSources()
@@ -73,6 +74,10 @@
       <a href="https://creativecommons.org/licenses/by-sa/3.0/us/" target="_blank" rel="noopener">CC BY-SA 3.0 US</a>. In MP3
       umgewandelt vom Projekt
       <a href="https://github.com/hugolpz/audio-cmn" target="_blank" rel="noopener">audio-cmn</a>.
+      {#if homophoneCount}
+        Einzelne Zeichen ohne eigene Aufnahme ({homophoneCount}) klingen genau wie ein anderes Zeichen mit derselben Silbe und
+        demselben Ton – dafür wird dessen Aufnahme verwendet (z. B. 伞 sǎn für 散 sǎn).
+      {/if}
     </p>
     {#if llSpeakers.length}
       <p>

@@ -9,7 +9,8 @@ so wie man es spricht; 一/不 stehen schon so in unseren Daten, wie sie gesproc
 Wortanfang: Ein einzeln erzeugtes Wort beginnt bei Kokoro mit einem stimmhaften Vorlaut, der z. B.
 „sh“ wie „r“ klingen lässt. Deshalb wird das Wort mit einem kurzen Anlauf erzeugt und genau an der
 Grenze zum Wort geschnitten. Die Grenze liefert Kokoro selbst (Dauer je Laut, 25 ms je Schritt). Bei stimmlosem
-Anlaut wird genau am Beginn des Reibelauts geschnitten, Wörter ohne Anlaut (Vokal, w, y, er) werden weich eingeblendet.
+Anlaut wird genau am Beginn des Reibelauts geschnitten, bei b/p/d/t/g/k im Verschluss vor der Lösung (sonst klingt der
+Anlauf noch nach), Wörter ohne Anlaut (Vokal, w, y, er) werden weich eingeblendet.
 
 Die Lautstärke wird an die echten Aufnahmen angeglichen.
 
@@ -122,6 +123,31 @@ def frication_onset(audio: np.ndarray, guess: int) -> int:
     return guess
 
 
+STOPS = set('ㄅㄆㄉㄊㄍㄎ')  # b p d t g k
+
+
+def closure_onset(audio: np.ndarray, guess: int) -> int:
+    """Verschluss vor b/p/d/t/g/k ab der berechneten Grenze: Dort klingt oft noch 20–75 ms lang stimmhaft der Anlauf
+    nach (wie ein leises „m“ vor b – bei 135 von 143 KI-Wörtern mit b/d/g gemessen). Geschnitten wird im leisesten
+    5-ms-Stück vor der Lösung, aber nur, wenn davor stimmhaftes, abklingendes Signal liegt (die Lösung bleibt also)."""
+    step = SAMPLE_RATE // 200
+    lo = max(0, guess)
+    frames = [audio[i: i + step] for i in range(lo, min(len(audio) - step, lo + 24 * step), step)]
+    db = [20 * np.log10(float(np.sqrt(np.mean(x ** 2))) + 1e-9) for x in frames]
+    zcr = [float(np.mean(np.abs(np.diff(np.sign(x))))) / 2 for x in frames]
+    k0 = next((k for k, d in enumerate(db) if d > -45), None)
+    if k0 is None:
+        return guess
+    m = k0
+    for k in range(k0 + 1, len(db)):
+        if db[k] < db[m]:
+            m = k
+        elif db[k] > db[m] + 15:  # Lösung bzw. Vokal: das leiseste Stück davor ist der Verschluss
+            break
+    voiced = m > k0 and max(zcr[k0:m]) < 0.12
+    return lo + m * step if voiced and db[k0] - db[m] >= 12 else guess
+
+
 def synthesize(model, pack, ps: str, speed: float):
     """Wort mit Anlauf erzeugen und an den von Kokoro gelieferten Lautgrenzen schneiden."""
     full = LEAD + ps + TAIL
@@ -137,6 +163,8 @@ def synthesize(model, pack, ps: str, speed: float):
         a = max(0, frication_onset(audio, start) - SAMPLE_RATE // 500)  # 2 ms Luft
     else:
         a = max(0, start - int(SAMPLE_RATE * PRE_MS / 1000))
+        if ps[0] in STOPS:
+            a = closure_onset(audio, a)
     b = min(len(audio), end + int(SAMPLE_RATE * POST_MS / 1000))
     seg = audio[a:b].copy()
     if ps[0] not in INITIALS:  # kein Anlaut: weich einsetzen wie gesprochen

@@ -93,6 +93,8 @@
         {#if word.a?.length}<div class="muted small">{alsoPinyin(word.a)}</div>{/if}
         {#if audioFor(word)?.s === 'ai'}
           <div class="muted small"><span class="badge ai">KI</span> Aussprache von einer KI-Stimme – keine echte Aufnahme</div>
+        {:else if audioFor(word)?.h}
+          <div class="muted small">Aufnahme des gleich ausgesprochenen Zeichens {audioFor(word)?.h}</div>
         {/if}
         <div class="meaning">{word.m}</div>
       </div>

@@ -1,7 +1,9 @@
 // Sammelt echte Aussprache-Aufnahmen für die Wörter der HSK-Sets:
 //   1. Yue Tan (Universität Caen, über audio-cmn), CC BY-SA 3.0 US – Lesung wird mit dem Shtooka-Index geprüft
 //   2. Lingua Libre (Wikimedia Commons), CC0 / CC BY / CC BY-SA – nur für Wörter mit eindeutiger Lesung
-//   3. Lücken: KI-Stimme Kokoro v1.1-zh (Apache 2.0), deutlich als KI gekennzeichnet
+//   3. Einsilbige Wörter ohne eigene Aufnahme: Aufnahme von Yue Tan für ein gleich ausgesprochenes Zeichen
+//      (散 sǎn klingt genau wie 伞 sǎn), in der App mit Hinweis
+//   4. Lücken: KI-Stimme Kokoro v1.1-zh (Apache 2.0), deutlich als KI gekennzeichnet
 //      (braucht die Python-Umgebung .venv-tts, siehe scripts/tts/ki_aussprache.py; abschaltbar mit --no-ai)
 // Ergebnis:
 //   public/audio/*.mp3          Audiodateien
@@ -101,6 +103,20 @@ for (const block of fs.readFileSync(tanIndexFile, 'utf8').split(/\n(?=\[cmn-)/))
   if (!text || !phon) continue
   if (!tanReadings.has(text)) tanReadings.set(text, [])
   tanReadings.get(text).push(phon)
+}
+
+/**
+ * Gleich ausgesprochene Einzelzeichen: Lesung (Zahlen-Pinyin) -> Zeichen mit Aufnahme in audio-cmn, deren Aufnahmen bei
+ * Yue Tan alle genau diese Lesung tragen (samt Ton). Für einsilbige Wörter ohne eigene Aufnahme (siehe unten).
+ */
+const tanHomophones = new Map()
+for (const [h, phons] of tanReadings) {
+  if ([...h].length !== 1 || !cmnWords.has(h) || TAN_BLOCK[h]) continue
+  const nums = new Set(phons.map((p) => normalizeNumeric(inputToNumeric(p).numeric)))
+  const [n] = nums
+  if (nums.size !== 1 || splitNumeric(n).length !== 1) continue
+  if (!tanHomophones.has(n)) tanHomophones.set(n, [])
+  tanHomophones.get(n).push(h)
 }
 
 /** Lingua Libre: alle Mandarin-Dateien (Titel) */
@@ -263,16 +279,38 @@ for (const c of llCandidates) {
   chosen.set(c.key, { word: c.w, src: 'll', url: f.mp3, author: f.speaker, license: f.license, licenseUrl: f.licenseUrl, page: f.page })
 }
 
+// ---------- Einsilbige Wörter ohne eigene Aufnahme: gleich ausgesprochenes Zeichen ----------
+// Ein einzelnes Zeichen klingt genau wie jedes andere mit derselben Silbe und demselben Ton (散 sǎn = 伞 sǎn).
+// Bevorzugt werden Zeichen, deren Aufnahme die App ohnehin hat, dann solche aus niedrigen HSK-Stufen.
+
+const levelOf = new Map()
+for (const w of words.values()) if (!levelOf.has(w.s)) levelOf.set(w.s, Number(w.set.replace(/\D/g, '')) || 9)
+const homophones = []
+for (const [key, w] of words) {
+  if (chosen.has(key) || !w.n) continue
+  const n = normalizeNumeric(w.n)
+  const cands = (tanHomophones.get(n) ?? []).filter((h) => h !== w.s)
+  if (!cands.length) continue
+  const own = (h) => (chosen.get(`${h}|${n}`)?.src === 'tan' && !chosen.get(`${h}|${n}`).via ? 0 : 1)
+  const h = cands.sort((a, b) => own(a) - own(b) || (levelOf.get(a) ?? 9) - (levelOf.get(b) ?? 9) || (a < b ? -1 : a > b ? 1 : 0))[0]
+  chosen.set(key, { word: w, src: 'tan', via: h, url: `https://raw.githubusercontent.com/${AUDIO_CMN}/${cmn.commit}/64k/hsk/cmn-${encodeURIComponent(h)}.mp3` })
+  homophones.push(`${w.s}=${h}`)
+}
+
 // ---------- Herunterladen ----------
 
+/** Datei einer echten Aufnahme – bei gleichlautendem Zeichen die Datei dieses Zeichens (wird geteilt) */
+const fileFor = (e) => (e.via ? fileOf({ s: e.via, n: e.word.n }) : fileOf(e.word))
 fs.mkdirSync(AUDIO_DIR, { recursive: true })
-const jobs = [...chosen.values()].filter((e) => refresh || !fs.existsSync(path.join(AUDIO_DIR, fileOf(e.word))))
+const jobs = [...new Map([...chosen.values()].map((e) => [fileFor(e), e])).values()].filter(
+  (e) => refresh || !fs.existsSync(path.join(AUDIO_DIR, fileFor(e))),
+)
 let done = 0
 async function worker() {
   while (jobs.length) {
     const e = jobs.shift()
     const buf = await fetchRetry(e.url, { as: 'buffer' })
-    fs.writeFileSync(path.join(AUDIO_DIR, fileOf(e.word)), buf)
+    fs.writeFileSync(path.join(AUDIO_DIR, fileFor(e)), buf)
     done++
     if (e.src === 'll') await sleep(500)
   }
@@ -352,12 +390,13 @@ const index = {
 }
 const credits = ['Namensnennung für die Audiodateien in diesem Ordner', '']
 for (const [key, e] of [...chosen.entries()].sort()) {
-  const entry = { f: e.src === 'ai' ? aiFile(e.word) : fileOf(e.word), s: e.src }
+  const entry = { f: e.src === 'ai' ? aiFile(e.word) : fileFor(e), s: e.src }
+  if (e.via) entry.h = e.via
   if (e.src === 'll') Object.assign(entry, { a: e.author, l: e.license, p: e.page })
   index.words[key] = entry
   credits.push(
     e.src === 'tan'
-      ? `${entry.f}\t${e.word.s}\tYue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)`
+      ? `${entry.f}\t${e.word.s}\tYue Tan, Universität Caen / Shtooka – CC BY-SA 3.0 US – via audio-cmn (in MP3 umgewandelt)${e.via ? ` – Aufnahme von ${e.via}, gleich ausgesprochen` : ''}`
       : e.src === 'll'
         ? `${entry.f}\t${e.word.s}\t${e.author} – ${e.license} – ${e.page} (MP3-Fassung von Wikimedia Commons)`
         : `${entry.f}\t${e.word.s}\tKI-Stimme ${AI.model} (${voiceOf.get(entry.f) ?? AI.voice}), Apache 2.0 – synthetisch erzeugt, keine echte Aufnahme`,
@@ -388,5 +427,6 @@ for (const set of sets) {
     `${set.name}: ${has.length}/${all.length} mit Aussprache – echt ${count('tan') + count('ll')} (Yue Tan ${count('tan')}, Lingua Libre ${count('ll')}), KI ${count('ai')}`,
   )
 }
+console.log(`Aufnahme eines gleich ausgesprochenen Zeichens (${homophones.length}): ${homophones.join(' ')}`)
 console.log(`ohne echte Aufnahme (${missingReal.length}): ${missingReal.map((w) => w.s).join(' ')}`)
 if (rejected.length) console.log('\nAussortiert:\n  - ' + rejected.join('\n  - '))
