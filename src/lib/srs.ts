@@ -4,7 +4,8 @@ import { allCards, cardsForWord, db, delMeta, getMeta, setMeta } from './db'
 import { loadSet } from './data'
 import { app } from './state.svelte'
 import { tonesOf } from './pinyin'
-import { QUIZ_TYPES, wordKey, type CardRecord, type QuizType, type Session, type SessionItem, type Word } from './types'
+import { orderSession, type DueCard } from './order'
+import { QUIZ_TYPES, wordKey, type CardRecord, type QuizType, type Session, type Word } from './types'
 
 const scheduler = fsrs({ enable_fuzz: true, request_retention: 0.9 })
 
@@ -116,33 +117,15 @@ export async function overview(deckId?: string): Promise<Overview> {
   return { due, newToday, learned, total: words.length }
 }
 
-function shuffle<T>(a: T[]): T[] {
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[a[i], a[j]] = [a[j], a[i]]
-  }
-  return a
-}
-
-/** Dasselbe Wort möglichst nicht zweimal direkt hintereinander */
-function spreadSameWord(items: SessionItem[]): SessionItem[] {
-  for (let i = 1; i < items.length; i++) {
-    if (items[i].word.s !== items[i - 1].word.s) continue
-    const j = items.findIndex((it, idx) => idx > i && it.word.s !== items[i - 1].word.s)
-    if (j > 0) [items[i], items[j]] = [items[j], items[i]]
-  }
-  return items
-}
-
 /**
- * Übungssitzung: fällige Karten + neue Wörter.
+ * Übungssitzung: fällige Karten + neue Wörter, angeordnet von orderSession() (lib/order.ts).
  * Mit deckId nur dieses Deck – dann alle neuen Wörter des Decks (z. B. Vokabeln der letzten Kursstunde).
  */
 export async function buildSession(deckId?: string): Promise<Session> {
   const [words, cards, intro] = await Promise.all([deckId ? wordsOfDecks([deckId]) : activeWords(), cardMap(), introducedToday()])
   const end = endOfToday()
   const now = Date.now()
-  const due: { item: SessionItem; at: number }[] = []
+  const due: DueCard[] = []
   const fresh: Word[] = []
   for (const w of words) {
     const k = wordKey(w)
@@ -157,18 +140,8 @@ export async function buildSession(deckId?: string): Promise<Session> {
       if (isDue(c, now, end)) due.push({ item: { kind: 'quiz', word: w, type }, at: c ? c.fsrs.due.getTime() : 0 })
     })
   }
-  due.sort((a, b) => a.at - b.at)
-  const items = spreadSameWord(due.map((d) => d.item))
-
-  // Neue Wörter: erst kennenlernen, die Abfragen dazu kommen versetzt nach dem nächsten neuen Wort
   const limit = deckId ? Infinity : Math.max(0, app.settings.newPerDay - intro)
-  let pending: SessionItem[] = []
-  for (const w of fresh.slice(0, limit)) {
-    items.push({ kind: 'learn', word: w })
-    items.push(...pending)
-    pending = shuffle(typesFor(w).map((type): SessionItem => ({ kind: 'quiz', word: w, type })))
-  }
-  items.push(...pending)
+  const items = orderSession(due, fresh.slice(0, limit).map((word) => ({ word, types: typesFor(word) })))
   return { date: today(), deckId, items, index: 0, charIndex: 0, stats: { good: 0, again: 0, learned: 0 } }
 }
 

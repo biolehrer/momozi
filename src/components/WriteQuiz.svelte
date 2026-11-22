@@ -1,5 +1,6 @@
 <script lang="ts">
   // Abfrage „Schreiben“: Bedeutung + Pinyin sehen, Zeichen für Zeichen aus dem Gedächtnis schreiben.
+  import Icon from './Icon.svelte'
   import SpeakButton from './SpeakButton.svelte'
   import WritingPad from './WritingPad.svelte'
   import { consume, isPrimary, shortcut } from '../lib/keys'
@@ -23,16 +24,26 @@
   // svelte-ignore state_referenced_locally
   let idx = $state(Math.min(startChar, [...word.s].length - 1))
   let mistakes = $state(0)
+  /** angesehene Tipps (nächster Strich), zählen wie Fehler */
+  let tips = $state(0)
   let hinted = $state(false)
   let finished = $state(false)
   let noData = $state(false)
   let paperRevealed = $state(false)
+  /** Zeichen, bei dem „Lösung zeigen“ gedrückt wurde */
+  let revealedAt = $state(-1)
   let pad: WritingPad | undefined = $state()
 
-  const suggested = $derived<1 | 3>(!hinted && mistakes <= 1 ? 3 : 1)
+  const suggested = $derived<1 | 3>(!hinted && mistakes + tips <= 1 ? 3 : 1)
+  // Druckschrift vor dem Pinyin erst, wenn das ganze Wort bekannt ist – vorher würde man es nur abschreiben
+  const showWord = $derived(finished || paperRevealed || revealedAt === chars.length - 1)
+  const resultText = $derived(
+    [mistakes && `${mistakes} Fehler`, tips && `${tips} ${tips === 1 ? 'Tipp' : 'Tipps'}`].filter(Boolean).join(' · '),
+  )
 
-  function charDone(r: { mistakes: number; hinted: boolean }) {
+  function charDone(r: { mistakes: number; hinted: boolean; tips: number }) {
     mistakes += r.mistakes
+    tips += r.tips
     if (r.hinted) hinted = true
     if (idx < chars.length - 1) {
       setTimeout(() => {
@@ -46,7 +57,12 @@
 
   function showSolution() {
     hinted = true
+    revealedAt = idx
     pad?.reveal()
+  }
+
+  function tip() {
+    pad?.hint()
   }
 
   function onKey(e: KeyboardEvent) {
@@ -61,6 +77,9 @@
       if (isPrimary(k)) {
         consume(e)
         showSolution()
+      } else if (k === 't') {
+        consume(e)
+        tip()
       }
     } else if (k === '1' || k === '2') {
       consume(e)
@@ -80,6 +99,7 @@
     <div class="prompt">
       <div class="meaning">{word.m}</div>
       <div class="pinyin-row">
+        {#if showWord}<span class="hanzi zh fade-in" lang="zh-Hans">{word.s}</span>{/if}
         {#if word.n}<span class="pinyin">{displayPinyin(word.n)}</span>{/if}
         <SpeakButton {word} auto size={40} />
       </div>
@@ -117,10 +137,10 @@
       <div class="result fade-in">
         {#if hinted}
           <span class="badge accent">mit Hilfe</span>
-        {:else if mistakes === 0}
+        {:else if !resultText}
           <span class="badge good">fehlerfrei</span>
         {:else}
-          <span class="badge">{mistakes} {mistakes === 1 ? 'Fehler' : 'Fehler'}</span>
+          <span class="badge">{resultText}</span>
         {/if}
       </div>
     {/if}
@@ -132,6 +152,9 @@
     {#if noData && !paperRevealed}
       <button class="btn primary" onclick={() => (paperRevealed = true)}>Aufdecken <kbd class="key">↵</kbd></button>
     {:else if !finished && !noData}
+      <button class="btn tip" onclick={tip} aria-label="Tipp: nächsten Strich zeigen" title="Nächsten Strich zeigen (T)">
+        <Icon name="bulb" size={22} /> Tipp <kbd class="key">T</kbd>
+      </button>
       <button class="btn" onclick={showSolution}>Lösung zeigen <kbd class="key">↵</kbd></button>
     {:else}
       <button class="btn" class:bad={finished && suggested === 1} onclick={() => onrate(1)}>Nochmal <kbd class="key">1</kbd></button>
@@ -168,9 +191,18 @@
     margin-top: 4px;
     min-height: 40px;
   }
-  .pinyin {
+  .pinyin,
+  .hanzi {
     color: var(--muted);
     font-size: 1.1rem;
+  }
+  .hanzi {
+    color: var(--ink);
+  }
+  /* Tipp-Taste schmal, „Lösung zeigen“ nimmt den Rest */
+  .dock-inner > .tip {
+    flex: 0 0 auto;
+    padding: 0 18px;
   }
   .slots {
     display: flex;
@@ -211,7 +243,8 @@
     .meaning {
       font-size: 1.9rem;
     }
-    .pinyin {
+    .pinyin,
+    .hanzi {
       font-size: 1.35rem;
     }
     .slot {

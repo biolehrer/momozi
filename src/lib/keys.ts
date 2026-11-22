@@ -2,6 +2,7 @@
 //   Leertaste/Enter  Hauptaktion (Aufdecken, Lösung zeigen, Weiter)
 //   1 / 2            Nochmal / Gewusst
 //   1–5              Töne (5 oder 0 = neutral)
+//   T                Tipp beim Schreiben (nächster Strich)
 //   P                Aussprache abspielen
 //   Esc              Üben beenden
 

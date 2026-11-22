@@ -131,6 +131,8 @@
         </div>
         <button class="btn small" onclick={playAll}><Icon name="play" size={18} /> Strichfolge abspielen</button>
         <div class="pinyin-row">
+          <!-- Druckschrift neben der Handschrift oben: manche Zeichen sehen geschrieben anders aus -->
+          <span class="hanzi zh" lang="zh-Hans">{word.s}</span>
           {#if word.n}<span class="pinyin">{displayPinyin(word.n)}</span>{/if}
           <SpeakButton {word} size={44} />
         </div>
@@ -235,6 +237,9 @@
   .pinyin {
     font-size: 1.4rem;
     font-weight: 650;
+  }
+  .hanzi {
+    font-size: 1.4rem;
   }
   .meaning {
     font-size: 1.1rem;

@@ -1,7 +1,7 @@
 <script lang="ts">
   // Zeichenfläche auf Basis von Hanzi Writer.
   //  mode "learn": Strichfolge wird vorgeführt, danach mit Umriss nachzeichnen (Hinweis nach 1 Fehler)
-  //  mode "test":  leeres Kästchen, aus dem Gedächtnis schreiben (Hinweis nach 3 Fehlern)
+  //  mode "test":  leeres Kästchen, aus dem Gedächtnis schreiben (Hinweis nach 3 Fehlern oder per Tipp, siehe hint())
   //  mode "view":  Zeichen anzeigen, Animation auf Wunsch
   import HanziWriter from 'hanzi-writer'
   import { onMount } from 'svelte'
@@ -26,7 +26,7 @@
     fixedSize?: number
     /** Platz in px, der vertikal für den Rest der Ansicht frei bleiben soll */
     reserve?: number
-    oncomplete?: (r: { mistakes: number; hinted: boolean }) => void
+    oncomplete?: (r: { mistakes: number; hinted: boolean; tips: number }) => void
     onerror?: () => void
   } = $props()
 
@@ -38,6 +38,12 @@
   let mistakes = 0
   let hinted = false
   let destroyed = false
+  /** läuft gerade eine Abfrage (nicht während der Vorführung)? */
+  let quizzing = false
+  /** nächster zu schreibender Strich der laufenden Abfrage */
+  let stroke = 0
+  /** Striche, für die ein Tipp angesehen wurde – mehrmals derselbe zählt einmal */
+  const tipped = new Set<number>()
 
   function colors() {
     const cs = getComputedStyle(document.documentElement)
@@ -55,6 +61,8 @@
     if (!writer || destroyed) return
     if (withOutline) writer.showOutline()
     else writer.hideOutline()
+    stroke = 0
+    quizzing = true
     writer.quiz({
       leniency: 1.3,
       showHintAfterMisses: withOutline ? 1 : 3,
@@ -63,10 +71,24 @@
       onMistake: () => {
         mistakes++
       },
+      onCorrectStroke: (d) => {
+        stroke = d.strokeNum + 1
+      },
       onComplete: () => {
-        if (!destroyed) oncomplete?.({ mistakes, hinted })
+        quizzing = false
+        if (!destroyed) oncomplete?.({ mistakes, hinted, tips: tipped.size })
       },
     })
+  }
+
+  /**
+   * Tipp: den nächsten Strich kurz aufleuchten lassen – dieselbe Animation wie der Hinweis nach Fehlern.
+   * Zählt einmal je Strich (siehe tips in oncomplete).
+   */
+  export function hint() {
+    if (!writer || status !== 'ready' || !quizzing) return
+    tipped.add(stroke)
+    writer.highlightStroke(stroke)
   }
 
   /** Strichfolge vorführen, danach mit Umriss nachzeichnen */
@@ -88,6 +110,7 @@
   export function reveal() {
     if (!writer || status !== 'ready') return
     hinted = true
+    quizzing = false
     writer.cancelQuiz()
     demoThenTrace()
   }

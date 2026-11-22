@@ -8,6 +8,7 @@
   import { consume, isPrimary, shortcut } from '../lib/keys'
   import { back, route } from '../lib/router.svelte'
   import { deckName } from '../lib/state.svelte'
+  import { requeue } from '../lib/order'
   import { buildSession, clearSession, markIntroduced, rateCard, resumableSession, saveSession } from '../lib/srs'
   import type { Session, SessionItem } from '../lib/types'
 
@@ -23,7 +24,11 @@
 
   const item = $derived(session && session.index < session.items.length ? session.items[session.index] : null)
   const total = $derived(session?.items.length ?? 0)
-  const progress = $derived(session && total ? session.index / total : 0)
+  // Fester Fortschritt: jede Aufgabe zählt einmal und ist erst mit „Gewusst“ (bzw. nach dem Kennenlernen) erledigt.
+  // Jedes „Nochmal“ hängt eine Kopie an – ohne sie bleibt die Zahl der Aufgaben gleich (gilt auch für alte Sitzungen).
+  const goal = $derived(session ? session.items.length - session.stats.again : 0)
+  const done = $derived(session ? session.stats.good + session.stats.learned : 0)
+  const percent = $derived(goal ? Math.floor((done / goal) * 100) : 0)
 
   async function persist() {
     if (session) await saveSession($state.snapshot(session) as Session)
@@ -44,9 +49,8 @@
       await rateCard(item.word, item.type, grade)
       if (grade === 1) {
         session.stats.again++
-        // später in dieser Sitzung noch einmal
-        const at = Math.min(session.items.length, session.index + 5)
-        session.items.splice(at, 0, $state.snapshot(item) as SessionItem)
+        // später in dieser Sitzung noch einmal – mit Abstand zu den anderen Karten desselben Wortes
+        session.items = requeue($state.snapshot(session.items) as SessionItem[], session.index)
       } else {
         session.stats.good++
       }
@@ -102,10 +106,19 @@
     <button class="icon-btn" onclick={() => back('/')} aria-label="Übung beenden" title="Übung beenden (Esc)">
       <Icon name="close" />
     </button>
-    <div class="progress" role="progressbar" aria-valuemin={0} aria-valuemax={total} aria-valuenow={session?.index ?? 0}>
-      <div class="fill" style:width="{progress * 100}%"></div>
+    <div
+      class="progress"
+      role="progressbar"
+      aria-label="Fortschritt"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={percent}
+      aria-valuetext="{percent} Prozent, {done} von {goal} Karten erledigt"
+      title="{done} von {goal} Karten erledigt"
+    >
+      <div class="fill" style:width="{goal ? (done / goal) * 100 : 0}%"></div>
     </div>
-    <span class="count small muted">{Math.min(session?.index ?? 0, total)}/{total}</span>
+    <span class="count small" aria-hidden="true">{percent}&#8239;%</span>
   </header>
   {#if session?.deckId}<p class="deck-label small muted">{deckName(session.deckId)}</p>{/if}
 
@@ -153,7 +166,7 @@
   </main>
   {#if item}
     <p class="keys-help small muted" aria-hidden="true">
-      <kbd>↵</kbd> weiter · <kbd>1</kbd> <kbd>2</kbd> bewerten · <kbd>1</kbd>–<kbd>5</kbd> Töne · <kbd>P</kbd> anhören · <kbd>Esc</kbd> beenden
+      <kbd>↵</kbd> weiter · <kbd>1</kbd> <kbd>2</kbd> bewerten · <kbd>1</kbd>–<kbd>5</kbd> Töne · <kbd>T</kbd> Tipp · <kbd>P</kbd> anhören · <kbd>Esc</kbd> beenden
     </p>
   {/if}
 </div>
@@ -206,7 +219,9 @@
   .count {
     min-width: 3.5em;
     text-align: right;
+    font-weight: 650;
     font-variant-numeric: tabular-nums;
+    white-space: nowrap;
   }
   .body {
     max-width: 560px;

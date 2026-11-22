@@ -22,6 +22,7 @@
     clipboard:
       'M9 3.5h6v3H9zM8 5H6.5A1.5 1.5 0 0 0 5 6.5v13A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5v-13A1.5 1.5 0 0 0 17.5 5H16M8.5 11.5h7M8.5 15.5h5',
     speaker: 'M4 9.5h3.5L12 5.5v13l-4.5-4H4v-5ZM15.5 9a4.5 4.5 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11',
+    bulb: 'M8.6 14.2a6 6 0 1 1 6.8 0c-.8.6-1.4 1.6-1.4 2.8h-4c0-1.2-.6-2.2-1.4-2.8ZM9.5 20h5',
   } as const
 
   let { name, size = 24, stroke = 2 }: { name: keyof typeof PATHS; size?: number; stroke?: number } = $props()
