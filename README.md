@@ -3,7 +3,7 @@
 Web-App zum Üben chinesischer Schriftzeichen (Kurzzeichen) – für das Handy gemacht, installierbar, auf Deutsch.
 
 - **Fertige Sets:** HSK 1–6 (HSK 3.0, Prüfungsfassung 2026) mit von Hand geprüften deutschen Bedeutungen und Lesungen; in „Decks“ einzeln zuschaltbar
-- **Eigene Decks:** Wörter im Wörterbuch suchen (Zeichen, Pinyin oder Deutsch) oder selbst anlegen
+- **Eigene Decks:** Wörter suchen (Zeichen, Pinyin oder Deutsch) – standardmäßig nur in den HSK-Wörtern, mit dem Schalter „Auch im Wörterbuch suchen“ zusätzlich in rund 160.000 HanDeDict-Wörtern (farblich abgesetzt) – oder selbst anlegen
 - **Vier Abfragearten**, einzeln abschaltbar:
   - **Schreiben** – Bedeutung und Pinyin sehen, Zeichen aus dem Gedächtnis schreiben; jeder Strich wird geprüft
   - **Pinyin** – Zeichen sehen, Aussprache erinnern
@@ -12,8 +12,8 @@ Web-App zum Üben chinesischer Schriftzeichen (Kurzzeichen) – für das Handy g
 - **Neue Wörter** werden erst vorgeführt (Strichfolge-Animation) und dann nachgezeichnet
 - **Aussprache** mit echten Aufnahmen, Lücken mit gekennzeichneter KI-Stimme (abschaltbares automatisches Abspielen); bei Pinyin- und Ton-Abfragen erst nach der Antwort
 - **Spaced Repetition** mit FSRS, jede Abfrageart wird einzeln geplant
-- **Offline nutzbar** (Service Worker): App und HSK-Sets fest gespeichert, Strichfolgen und Aussprache der eigenen/aktiven Decks werden im Hintergrund vorgeladen, das Wörterbuch beim ersten Suchen; Updates nach Tippen auf „Aktualisieren“
-- **Eigene Decks zusammenstellen:** HSK-Wörter ankreuzen, im Wörterbuch suchen oder die Vokabelliste aus dem Kurs einfügen; Decks als Datei teilen und importieren
+- **Offline nutzbar** (Service Worker): App und HSK-Sets fest gespeichert, Strichfolgen und Aussprache der eigenen/aktiven Decks werden im Hintergrund vorgeladen, das Wörterbuch bei der ersten Suche mit Wörterbuch-Schalter oder beim ersten Einfügen einer Vokabelliste; Updates nach Tippen auf „Aktualisieren“
+- **Eigene Decks zusammenstellen:** HSK-Wörter ankreuzen, bei Bedarf auch im Wörterbuch suchen oder die Vokabelliste aus dem Kurs einfügen; Decks als Datei teilen und importieren
 - **Sicherung** des Lernstands als Datei (Teilen-Menü), Laden mit Zusammenführen oder Ersetzen; dezente Erinnerung
 - **Handy, Tablet und PC:** auf dem Handy Leiste unten, auf dem iPad hochkant eine Icon-Leiste links, im Querformat und am Rechner eine Seitenleiste; Üben im Querformat zweispaltig mit großer Zeichenfläche
 - **Tastenkürzel** beim Üben: Leertaste/Enter weiter, 1/2 bewerten, 1–5 Töne, P anhören, Esc beenden

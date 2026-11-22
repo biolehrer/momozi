@@ -49,15 +49,35 @@ export interface DictEntry {
   tk: string
   /** Bedeutung in Kleinbuchstaben */
   ml: string
+  /**
+   * Angezeigte Kurzbedeutung in Kleinbuchstaben – Treffer dort zählen mehr als in den weiteren Bedeutungen.
+   * Bei HSK-Wörtern vorgegeben, im Wörterbuch erst bei Bedarf berechnet (siehe shownLower).
+   */
+  pm?: string
+  /** Malus für seltene Zeichen (siehe rarity), wird zum Suchwert addiert */
+  r?: number
+}
+
+/**
+ * Wie gebräuchlich ein Wort ist, geschätzt aus dem Wörterbuch selbst: in wie vielen Einträgen sein
+ * seltenstes Zeichen vorkommt. 玉 steckt in 128 Wörtern, Zeichen wie 瑔 nur in ihrem eigenen Eintrag.
+ * Seltene Wörter rutschen so bei gleich gutem Treffer nach unten (ähnlich wie Pleco nach Häufigkeit sortiert).
+ */
+function rarity(s: string, count: Map<string, number>): number {
+  let min = Infinity
+  for (const c of s) min = Math.min(min, count.get(c) ?? 0)
+  return min <= 1 ? 0.6 : min <= 3 ? 0.4 : min <= 10 ? 0.2 : 0
 }
 
 let dictPromise: Promise<DictEntry[]> | null = null
 
 export function loadDictionary(): Promise<DictEntry[]> {
   if (!dictPromise) {
-    dictPromise = getJson<[string, string, string][]>(`${BASE}data/dict.json`).then((rows) =>
-      rows.map(([s, n, m]) => ({ s, n, m, pk: searchKey(n), tk: toneSearchKey(n), ml: m.toLowerCase() })),
-    )
+    dictPromise = getJson<[string, string, string][]>(`${BASE}data/dict.json`).then((rows) => {
+      const count = new Map<string, number>()
+      for (const [s] of rows) for (const c of new Set(s)) count.set(c, (count.get(c) ?? 0) + 1)
+      return rows.map(([s, n, m]) => ({ s, n, m, pk: searchKey(n), tk: toneSearchKey(n), ml: m.toLowerCase(), r: rarity(s, count) }))
+    })
     dictPromise.catch(() => (dictPromise = null))
   }
   return dictPromise
@@ -66,6 +86,12 @@ export function loadDictionary(): Promise<DictEntry[]> {
 const CJK = /[㐀-鿿豈-﫿]/
 const PINYIN_ONLY = /^[a-zA-ZüÜāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ0-5\s':]+$/
 const HAS_TONE = /[0-5]|[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ]/
+
+/** Kurzbedeutung, wie sie in der Liste steht (vgl. wordFromDict); wird am Eintrag gemerkt */
+function shownLower(e: DictEntry): string {
+  if (e.pm === undefined) e.pm = (shortMeaning(e.m) || e.m).toLowerCase()
+  return e.pm
+}
 
 function glossExact(ml: string, q: string): boolean {
   return ml.split(/\s*[;/,]\s*/).some((raw) => {
@@ -107,7 +133,10 @@ export function searchDictionary(dict: DictEntry[], query: string, boost?: Set<s
         const i = e.ml.indexOf(ql)
         if (i >= 0) {
           const boundary = i === 0 || /[\s;/(,"„]/.test(e.ml[i - 1])
-          const s2 = glossExact(e.ml, ql) ? 0.2 : boundary ? 2 : 4
+          let s2 = glossExact(e.ml, ql) ? 0.2 : boundary ? 2 : 4
+          // Passt nur in den weiteren Bedeutungen, nicht in der angezeigten Kurzbedeutung
+          // (门 „Schule“ als Denkrichtung, 宗 „Sekte, Schule“): nach hinten
+          if (!shownLower(e).includes(ql)) s2 += 0.5
           if (s2 < score) score = s2
         }
       }
@@ -116,7 +145,7 @@ export function searchDictionary(dict: DictEntry[], query: string, boost?: Set<s
   }
 
   for (const h of hits) {
-    h.score += [...h.e.s].length * 0.05
+    h.score += [...h.e.s].length * 0.05 + (h.e.r ?? 0)
     if (boost?.has(h.e.s)) h.score -= 0.5
   }
   hits.sort((a, b) => a.score - b.score)

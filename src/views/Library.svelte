@@ -29,8 +29,10 @@
   let target = $state(fromDeck ?? app.decks[0]?.id ?? '')
   let query = $state('')
   let q = $state('')
-  /** 'all' | 'selected' | 'dict' | Name eines HSK-Sets */
+  /** 'all' | 'selected' | Name eines HSK-Sets */
   let filter = $state('all')
+  /** Auch im Wörterbuch suchen – standardmäßig nur in den HSK-Wörtern (geprüfte Bedeutungen, Aussprache) */
+  let withDict = $state(false)
   let limit = $state(PAGE)
   let hsk = $state.raw<LibItem[]>([])
   let hskEntries = $state.raw<LibEntry[]>([])
@@ -76,25 +78,35 @@
       q = query.trim()
       limit = PAGE
     }, 160)
-    if (query.trim() && (filter === 'all' || filter === 'dict')) ensureDict()
+    if (query.trim() && withDict) ensureDict()
   }
 
   function setFilter(f: string) {
     filter = f
     limit = PAGE
-    if (q && (f === 'all' || f === 'dict')) ensureDict()
   }
 
-  const results = $derived.by((): LibItem[] => {
-    if (filter === 'selected') return [...selected.values()]
-    if (filter === 'dict') return q && dict ? searchDictionary(dict, q, undefined, 100).map(itemFromDict) : []
+  function setWithDict(on: boolean) {
+    withDict = on
+    limit = PAGE
+    // query statt q: q wird erst 160 ms nach dem Tippen gesetzt
+    if (on && query.trim()) ensureDict()
+  }
+
+  const hskKeys = $derived(new Set(hsk.map((i) => i.key)))
+
+  /** Treffer getrennt nach Herkunft: HSK-Wörter (bzw. die Auswahl) zuerst, Wörterbuch-Treffer nur mit Schalter */
+  const found = $derived.by((): { main: LibItem[]; dict: LibItem[] } => {
+    if (filter === 'selected') return { main: [...selected.values()], dict: [] }
     const pool = filter === 'all' ? hskEntries : hskEntries.filter((e) => e.item.set === filter)
-    if (!q) return pool.map((e) => e.item)
-    const fromHsk = (searchDictionary(pool, q, undefined, 200) as LibEntry[]).map((e) => e.item)
-    if (filter !== 'all' || !dict) return fromHsk
-    const keys = new Set(fromHsk.map((i) => i.key))
-    return [...fromHsk, ...searchDictionary(dict, q, undefined, 60).map(itemFromDict).filter((i) => !keys.has(i.key))]
+    if (!q) return { main: pool.map((e) => e.item), dict: [] }
+    const main = (searchDictionary(pool, q, undefined, 200) as LibEntry[]).map((e) => e.item)
+    const fromDict = withDict && dict ? searchDictionary(dict, q, undefined, 60).map(itemFromDict).filter((i) => !hskKeys.has(i.key)) : []
+    return { main, dict: fromDict }
   })
+  const total = $derived(found.main.length + found.dict.length)
+  const shownMain = $derived(found.main.slice(0, limit))
+  const shownDict = $derived(found.dict.slice(0, Math.max(0, limit - found.main.length)))
 
   function toggle(it: LibItem) {
     if (selected.has(it.key)) selected.delete(it.key)
@@ -153,7 +165,6 @@
     { id: 'all', label: 'Alle' },
     ...(selected.size ? [{ id: 'selected', label: `Auswahl (${selected.size})` }] : []),
     ...app.sets.map((s) => ({ id: s.name, label: s.name })),
-    { id: 'dict', label: 'Wörterbuch' },
   ])
 
   const pasteFound = $derived(paste?.filter((p) => p.options.length === 1).length ?? 0)
@@ -202,6 +213,16 @@
         <button class="chip" role="tab" aria-selected={filter === c.id} onclick={() => setFilter(c.id)}>{c.label}</button>
       {/each}
     </div>
+
+    {#if filter !== 'selected'}
+      <label class="dict-switch">
+        <span class="grow">
+          <span>Auch im Wörterbuch suchen</span>
+          <span class="muted small block">Rund 160.000 weitere Wörter aus HanDeDict, Bedeutungen nicht von Hand geprüft</span>
+        </span>
+        <input type="checkbox" class="switch" checked={withDict} onchange={(e) => setWithDict(e.currentTarget.checked)} />
+      </label>
+    {/if}
   </div>
 
   {#if message}<div class="notice fade-in msg">{message}</div>{/if}
@@ -238,7 +259,7 @@
           <div class="options">
             {#each p.options as o (o.key)}
               <button class="opt" class:on={selected.has(o.key)} onclick={() => pick(p, o)}>
-                <span class="pinyin">{displayPinyin(o.word.n)}</span>
+                <span class="pinyin">{displayPinyin(o.word.n)} {#if !o.set}<span class="badge dict">Wörterbuch</span>{/if}</span>
                 <span class="muted small ellipsis">{o.word.m}</span>
               </button>
             {/each}
@@ -257,46 +278,66 @@
     </div>
   {/if}
 
-  {#if dictLoading && q}
-    <p class="muted small">Wörterbuch wird geladen …</p>
-  {:else if dictError && (filter === 'all' || filter === 'dict')}
-    <p class="error small">{dictError}</p>
+  {#snippet row(it: LibItem)}
+    {@const isIn = inDeck.has(it.key)}
+    {@const isSel = selected.has(it.key)}
+    <div class="list-item item" class:sel={isSel} class:dict={!it.set}>
+      <button class="pick" disabled={isIn} aria-pressed={isSel} onclick={() => toggle(it)}>
+        <span class="check" class:on={isSel} class:in={isIn} aria-hidden="true">
+          {#if isSel || isIn}<Icon name="check" size={16} stroke={3} />{/if}
+        </span>
+        <span class="zh chars" lang="zh-Hans">{it.word.s}</span>
+        <span class="info">
+          <span class="top">
+            <span class="pinyin">{it.word.n ? displayPinyin(it.word.n) : ''}</span>
+            {#if it.set}<span class="badge">{it.set}</span>{:else}<span class="badge dict">Wörterbuch</span>{/if}
+            {#if isIn}<span class="badge good">im Deck</span>{/if}
+          </span>
+          <span class="muted small meaning">{it.word.m}</span>
+        </span>
+      </button>
+      <SpeakButton word={it.word} size={40} />
+    </div>
+  {/snippet}
+
+  {#if total}
+    {#if shownMain.length}
+      <div class="list results cols">
+        {#each shownMain as it (it.key)}{@render row(it)}{/each}
+      </div>
+    {/if}
+    {#if shownDict.length}
+      <p class="dict-head">
+        <span class="badge dict">Wörterbuch</span>
+        <span>
+          {found.main.length ? 'Weitere Treffer, Bedeutungen nicht von Hand geprüft' : 'Kein HSK-Wort gefunden. Bedeutungen hier nicht von Hand geprüft'}
+        </span>
+      </p>
+      <div class="list results cols dict-list">
+        {#each shownDict as it (it.key)}{@render row(it)}{/each}
+      </div>
+    {/if}
+    {#if total > limit}
+      <button class="btn block more" onclick={() => (limit += PAGE)}>Mehr anzeigen ({total - limit} weitere)</button>
+    {/if}
   {/if}
 
-  {#if results.length}
-    <div class="list results cols">
-      {#each results.slice(0, limit) as it (it.key)}
-        {@const isIn = inDeck.has(it.key)}
-        {@const isSel = selected.has(it.key)}
-        <div class="list-item item" class:sel={isSel}>
-          <button class="pick" disabled={isIn} aria-pressed={isSel} onclick={() => toggle(it)}>
-            <span class="check" class:on={isSel} class:in={isIn} aria-hidden="true">
-              {#if isSel || isIn}<Icon name="check" size={16} stroke={3} />{/if}
-            </span>
-            <span class="zh chars" lang="zh-Hans">{it.word.s}</span>
-            <span class="info">
-              <span class="top">
-                <span class="pinyin">{it.word.n ? displayPinyin(it.word.n) : ''}</span>
-                {#if it.set}<span class="badge">{it.set}</span>{/if}
-                {#if isIn}<span class="badge good">im Deck</span>{/if}
-              </span>
-              <span class="muted small meaning">{it.word.m}</span>
-            </span>
-          </button>
-          <SpeakButton word={it.word} size={40} />
-        </div>
-      {/each}
-    </div>
-    {#if results.length > limit}
-      <button class="btn block more" onclick={() => (limit += PAGE)}>Mehr anzeigen ({results.length - limit} weitere)</button>
+  {#if withDict && q && filter !== 'selected'}
+    {#if dictLoading}
+      <p class="muted small hint">Wörterbuch wird geladen …</p>
+    {:else if dictError}
+      <p class="error small hint">{dictError}</p>
     {/if}
-  {:else if filter === 'dict' && !q}
+  {/if}
+
+  {#if q && !total && !dictLoading}
     <p class="muted hint">
-      Im Wörterbuch nach Zeichen, Pinyin oder Deutsch suchen – für Wörter, die in keiner HSK-Stufe vorkommen.<br />
-      Die Bedeutungen stammen aus dem freien Wörterbuch HanDeDict und sind nicht von Hand geprüft. Aussprache gibt es nur für HSK-Wörter.
+      {#if withDict || filter === 'selected'}
+        Nichts gefunden.
+      {:else}
+        In den HSK-Wörtern nichts gefunden. Mit „Auch im Wörterbuch suchen“ durchsuchst du alle Wörter.
+      {/if}
     </p>
-  {:else if q && !dictLoading}
-    <p class="muted hint">Nichts gefunden.</p>
   {/if}
 
   {#if q && targetDeck}
@@ -406,8 +447,39 @@
     padding: 4px 10px 4px 4px;
     gap: 6px;
   }
+  /* Wörterbuch-Treffer: blau getönt mit Randstreifen, damit sie sich von den geprüften HSK-Wörtern abheben */
+  .item.dict {
+    background: var(--dict-soft);
+    box-shadow: inset 4px 0 0 var(--dict);
+  }
   .item.sel {
     background: var(--accent-soft);
+  }
+  .dict-switch {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px;
+    cursor: pointer;
+  }
+  .dict-switch .grow {
+    flex: 1;
+    min-width: 0;
+  }
+  .block {
+    display: block;
+  }
+  .dict-head {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 4px 0;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .dict-list {
+    margin-top: 8px;
   }
   .pick {
     flex: 1;

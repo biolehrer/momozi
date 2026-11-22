@@ -38,7 +38,7 @@ export function toEntries(items: LibItem[]): LibEntry[] {
   return items.map((item) => {
     const n = normalizeNumeric(item.word.n)
     const m = [item.word.m, item.word.x].filter(Boolean).join(' / ')
-    return { s: item.word.s, n, m, pk: searchKey(n), tk: toneSearchKey(n), ml: m.toLowerCase(), item }
+    return { s: item.word.s, n, m, pk: searchKey(n), tk: toneSearchKey(n), ml: m.toLowerCase(), pm: item.word.m.toLowerCase(), item }
   })
 }
 

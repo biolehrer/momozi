@@ -17,6 +17,9 @@
   --grid: #e2b5a4;
   --outline: #d8cdbb;
   --hint: #d9902a;
+  /* Wörterbuch-Treffer (nicht von Hand geprüft) in der Suche */
+  --dict: #2f6b8a;
+  --dict-soft: #e4edf1;
 
   --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
   --font-zh: 'Kaiti SC', 'STKaiti', 'KaiTi', 'Noto Serif SC', 'Songti SC', 'Noto Sans SC', 'PingFang SC', serif;
@@ -81,6 +84,8 @@
     --grid: #4f2f26;
     --outline: #4a443a;
     --hint: #e8b04f;
+    --dict: #7db3d0;
+    --dict-soft: #172630;
   }
 }
 
@@ -102,6 +107,8 @@
   --grid: #4f2f26;
   --outline: #4a443a;
   --hint: #e8b04f;
+  --dict: #7db3d0;
+  --dict-soft: #172630;
 }
 
 *,
@@ -488,6 +495,11 @@ h2 {
 .badge.good {
   background: var(--good-soft);
   color: var(--good);
+}
+
+.badge.dict {
+  background: var(--dict-soft);
+  color: var(--dict);
 }
 
 .notice {
