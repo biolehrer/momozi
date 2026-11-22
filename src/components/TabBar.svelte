@@ -14,7 +14,9 @@
   ] as const
 
   function isCurrent(path: string) {
-    if (path === '/decks') return ['/decks', '/deck', '/wort', '/neu', '/bearbeiten', '/auswahl'].includes(route.path)
+    const fromSearch = route.path === '/wort' && route.query.get('from') === 'suche'
+    if (path === '/decks') return !fromSearch && ['/decks', '/deck', '/wort', '/bearbeiten', '/auswahl'].includes(route.path)
+    if (path === '/suche') return route.path === '/suche' || fromSearch
     if (path === '/einstellungen') return ['/einstellungen', '/lizenzen', '/sicherung'].includes(route.path)
     return route.path === path
   }

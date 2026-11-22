@@ -26,7 +26,7 @@
   const viewKey = $derived(route.path + '?' + route.query.toString())
   const fullscreen = $derived(route.path === '/ueben')
   /** Formulare und Fließtext: auf großen Bildschirmen schmalere Spalte */
-  const narrow = $derived(['/einstellungen', '/lizenzen', '/sicherung', '/neu', '/bearbeiten'].includes(route.path))
+  const narrow = $derived(['/einstellungen', '/lizenzen', '/sicherung', '/bearbeiten'].includes(route.path))
 
   $effect(() => {
     void viewKey
@@ -63,7 +63,7 @@
         <Deck />
       {:else if route.path === '/wort'}
         <WordView />
-      {:else if route.path === '/neu' || route.path === '/bearbeiten'}
+      {:else if route.path === '/bearbeiten'}
         <WordForm />
       {:else if route.path === '/suche' || route.path === '/auswahl'}
         <Library />

@@ -1,5 +1,5 @@
 <script lang="ts">
-  // Wort selbst anlegen oder bearbeiten (nur eigene Decks)
+  // Wort in einem eigenen Deck bearbeiten (Wörter selbst anlegen gibt es nicht mehr)
   import Header from '../components/Header.svelte'
   import { displayPinyin, inputToNumeric, splitNumeric } from '../lib/pinyin'
   import { back, route } from '../lib/router.svelte'
@@ -63,7 +63,7 @@
     <p>Deck nicht gefunden.</p>
   {:else}
     <form class="stack" onsubmit={save}>
-      <p class="muted small">Neues Wort für „{deck.name}“.</p>
+      <p class="muted small">Wort in „{deck.name}“.</p>
       <div class="field">
         <label for="f-chars">Schriftzeichen (vereinfacht)</label>
         <input id="f-chars" class="input zh big" lang="zh-Hans" bind:value={chars} maxlength="12" autocomplete="off" required />

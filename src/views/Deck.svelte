@@ -164,7 +164,6 @@
       <button class="btn" class:primary={!words.length} onclick={() => go(`/auswahl?deck=${encodeURIComponent(id)}`)}>
         Wörter hinzufügen
       </button>
-      <button class="btn" onclick={() => go(`/neu?deck=${encodeURIComponent(id)}`)}>Selbst anlegen</button>
     </div>
   </div>
 {/if}

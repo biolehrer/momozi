@@ -1,7 +1,7 @@
 <script lang="ts">
-  // „Wörter auswählen“: HSK-Wörter durchstöbern oder suchen, mehrere ankreuzen und
-  // gesammelt in ein eigenes Deck übernehmen – oder eine Vokabelliste einfügen.
-  import { onMount } from 'svelte'
+  // Suche: HSK-Wörter durchstöbern oder suchen und zum Ansehen öffnen. Mit „Auswählen“
+  // mehrere ankreuzen und gesammelt in ein eigenes Deck übernehmen – oder eine Vokabelliste einfügen.
+  import { onMount, tick } from 'svelte'
   import { SvelteMap } from 'svelte/reactivity'
   import Header from '../components/Header.svelte'
   import Icon from '../components/Icon.svelte'
@@ -20,20 +20,25 @@
   } from '../lib/library'
   import { displayPinyin } from '../lib/pinyin'
   import { back, go, route } from '../lib/router.svelte'
+  import { rememberSearch, restoreSearch } from '../lib/search.svelte'
   import { app, createDeck, saveDeck, setActive } from '../lib/state.svelte'
   import { wordKey } from '../lib/types'
 
   const fromDeck = route.query.get('deck')
   const PAGE = 80
+  const context = fromDeck ? `/auswahl?deck=${fromDeck}` : '/suche'
+  const prev = restoreSearch(context)
 
-  let target = $state(fromDeck ?? app.decks[0]?.id ?? '')
-  let query = $state('')
-  let q = $state('')
+  let target = $state(fromDeck ?? (prev && app.decks.some((d) => d.id === prev.target) ? prev.target : app.decks[0]?.id) ?? '')
+  let query = $state(prev?.query ?? '')
+  let q = $state(prev?.query.trim() ?? '')
   /** 'all' | 'selected' | Name eines HSK-Sets */
-  let filter = $state('all')
+  let filter = $state(prev?.filter ?? 'all')
   /** Auch im Wörterbuch suchen – standardmäßig nur in den HSK-Wörtern (geprüfte Bedeutungen, Aussprache) */
-  let withDict = $state(false)
-  let limit = $state(PAGE)
+  let withDict = $state(prev?.withDict ?? false)
+  /** Auswählen-Modus: Antippen kreuzt an statt das Wort zu öffnen. Aus einem Deck heraus von Anfang an an. */
+  let select = $state(prev?.select ?? !!fromDeck)
+  let limit = $state(prev?.limit ?? PAGE)
   let hsk = $state.raw<LibItem[]>([])
   let hskEntries = $state.raw<LibEntry[]>([])
   let dict = $state.raw<DictEntry[] | null>(null)
@@ -46,18 +51,43 @@
   let timer: ReturnType<typeof setTimeout> | undefined
   let dictBySimp: Map<string, DictEntry[]> | null = null
 
-  const selected = new SvelteMap<string, LibItem>()
+  const selected = new SvelteMap<string, LibItem>(prev?.selected)
 
   const targetDeck = $derived(app.decks.find((d) => d.id === target))
   const inDeck = $derived(new Set(targetDeck?.words.map(wordKey) ?? []))
 
   onMount(() => {
-    loadHskItems().then((items) => {
+    if (prev?.withDict && prev.query.trim()) ensureDict()
+    loadHskItems().then(async (items) => {
       hsk = items
       hskEntries = toEntries(items)
+      // zurück aus einem geöffneten Wort: an dieselbe Stelle der Liste
+      if (prev?.scrollY) {
+        await tick()
+        requestAnimationFrame(() => window.scrollTo(0, prev.scrollY))
+      }
     })
     return () => clearTimeout(timer)
   })
+
+  function remember() {
+    rememberSearch({ context, query, filter, withDict, select, limit, target, selected: [...selected.entries()], scrollY: window.scrollY })
+  }
+
+  function setSelect(on: boolean) {
+    select = on
+    if (!on && filter === 'selected') setFilter('all')
+    message = ''
+  }
+
+  /** Wort zum Ansehen öffnen (Schreibweise, Strichfolge, Aussprache) */
+  function openItem(it: LibItem) {
+    remember()
+    const set = app.sets.find((s) => s.name === it.set)
+    const src = set ? `set=${encodeURIComponent(set.id)}&k=${encodeURIComponent(it.key)}` : `w=${encodeURIComponent(JSON.stringify(it.word))}`
+    const ctx = fromDeck ? `&from=auswahl&deck=${encodeURIComponent(fromDeck)}` : `&from=suche&ziel=${encodeURIComponent(target)}`
+    go(`/wort?${src}${ctx}`)
+  }
 
   async function ensureDict() {
     if (dict || dictLoading) return
@@ -132,6 +162,7 @@
     pasteOpen = false
     pasteText = ''
     message = ''
+    select = true
     setFilter('selected')
   }
 
@@ -163,7 +194,7 @@
 
   const chips = $derived([
     { id: 'all', label: 'Alle' },
-    ...(selected.size ? [{ id: 'selected', label: `Auswahl (${selected.size})` }] : []),
+    ...(select && selected.size ? [{ id: 'selected', label: `Auswahl (${selected.size})` }] : []),
     ...app.sets.map((s) => ({ id: s.name, label: s.name })),
   ])
 
@@ -195,7 +226,16 @@
       aria-label="Wörter suchen"
     />
 
-    {#if !fromDeck}
+    <label class="dict-switch">
+      <span class="grow">
+        <span>Auswählen</span>
+        <span class="muted small block">
+          {select ? 'Wörter antippen zum Ankreuzen, dann gesammelt hinzufügen' : 'Aus: Antippen öffnet das Wort mit Strichfolge und Aussprache'}
+        </span>
+      </span>
+      <input type="checkbox" class="switch" checked={select} onchange={(e) => setSelect(e.currentTarget.checked)} />
+    </label>
+    {#if !fromDeck && select}
       {#if app.decks.length > 1}
         <label class="row small target">
           <span class="muted">Hinzufügen zu</span>
@@ -207,6 +247,7 @@
         <p class="muted small target">Hinzufügen zu „{targetDeck.name}“</p>
       {/if}
     {/if}
+
 
     <div class="chips" role="tablist" aria-label="Filter">
       {#each chips as c (c.id)}
@@ -270,22 +311,26 @@
         <div class="row small">
           <span class="zh tok">{p.token}</span>
           <span class="spacer muted">nicht gefunden</span>
-          <button class="btn small" onclick={() => go(`/neu?deck=${encodeURIComponent(target)}&s=${encodeURIComponent(p.token)}`)}>
-            Selbst anlegen
-          </button>
         </div>
       {/each}
     </div>
   {/if}
 
   {#snippet row(it: LibItem)}
-    {@const isIn = inDeck.has(it.key)}
-    {@const isSel = selected.has(it.key)}
+    {@const isIn = select && inDeck.has(it.key)}
+    {@const isSel = select && selected.has(it.key)}
     <div class="list-item item" class:sel={isSel} class:dict={!it.set}>
-      <button class="pick" disabled={isIn} aria-pressed={isSel} onclick={() => toggle(it)}>
-        <span class="check" class:on={isSel} class:in={isIn} aria-hidden="true">
-          {#if isSel || isIn}<Icon name="check" size={16} stroke={3} />{/if}
-        </span>
+      <button
+        class="pick"
+        disabled={isIn}
+        aria-pressed={select ? isSel : undefined}
+        onclick={() => (select ? toggle(it) : openItem(it))}
+      >
+        {#if select}
+          <span class="check" class:on={isSel} class:in={isIn} aria-hidden="true">
+            {#if isSel || isIn}<Icon name="check" size={16} stroke={3} />{/if}
+          </span>
+        {/if}
         <span class="zh chars" lang="zh-Hans">{it.word.s}</span>
         <span class="info">
           <span class="top">
@@ -340,14 +385,11 @@
     </p>
   {/if}
 
-  {#if q && targetDeck}
-    <button class="btn block more" onclick={() => go(`/neu?deck=${encodeURIComponent(target)}`)}>Nicht dabei? Selbst anlegen</button>
-  {/if}
 </div>
 
 <div class="dock">
   <div class="dock-inner">
-    {#if selected.size}
+    {#if select && selected.size}
       <button
         class="btn"
         onclick={() => {
@@ -521,6 +563,8 @@
   .chars {
     font-size: 1.6rem;
     min-width: 1.8em;
+    flex-shrink: 0;
+    white-space: nowrap;
   }
   .info {
     display: flex;

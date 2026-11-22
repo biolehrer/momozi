@@ -10,21 +10,51 @@
   import { alsoPinyin, displayPinyin } from '../lib/pinyin'
   import { back, go, route } from '../lib/router.svelte'
   import { typesFor, wordProgress } from '../lib/srs'
-  import { app, saveDeck } from '../lib/state.svelte'
+  import { app, createDeck, saveDeck, setActive } from '../lib/state.svelte'
   import { QUIZ_LABEL, wordKey, type CardRecord, type QuizType, type Word } from '../lib/types'
 
   const deckId = route.query.get('deck') ?? ''
   const key = route.query.get('k') ?? ''
-  const custom = app.decks.find((d) => d.id === deckId)
+  /** Aus der Suche geöffnet: "suche" (Suche-Tab) oder "auswahl" (Wörter hinzufügen eines Decks) */
+  const from = route.query.get('from')
+  const fromSearch = from === 'suche' || from === 'auswahl'
+  /** Aus der Suche: HSK-Set des Wortes, oder das Wort selbst (Wörterbuch-Treffer) */
+  const setId = route.query.get('set') ?? ''
+  const inline = route.query.get('w')
+  const custom = fromSearch ? undefined : app.decks.find((d) => d.id === deckId)
+  const backTo = from === 'suche' ? '/suche' : from === 'auswahl' ? `/auswahl?deck=${deckId}` : `/deck?id=${deckId}`
+
+  /** Ziel-Deck für „Zu Deck hinzufügen“ */
+  let target = $state(
+    from === 'auswahl'
+      ? deckId
+      : [route.query.get('ziel'), app.decks[0]?.id].find((id) => id && app.decks.some((d) => d.id === id)) ?? '',
+  )
+  const targetDeck = $derived(app.decks.find((d) => d.id === target))
+  let added = $state(false)
 
   let word = $state<Word | null>(null)
   let progress = $state(new Map<QuizType, CardRecord>())
   let loaded = $state(false)
   let pads: (WritingPad | undefined)[] = $state([])
 
+  function parseInline(): Word | null {
+    try {
+      const w = JSON.parse(inline ?? '') as Word
+      return typeof w?.s === 'string' && typeof w.m === 'string' ? w : null
+    } catch {
+      return null
+    }
+  }
+
   onMount(async () => {
-    const words = custom ? custom.words : app.sets.some((s) => s.id === deckId) ? (await loadSet(deckId)).words : []
-    word = words.find((w) => wordKey(w) === key) ?? null
+    if (fromSearch && inline) {
+      word = parseInline()
+    } else {
+      const sid = fromSearch ? setId : deckId
+      const words = custom ? custom.words : app.sets.some((s) => s.id === sid) ? (await loadSet(sid)).words : []
+      word = words.find((w) => wordKey(w) === key) ?? null
+    }
     if (word) progress = await wordProgress(word)
     loaded = true
   })
@@ -53,12 +83,26 @@
     back(`/deck?id=${deckId}`)
   }
 
+  const inTarget = $derived(!!word && !!targetDeck?.words.some((w) => wordKey(w) === wordKey(word!)))
+
+  async function addToDeck() {
+    if (!word) return
+    let deck = targetDeck
+    if (!deck) {
+      deck = createDeck('Mein Deck')
+      await setActive(deck.id, true)
+      target = deck.id
+    }
+    if (!deck.words.some((w) => wordKey(w) === wordKey(word!))) await saveDeck({ ...deck, words: [...deck.words, word] })
+    added = true
+  }
+
   function playAll() {
     pads.forEach((p, i) => setTimeout(() => p?.animate(), i * 1600))
   }
 </script>
 
-<Header title={word?.s ?? 'Wort'} backTo={`/deck?id=${deckId}`}>
+<Header title={word?.s ?? 'Wort'} {backTo}>
   {#snippet actions()}
     {#if custom && word}
       <button
@@ -100,6 +144,29 @@
       </div>
 
       <div class="details stack">
+        {#if fromSearch}
+          <div class="stack add">
+            {#if from === 'suche' && app.decks.length > 1}
+              <label class="row small">
+                <span class="muted">Deck</span>
+                <select class="input select" bind:value={target} onchange={() => (added = false)}>
+                  {#each app.decks as d (d.id)}<option value={d.id}>{d.name}</option>{/each}
+                </select>
+              </label>
+            {/if}
+            {#if inTarget}
+              <div class="row in-deck">
+                <Icon name="check" size={20} stroke={3} />
+                <span>{added ? 'Hinzugefügt zu' : 'Schon in'} „{targetDeck?.name}“</span>
+              </div>
+            {:else}
+              <button class="btn primary block" onclick={addToDeck}>
+                <Icon name="plus" />
+                {targetDeck ? `Zu „${targetDeck.name}“ hinzufügen` : 'Zu einem neuen Deck hinzufügen'}
+              </button>
+            {/if}
+          </div>
+        {/if}
         {#if word.x && word.x !== word.m}
           <p class="section-title">Weitere Bedeutungen</p>
           <ul class="card senses">
@@ -140,7 +207,7 @@
       align-items: start;
       gap: 24px;
     }
-    .details > .section-title:first-child {
+    .details > :first-child {
       margin-top: 0;
     }
   }
@@ -179,6 +246,19 @@
   .senses {
     margin: 0;
     padding: 12px 16px 12px 34px;
+  }
+  .add {
+    margin-bottom: 4px;
+  }
+  .select {
+    flex: 1;
+    min-height: 44px;
+  }
+  .in-deck {
+    justify-content: center;
+    color: var(--good);
+    font-weight: 600;
+    min-height: 44px;
   }
   .senses li + li {
     margin-top: 6px;
