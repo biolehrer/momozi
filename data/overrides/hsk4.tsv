@@ -173,7 +173,7 @@
 点名	Anwesenheit prüfen; namentlich nennen
 点头	nicken
 调查	untersuchen; Umfrage
-掉	herunterfallen; verlieren
+掉	herunterfallen; verlieren; (nach Verb) weg
 订	buchen; bestellen
 定	festlegen; bestimmt
 东部	Osten (Teil)
@@ -266,8 +266,8 @@
 关键	Schlüssel(punkt); entscheidend
 观看	anschauen
 观众	Zuschauer(in); Publikum
-管	sich kümmern um; Rohr
-光	Licht; nur
+管	sich kümmern um; verwalten; Rohr
+光	Licht; nur; (nach Verb) aufgebraucht
 广播	Rundfunk; senden
 广告	Werbung
 逛	bummeln
@@ -298,7 +298,7 @@
 活	leben; lebendig; Arbeit
 活动	Aktivität; Veranstaltung; sich bewegen
 活泼	lebhaft
-火	Feuer
+火	Feuer; (umg.) angesagt, beliebt
 货	Ware
 获得	erhalten; gewinnen
 积极	aktiv; positiv
@@ -372,7 +372,7 @@
 竟然	unerwartet; tatsächlich (überraschend)
 究竟	eigentlich (in Fragen); letztlich
 就是	genau; nämlich; selbst wenn
-举	heben; hochhalten
+举	heben; hochhalten; anführen (Beispiel)
 举办	veranstalten; ausrichten
 举例	ein Beispiel geben
 举行	abhalten; stattfinden
@@ -398,10 +398,10 @@
 快餐	Fastfood
 快递	Expresslieferung; Paketdienst
 快速	schnell
-困	müde; schläfrig
+困	müde; schläfrig; in Not sein, festsitzen
 困难	Schwierigkeit; schwierig
 垃圾	Müll
-拉	ziehen
+拉	ziehen; spielen (Streichinstrument)
 辣	scharf (Geschmack)
 来不及	es nicht mehr schaffen; zu spät
 来得及	es noch schaffen; rechtzeitig
@@ -556,7 +556,7 @@
 摄氏度	Grad Celsius	she4 shi4 du4
 申请	beantragen; bewerben; Antrag
 深	tief; dunkel (Farbe)
-生	gebären; geboren werden; roh
+生	gebären; geboren werden; roh; fremd, unbekannt
 剩	übrig bleiben
 失败	scheitern; Misserfolg
 失去	verlieren
@@ -589,7 +589,7 @@
 首先	zuerst; vor allem
 受不了	nicht ertragen können
 受伤	verletzt werden
-输	verlieren
+输	verlieren; eingeben (Passwort)
 熟	reif; gar; vertraut
 熟悉	vertraut sein mit; kennen
 树林	Wald; Wäldchen
@@ -602,7 +602,7 @@
 说明	erklären; Erklärung
 说明书	Gebrauchsanweisung
 硕士	Master(abschluss)
-死	sterben; tot
+死	sterben; tot; (nach Adjektiv) extrem
 速度	Geschwindigkeit
 塑料	Plastik; Kunststoff
 酸	sauer
@@ -643,7 +643,7 @@
 痛	Schmerz; wehtun
 图	Bild; Zeichnung; Karte
 图片	Bild; Foto
-土	Erde; Boden
+土	Erde; Boden; lokal; (umg.) altmodisch
 推	schieben; drücken
 推迟	verschieben
 推出	herausbringen; einführen
@@ -694,7 +694,7 @@
 小组	Gruppe; Team
 效果	Wirkung; Effekt
 笑话	Witz; auslachen
-心	Herz
+心	Herz; Gefühl, Gemüt; Mitte, Zentrum
 心情	Stimmung; Laune
 辛苦	anstrengend; hart
 信号	Signal
@@ -846,3 +846,6 @@
 做法	Vorgehensweise; Methode
 做梦	träumen
 交警	Verkehrspolizist(in)
+笨	dumm; ungeschickt
+吹	blasen, wehen; prahlen
+轻	leicht; sanft, leise
