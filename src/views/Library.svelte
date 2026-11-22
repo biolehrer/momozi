@@ -70,6 +70,27 @@
     return () => clearTimeout(timer)
   })
 
+  /** Höhe der Bildschirmtastatur (iOS verkleinert das Layout nicht), damit das Fenster darüber bleibt */
+  let keyboard = $state(0)
+  $effect(() => {
+    const vv = window.visualViewport
+    if (!pasteOpen || !vv) return
+    const update = () => (keyboard = Math.max(0, window.innerHeight - vv.height - vv.offsetTop))
+    update()
+    vv.addEventListener('resize', update)
+    vv.addEventListener('scroll', update)
+    return () => {
+      vv.removeEventListener('resize', update)
+      vv.removeEventListener('scroll', update)
+      keyboard = 0
+    }
+  })
+
+  function cancelPaste() {
+    pasteText = ''
+    pasteOpen = false
+  }
+
   function remember() {
     rememberSearch({ context, query, filter, withDict, select, limit, target, selected: [...selected.entries()], scrollY: window.scrollY })
   }
@@ -208,7 +229,14 @@
   backTo={fromDeck ? `/deck?id=${fromDeck}` : undefined}
 >
   {#snippet actions()}
-    <button class="icon-btn" aria-label="Vokabelliste einfügen" title="Vokabelliste einfügen" onclick={() => (pasteOpen = true)}>
+    <button
+      class="icon-btn"
+      class:active={pasteOpen}
+      aria-label="Vokabelliste einfügen"
+      aria-expanded={pasteOpen}
+      title="Vokabelliste einfügen"
+      onclick={() => (pasteOpen = !pasteOpen)}
+    >
       <Icon name="clipboard" />
     </button>
     <button class="text-btn" class:strong={select} onclick={() => setSelect(!select)}>{select ? 'Fertig' : 'Auswählen'}</button>
@@ -249,21 +277,6 @@
 
   {#if message}<div class="notice fade-in msg">{message}</div>{/if}
 
-  {#if pasteOpen}
-    <div class="card stack fade-in paste">
-      <label for="paste-text"><strong>Vokabelliste einfügen</strong></label>
-      <!-- svelte-ignore a11y_autofocus -->
-      <textarea id="paste-text" class="input area zh-in" bind:value={pasteText} autofocus placeholder={'z. B. 老师 学生 谢谢\noder ein Wort pro Zeile'}
-      ></textarea>
-      <p class="muted small">Pinyin, Übersetzungen oder Nummern dürfen mit drinstehen – die App sucht sich die Schriftzeichen heraus.</p>
-      <div class="row">
-        <button class="btn" onclick={() => (pasteOpen = false)}>Abbrechen</button>
-        <button class="btn primary spacer" onclick={runPaste} disabled={!pasteText.trim() || dictLoading}>
-          {dictLoading ? 'Lädt …' : 'Wörter finden'}
-        </button>
-      </div>
-    </div>
-  {/if}
 
   {#if paste}
     <div class="card stack fade-in paste">
@@ -399,6 +412,32 @@
   </div>
 {/if}
 
+{#if pasteOpen}
+  <!-- Antippen daneben schließt das Fenster; der Text bleibt bis „Abbrechen“ erhalten -->
+  <div class="sheet-backdrop fade-in" aria-hidden="true" onclick={() => (pasteOpen = false)}></div>
+  <div
+    class="sheet card stack fade-in"
+    class:over-keyboard={keyboard > 0}
+    style:--kb="{keyboard}px"
+    role="dialog"
+    aria-label="Vokabelliste einfügen"
+    tabindex="-1"
+    onkeydown={(e) => e.key === 'Escape' && (pasteOpen = false)}
+  >
+    <label for="paste-text"><strong>Vokabelliste einfügen</strong></label>
+    <!-- svelte-ignore a11y_autofocus -->
+    <textarea id="paste-text" class="input area zh-in" bind:value={pasteText} autofocus placeholder={'z. B. 老师 学生 谢谢\noder ein Wort pro Zeile'}
+    ></textarea>
+    <p class="muted small">Pinyin, Übersetzungen oder Nummern dürfen mit drinstehen – die App sucht sich die Schriftzeichen heraus.</p>
+    <div class="row">
+      <button class="btn" onclick={cancelPaste}>Abbrechen</button>
+      <button class="btn primary spacer" onclick={runPaste} disabled={!pasteText.trim() || dictLoading}>
+        {dictLoading ? 'Lädt …' : 'Wörter finden'}
+      </button>
+    </div>
+  </div>
+{/if}
+
 <style>
   .chips {
     display: flex;
@@ -480,6 +519,30 @@
   }
   .item.sel {
     background: var(--accent-soft);
+  }
+  .icon-btn.active {
+    background: var(--surface-2);
+    color: var(--accent);
+  }
+  .sheet-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgb(0 0 0 / 0.35);
+    z-index: 20;
+  }
+  .sheet {
+    position: fixed;
+    z-index: 21;
+    left: calc(var(--nav-w) + 12px);
+    right: 12px;
+    bottom: calc(var(--tabbar-h) + var(--safe-bottom) + 12px);
+    max-width: 560px;
+    margin: 0 auto;
+    box-shadow: 0 12px 40px rgb(0 0 0 / 0.35);
+  }
+  /* Bildschirmtastatur offen: direkt über der Tastatur statt über der Menüleiste */
+  .sheet.over-keyboard {
+    bottom: calc(var(--kb) + 8px);
   }
   .text-btn {
     min-height: 44px;
