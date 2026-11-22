@@ -203,15 +203,19 @@
   const pasteMissing = $derived(paste?.filter((p) => p.options.length === 0) ?? [])
 </script>
 
-<Header title={fromDeck ? 'Wörter hinzufügen' : 'Suche'} backTo={fromDeck ? `/deck?id=${fromDeck}` : undefined}>
+<Header
+  title={select && selected.size ? `${selected.size} ausgewählt` : fromDeck ? 'Wörter hinzufügen' : select ? 'Auswählen' : 'Suche'}
+  backTo={fromDeck ? `/deck?id=${fromDeck}` : undefined}
+>
   {#snippet actions()}
     <button class="icon-btn" aria-label="Vokabelliste einfügen" title="Vokabelliste einfügen" onclick={() => (pasteOpen = true)}>
       <Icon name="clipboard" />
     </button>
+    <button class="text-btn" class:strong={select} onclick={() => setSelect(!select)}>{select ? 'Fertig' : 'Auswählen'}</button>
   {/snippet}
 </Header>
 
-<div class="page">
+<div class="page" class:no-dock={!(select && selected.size)}>
   <div class="stack">
     <input
       class="input"
@@ -226,29 +230,6 @@
       aria-label="Wörter suchen"
     />
 
-    <label class="dict-switch">
-      <span class="grow">
-        <span>Auswählen</span>
-        <span class="muted small block">
-          {select ? 'Wörter antippen zum Ankreuzen, dann gesammelt hinzufügen' : 'Aus: Antippen öffnet das Wort mit Strichfolge und Aussprache'}
-        </span>
-      </span>
-      <input type="checkbox" class="switch" checked={select} onchange={(e) => setSelect(e.currentTarget.checked)} />
-    </label>
-    {#if !fromDeck && select}
-      {#if app.decks.length > 1}
-        <label class="row small target">
-          <span class="muted">Hinzufügen zu</span>
-          <select class="input select" bind:value={target}>
-            {#each app.decks as d (d.id)}<option value={d.id}>{d.name}</option>{/each}
-          </select>
-        </label>
-      {:else if targetDeck}
-        <p class="muted small target">Hinzufügen zu „{targetDeck.name}“</p>
-      {/if}
-    {/if}
-
-
     <div class="chips" role="tablist" aria-label="Filter">
       {#each chips as c (c.id)}
         <button class="chip" role="tab" aria-selected={filter === c.id} onclick={() => setFilter(c.id)}>{c.label}</button>
@@ -259,7 +240,7 @@
       <label class="dict-switch">
         <span class="grow">
           <span>Auch im Wörterbuch suchen</span>
-          <span class="muted small block">Rund 160.000 weitere Wörter aus HanDeDict, Bedeutungen nicht von Hand geprüft</span>
+          <span class="muted small block">160.000 weitere Wörter, ungeprüft</span>
         </span>
         <input type="checkbox" class="switch" checked={withDict} onchange={(e) => setWithDict(e.currentTarget.checked)} />
       </label>
@@ -387,9 +368,21 @@
 
 </div>
 
-<div class="dock">
-  <div class="dock-inner">
-    {#if select && selected.size}
+{#if select && selected.size}
+  <div class="dock" class:with-target={!fromDeck}>
+    {#if !fromDeck}
+      <div class="dock-target small">
+        {#if app.decks.length > 1}
+          <span class="muted">Hinzufügen zu</span>
+          <select class="deck-select" bind:value={target}>
+            {#each app.decks as d (d.id)}<option value={d.id}>{d.name}</option>{/each}
+          </select>
+        {:else if targetDeck}
+          <span class="muted">Hinzufügen zu „{targetDeck.name}“</span>
+        {/if}
+      </div>
+    {/if}
+    <div class="dock-inner">
       <button
         class="btn"
         onclick={() => {
@@ -402,20 +395,11 @@
         {selected.size}
         {selected.size === 1 ? 'Wort' : 'Wörter'} hinzufügen
       </button>
-    {:else}
-      <button class="btn" onclick={() => (pasteOpen = true)}><Icon name="clipboard" size={20} /> Vokabelliste einfügen</button>
-    {/if}
+    </div>
   </div>
-</div>
+{/if}
 
 <style>
-  .target {
-    margin: 0 4px;
-  }
-  .select {
-    flex: 1;
-    min-height: 44px;
-  }
   .chips {
     display: flex;
     gap: 8px;
@@ -496,6 +480,44 @@
   }
   .item.sel {
     background: var(--accent-soft);
+  }
+  .text-btn {
+    min-height: 44px;
+    padding: 0 10px;
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    color: var(--accent);
+    font: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .text-btn.strong {
+    font-weight: 650;
+  }
+  .text-btn:active {
+    background: var(--surface-2);
+  }
+  .dock.with-target {
+    padding-top: 28px;
+    background: linear-gradient(to top, var(--bg) 82%, transparent);
+  }
+  .dock-target {
+    max-width: 560px;
+    margin: 0 auto 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .deck-select {
+    border: none;
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
   }
   .dict-switch {
     display: flex;
