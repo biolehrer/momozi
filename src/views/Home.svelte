@@ -60,10 +60,10 @@
 
 <header class="hero">
   <div class="inner">
-    <div class="logo zh" aria-hidden="true">字</div>
+    <div class="logo zh" aria-hidden="true">墨</div>
     <div class="spacer">
       <!-- mit Seitenleiste steht der App-Name schon links -->
-      <h1><span class="phone-title">Zeichenweise</span><span class="wide-title">Heute</span></h1>
+      <h1><span class="phone-title">Momozì</span><span class="wide-title">Heute</span></h1>
       <p class="muted small">{dateLabel}</p>
     </div>
     <button
@@ -139,7 +139,7 @@
 
     {#if install.event}
       <div class="notice row">
-        <span class="spacer">Zeichenweise als App installieren?</span>
+        <span class="spacer">Momozì als App installieren?</span>
         <button class="btn small primary" onclick={installApp}>Installieren</button>
       </div>
     {/if}

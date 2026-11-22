@@ -49,7 +49,7 @@
     <button class="btn" onclick={() => location.reload()}>Neu laden</button>
   </div>
 {:else if !app.ready}
-  <div class="splash zh" aria-label="Lädt">字</div>
+  <div class="splash zh" aria-label="Lädt">墨</div>
 {:else}
   <div class="shell" class:nav={!fullscreen} class:narrow>
     {#key viewKey}

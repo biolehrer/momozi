@@ -32,7 +32,7 @@
 
 <div class="page no-dock stack">
   <p>
-    Zeichenweise ist ein privates Open-Source-Projekt. Der eigene Programmcode steht unter der <strong>MIT-Lizenz</strong>. Die
+    Momozì ist ein privates Open-Source-Projekt. Der eigene Programmcode steht unter der <strong>MIT-Lizenz</strong>. Die
     verwendeten Daten und Bibliotheken haben eigene Lizenzen:
   </p>
 
@@ -132,7 +132,7 @@
   </section>
 
   <p class="muted small">
-    Die vollständigen Lizenztexte stehen in der Datei LICENSES.md im Quellcode-Repository. Zeichenweise steht in keiner Verbindung
+    Die vollständigen Lizenztexte stehen in der Datei LICENSES.md im Quellcode-Repository. Momozì steht in keiner Verbindung
     zu den Herausgebern der HSK-Prüfung.
   </p>
 </div>

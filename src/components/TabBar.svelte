@@ -24,8 +24,8 @@
 
 <nav class="tabbar" aria-label="Hauptnavigation">
   <div class="brand" aria-hidden="true">
-    <span class="logo zh">字</span>
-    <span class="name">Zeichenweise</span>
+    <span class="logo zh">墨</span>
+    <span class="name">Momozì</span>
   </div>
   <div class="inner">
     {#each tabs as t (t.path)}

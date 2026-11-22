@@ -7,6 +7,7 @@ import { migrateData, migrateWords } from './migrate'
 import { today } from './srs'
 import { wordKey, type CardRecord, type CustomDeck, type ReviewLogRecord, type Settings, type Word } from './types'
 
+// Kennung im Dateiformat – bleibt vom früheren App-Namen, damit alte Sicherungen und geteilte Decks weiter lesbar sind
 const APP = 'zeichenweise'
 const DAY = 86_400_000
 
@@ -47,7 +48,7 @@ export async function buildBackup(): Promise<BackupFile> {
 }
 
 export function backupFilename(): string {
-  return `zeichenweise-sicherung-${today()}.json`
+  return `momozi-sicherung-${today()}.json`
 }
 
 function slug(name: string): string {
@@ -135,9 +136,9 @@ export function parseFile(text: string): BackupFile | DeckFile {
   try {
     data = JSON.parse(text)
   } catch {
-    throw new Error('Diese Datei konnte nicht gelesen werden – ist es eine Zeichenweise-Datei?')
+    throw new Error('Diese Datei konnte nicht gelesen werden – ist es eine Momozì-Datei?')
   }
-  if (data?.app !== APP) throw new Error('Das ist keine Zeichenweise-Datei.')
+  if (data?.app !== APP) throw new Error('Das ist keine Momozì-Datei.')
   if (data.version !== 1) throw new Error('Diese Datei stammt aus einer neueren Version der App.')
   if (data.type === 'deck') {
     const words = cleanWords(data.deck?.words)

@@ -12,7 +12,8 @@ interface ZwSchema extends DBSchema {
 let dbPromise: Promise<IDBPDatabase<ZwSchema>> | null = null
 
 export function db(): Promise<IDBPDatabase<ZwSchema>> {
-  dbPromise ??= openDB<ZwSchema>('zeichenweise', 1, {
+  dbPromise ??= // Datenbankname bleibt vom früheren App-Namen: so findet die App den bisherigen Lernstand wieder
+  openDB<ZwSchema>('zeichenweise', 1, {
     upgrade(d) {
       d.createObjectStore('decks', { keyPath: 'id' })
       const cards = d.createObjectStore('cards', { keyPath: 'id' })

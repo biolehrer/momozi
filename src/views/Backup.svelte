@@ -44,7 +44,7 @@
   async function save() {
     if (!prepared) return
     error = ''
-    const r = await shareText(prepared.name, prepared.text, 'Zeichenweise-Sicherung')
+    const r = await shareText(prepared.name, prepared.text, 'Momozì-Sicherung')
     if (r === 'aborted') return
     await markBackedUp()
     message = r === 'shared' ? 'Sicherung erstellt.' : `Sicherung als „${prepared.name}“ heruntergeladen.`

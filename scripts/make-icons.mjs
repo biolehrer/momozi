@@ -1,11 +1,11 @@
-// Erzeugt die App-Symbole als SVG aus den Strichdaten von 字 (hanzi-writer-data, Arphic PL).
+// Erzeugt die App-Symbole als SVG aus den Strichdaten von 墨 (hanzi-writer-data, Arphic PL).
 // PNG-Versionen werden daraus einmalig gerendert (siehe README) und liegen in public/icons/.
 import fs from 'node:fs'
 import path from 'node:path'
 
 const ROOT = path.resolve(import.meta.dirname, '..')
 const OUT = path.join(ROOT, 'public', 'icons')
-const data = JSON.parse(fs.readFileSync(path.join(ROOT, 'node_modules', 'hanzi-writer-data', '字.json'), 'utf8'))
+const data = JSON.parse(fs.readFileSync(path.join(ROOT, 'node_modules', 'hanzi-writer-data', '墨.json'), 'utf8'))
 
 const BG = '#b8432c'
 const FG = '#fffcf5'

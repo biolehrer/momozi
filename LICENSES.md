@@ -1,6 +1,6 @@
 # Quellen und Lizenzen
 
-Zeichenweise besteht aus eigenem Code (MIT-Lizenz, siehe `LICENSE`) und Daten bzw. Bibliotheken anderer Projekte. Hier steht, was woher kommt und unter welcher Lizenz es steht.
+Momozì besteht aus eigenem Code (MIT-Lizenz, siehe `LICENSE`) und Daten bzw. Bibliotheken anderer Projekte. Hier steht, was woher kommt und unter welcher Lizenz es steht.
 
 ## Daten
 
@@ -37,4 +37,4 @@ Sprecher, Lizenz und Originalseite jeder Audiodatei stehen in `public/audio/CRED
 
 ## Hinweis
 
-Zeichenweise ist ein privates, nicht-kommerzielles Projekt und steht in keiner Verbindung zu den Herausgebern der HSK-Prüfung (Chinese Testing International) oder zu anderen Lern-Apps.
+Momozì ist ein privates, nicht-kommerzielles Projekt und steht in keiner Verbindung zu den Herausgebern der HSK-Prüfung (Chinese Testing International) oder zu anderen Lern-Apps.

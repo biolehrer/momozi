@@ -18,7 +18,7 @@ function strokeFileName(ch: string): string {
  */
 function strokes(): Plugin {
   return {
-    name: 'zeichenweise-strokes',
+    name: 'momozi-strokes',
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
         const m = req.url?.match(/\/strokes\/([0-9a-f]+)\.json(?:\?.*)?$/)
