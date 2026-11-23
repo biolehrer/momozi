@@ -81,94 +81,96 @@
   </div>
 </header>
 
-<div class="page home">
-  <div class="col stack">
-    <div class="tiles">
-      <div class="tile">
-        <span class="num">{ov ? ov.due : '–'}</span>
-        <span class="lbl">fällig</span>
-      </div>
-      <div class="tile">
-        <span class="num">{ov ? ov.newToday : '–'}</span>
-        <span class="lbl">neue Wörter</span>
-      </div>
+<!-- Handy: alles untereinander (Reihenfolge wie im Quelltext). Ab Tablet ein Raster: „Zeichnen“ rechts neben
+     „Gelernt“ und dem Start-Knopf, ab 1100 px zusätzlich „Aktive Decks“ rechts neben den Zahlen (siehe Stil unten) -->
+<div class="page home" class:with-sketch={known > 0}>
+  <div class="tiles">
+    <div class="tile">
+      <span class="num">{ov ? ov.due : '–'}</span>
+      <span class="lbl">fällig</span>
     </div>
-
-    {#if ov}
-      <div class="card">
-        <div class="row">
-          <span>Gelernt</span>
-          <span class="spacer"></span>
-          <span class="muted">{ov.learned} von {ov.total} Wörtern</span>
-        </div>
-        <div class="bar"><div class="fill" style:width="{ov.total ? (ov.learned / ov.total) * 100 : 0}%"></div></div>
-      </div>
-    {/if}
-    <div class="start-inline">{@render start()}</div>
-
-    {#if known > 0}
-      <button class="card sketch-card fade-in" onclick={() => go('/zeichnen')}>
-        <span class="sketch-icon"><Icon name="brush" size={22} /></span>
-        <span class="grow">
-          <span class="sketch-title">Zeichnen</span>
-          <span class="muted small">Gelernte Wörter frei schreiben – zählt nicht zum Lernplan</span>
-        </span>
-        <Icon name="chevron" size={18} />
-      </button>
-    {/if}
+    <div class="tile">
+      <span class="num">{ov ? ov.newToday : '–'}</span>
+      <span class="lbl">neue Wörter</span>
+    </div>
   </div>
 
-  <div class="col stack">
-    <div class="card">
+  {#if ov}
+    <div class="card learned">
       <div class="row">
-        <span>Aktive Decks</span>
+        <span>Gelernt</span>
         <span class="spacer"></span>
-        <button class="btn ghost small" onclick={() => go('/decks')}>Ändern</button>
+        <span class="muted">{ov.learned} von {ov.total} Wörtern</span>
       </div>
-      <div class="chips">
-        {#each app.settings.activeDecks as id (id)}
-          <span class="badge">{deckName(id)}</span>
-        {:else}
-          <span class="muted small">Kein Deck aktiv</span>
-        {/each}
-      </div>
+      <div class="bar"><div class="fill" style:width="{ov.total ? (ov.learned / ov.total) * 100 : 0}%"></div></div>
     </div>
+  {/if}
+  <div class="start-inline">{@render start()}</div>
 
-    {#if remind}
-      <div class="remind fade-in">
-        <button class="remind-open" onclick={() => go('/sicherung')}>
-          <Icon name="shield" size={22} />
-          <span class="grow">
-            <span class="remind-title">Lernstand sichern?</span>
-            <span class="muted small">
-              {remind.lastAt ? `Letzte Sicherung: ${formatDate(remind.lastAt)}` : 'Noch keine Sicherung'} · kurz erklärt
-            </span>
-          </span>
-        </button>
-        <button class="icon-btn" aria-label="Später erinnern" title="Später erinnern" onclick={snooze}>
-          <Icon name="close" size={18} />
-        </button>
-      </div>
-    {/if}
+  {#if known > 0}
+    <button class="card sketch-card fade-in" onclick={() => go('/zeichnen')}>
+      <span class="sketch-icon"><Icon name="brush" size={22} /></span>
+      <span class="grow">
+        <span class="sketch-title">Zeichnen</span>
+        <span class="muted small">Gelernte Wörter frei schreiben – zählt nicht zum Lernplan</span>
+      </span>
+      <Icon name="chevron" size={18} />
+    </button>
+  {/if}
 
-    {#if install.event}
-      <div class="notice row">
-        <span class="spacer">Momozì als App installieren?</span>
-        <button class="btn small primary" onclick={installApp}>Installieren</button>
-      </div>
-    {/if}
-
-    {#if showIosHint}
-      <div class="notice">
-        <strong>Tipp fürs iPhone:</strong> In Safari auf „Teilen“ und dann „Zum Home-Bildschirm“ tippen.
-        Achtung: Safari und die installierte App speichern den Fortschritt getrennt – am besten gleich die App nutzen.
-        <div class="row" style="margin-top:8px">
-          <span class="spacer"></span>
-          <button class="btn small" onclick={dismissHint}>Verstanden</button>
-        </div>
-      </div>
-    {/if}
+  <div class="card decks">
+    <div class="row">
+      <span>Aktive Decks</span>
+      <span class="spacer"></span>
+      <button class="btn ghost small" onclick={() => go('/decks')}>Ändern</button>
+    </div>
+    <div class="chips">
+      {#each app.settings.activeDecks as id (id)}
+        <span class="badge">{deckName(id)}</span>
+      {:else}
+        <span class="muted small">Kein Deck aktiv</span>
+      {/each}
+    </div>
   </div>
+
+  {#if remind || install.event || showIosHint}
+    <div class="notes stack">
+      {#if remind}
+        <div class="remind fade-in">
+          <button class="remind-open" onclick={() => go('/sicherung')}>
+            <Icon name="shield" size={22} />
+            <span class="grow">
+              <span class="remind-title">Lernstand sichern?</span>
+              <span class="muted small">
+                {remind.lastAt ? `Letzte Sicherung: ${formatDate(remind.lastAt)}` : 'Noch keine Sicherung'} · kurz erklärt
+              </span>
+            </span>
+          </button>
+          <button class="icon-btn" aria-label="Später erinnern" title="Später erinnern" onclick={snooze}>
+            <Icon name="close" size={18} />
+          </button>
+        </div>
+      {/if}
+
+      {#if install.event}
+        <div class="notice row">
+          <span class="spacer">Momozì als App installieren?</span>
+          <button class="btn small primary" onclick={installApp}>Installieren</button>
+        </div>
+      {/if}
+
+      {#if showIosHint}
+        <div class="notice">
+          <strong>Tipp fürs iPhone:</strong> In Safari auf „Teilen“ und dann „Zum Home-Bildschirm“ tippen.
+          Achtung: Safari und die installierte App speichern den Fortschritt getrennt – am besten gleich die App nutzen.
+          <div class="row" style="margin-top:8px">
+            <span class="spacer"></span>
+            <button class="btn small" onclick={dismissHint}>Verstanden</button>
+          </div>
+        </div>
+      {/if}
+    </div>
+  {/if}
 </div>
 
 {#snippet start()}
@@ -345,6 +347,25 @@
   .start-inline :global(.btn) {
     width: 100%;
   }
+  .tiles {
+    grid-area: tiles;
+  }
+  .learned {
+    grid-area: learned;
+  }
+  .start-inline {
+    grid-area: start;
+  }
+  .sketch-card {
+    grid-area: sketch;
+    align-self: stretch;
+  }
+  .decks {
+    grid-area: decks;
+  }
+  .notes {
+    grid-area: notes;
+  }
   @media (min-width: 700px) {
     .logo,
     .phone-title,
@@ -353,18 +374,50 @@
     }
     .start-inline {
       display: block;
-      margin-top: 4px;
     }
     .wide-title {
       display: inline;
     }
-  }
-  @media (min-width: 1100px) {
+    /* Tablet hochkant: Raster mit zwei Spalten, „Zeichnen“ so hoch wie „Gelernt“ und Start-Knopf zusammen */
     .home {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-areas:
+        'tiles tiles'
+        'learned learned'
+        'start start'
+        'decks decks'
+        'notes notes';
       align-items: start;
-      gap: 16px;
+    }
+    .home.with-sketch {
+      grid-template-areas:
+        'tiles tiles'
+        'learned sketch'
+        'start sketch'
+        'decks decks'
+        'notes notes';
+    }
+  }
+  /* iPad quer und Mac: „Aktive Decks“ rechts neben den Zahlen, Hinweise rechts darunter */
+  @media (min-width: 1100px) {
+    .home {
+      grid-template-areas:
+        'tiles decks'
+        'learned notes'
+        'start notes';
+      gap: 12px 16px;
+    }
+    .home.with-sketch {
+      grid-template-areas:
+        'tiles decks'
+        'learned sketch'
+        'start sketch'
+        '. notes';
+    }
+    /* so hoch wie die Zahlen daneben – gerade Kanten */
+    .decks {
+      align-self: stretch;
     }
     .num {
       font-size: 3.2rem;
