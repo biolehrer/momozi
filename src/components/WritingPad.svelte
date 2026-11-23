@@ -13,6 +13,7 @@
   let {
     char,
     mode,
+    outline = false,
     maxSize = 320,
     reserve = 330,
     fixedSize,
@@ -21,6 +22,8 @@
   }: {
     char: string
     mode: Mode
+    /** nur mode "test": mit Umriss nachzeichnen statt aus dem Kopf (Zeichenmodus) */
+    outline?: boolean
     maxSize?: number
     /** feste Kantenlänge in px (z. B. mehrere Zeichen nebeneinander) */
     fixedSize?: number
@@ -152,7 +155,7 @@
       height: size,
       padding: Math.round(size * 0.07),
       showCharacter: mode === 'view',
-      showOutline: mode !== 'test',
+      showOutline: mode !== 'test' || outline,
       strokeAnimationSpeed: 1.1,
       delayBetweenStrokes: 220,
       drawingWidth: 26,
@@ -169,7 +172,7 @@
       },
     })
     if (mode === 'learn') demoThenTrace()
-    else if (mode === 'test') startQuiz(false)
+    else if (mode === 'test') startQuiz(outline)
     return () => {
       destroyed = true
       cancelAnimationFrame(frame)

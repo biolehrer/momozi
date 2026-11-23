@@ -1,5 +1,6 @@
 <script lang="ts">
   // Abfrage „Schreiben“: Bedeutung + Pinyin sehen, Zeichen für Zeichen aus dem Gedächtnis schreiben.
+  // Auch für den Zeichenmodus (free): ohne Bewertung, mit „Weiter“, wahlweise mit Umriss zum Nachzeichnen.
   import Icon from './Icon.svelte'
   import SpeakButton from './SpeakButton.svelte'
   import WritingPad from './WritingPad.svelte'
@@ -10,23 +11,45 @@
   let {
     word,
     startChar = 0,
+    free = false,
+    outline = false,
     onrate,
+    onnext,
+    onfinish,
     onprogress,
   }: {
     word: Word
     startChar?: number
-    onrate: (grade: 1 | 3) => void
+    /** Zeichenmodus: keine Bewertung, stattdessen „Weiter“ (onnext) */
+    free?: boolean
+    /** Umriss zeigen – nachzeichnen statt aus dem Kopf schreiben */
+    outline?: boolean
+    onrate?: (grade: 1 | 3) => void
+    onnext?: () => void
+    /** ein Durchgang ist fertig geschrieben (auch nach „Neu zeichnen“) */
+    onfinish?: () => void
     onprogress?: (charIndex: number) => void
   } = $props()
+
+  interface Result {
+    mistakes: number
+    /** angesehene Tipps (nächster Strich), zählen wie Fehler */
+    tips: number
+    /** „Lösung zeigen“ benutzt */
+    hinted: boolean
+  }
+  const blank = (): Result => ({ mistakes: 0, tips: 0, hinted: false })
 
   const chars = $derived([...word.s])
   // Startwert genügt: die Komponente wird für jede Karte neu erzeugt
   // svelte-ignore state_referenced_locally
   let idx = $state(Math.min(startChar, [...word.s].length - 1))
-  let mistakes = $state(0)
-  /** angesehene Tipps (nächster Strich), zählen wie Fehler */
-  let tips = $state(0)
-  let hinted = $state(false)
+  /** laufender Durchgang */
+  let cur = $state<Result>(blank())
+  /** erster Durchgang – nur er zählt für die Bewertung */
+  let first = $state<Result | null>(null)
+  /** 0 = erster Durchgang, danach je „Neu zeichnen“ eins mehr */
+  let attempt = $state(0)
   let finished = $state(false)
   let noData = $state(false)
   let paperRevealed = $state(false)
@@ -34,29 +57,39 @@
   let revealedAt = $state(-1)
   let pad: WritingPad | undefined = $state()
 
-  const suggested = $derived<1 | 3>(!hinted && mistakes + tips <= 1 ? 3 : 1)
-  // Druckschrift vor dem Pinyin erst, wenn das ganze Wort bekannt ist – vorher würde man es nur abschreiben
-  const showWord = $derived(finished || paperRevealed || revealedAt === chars.length - 1)
-  const resultText = $derived(
-    [mistakes && `${mistakes} Fehler`, tips && `${tips} ${tips === 1 ? 'Tipp' : 'Tipps'}`].filter(Boolean).join(' · '),
-  )
+  const rated = $derived(first ?? cur)
+  const suggested = $derived<1 | 3>(!rated.hinted && rated.mistakes + rated.tips <= 1 ? 3 : 1)
+  // Druckschrift vor dem Pinyin erst, wenn das ganze Wort bekannt ist – vorher würde man es nur abschreiben.
+  // Mit Umriss ist das Zeichen ohnehin zu sehen.
+  const showWord = $derived(outline || finished || paperRevealed || revealedAt === chars.length - 1)
 
-  function charDone(r: { mistakes: number; hinted: boolean; tips: number }) {
-    mistakes += r.mistakes
-    tips += r.tips
-    if (r.hinted) hinted = true
+  function resultLabel(r: Result): string {
+    if (r.hinted) return 'mit Hilfe'
+    const parts = [r.mistakes && `${r.mistakes} Fehler`, r.tips && `${r.tips} ${r.tips === 1 ? 'Tipp' : 'Tipps'}`]
+    return parts.filter(Boolean).join(' · ') || 'fehlerfrei'
+  }
+  const resultClass = (r: Result) => (r.hinted ? 'accent' : !r.mistakes && !r.tips ? 'good' : '')
+
+  function charDone(r: Result) {
+    cur.mistakes += r.mistakes
+    cur.tips += r.tips
+    if (r.hinted) cur.hinted = true
     if (idx < chars.length - 1) {
       setTimeout(() => {
         idx++
-        onprogress?.(idx)
+        if (attempt === 0) onprogress?.(idx)
       }, 600)
     } else {
-      setTimeout(() => (finished = true), 450)
+      setTimeout(() => {
+        finished = true
+        if (attempt === 0) first = $state.snapshot(cur)
+        onfinish?.()
+      }, 450)
     }
   }
 
   function showSolution() {
-    hinted = true
+    cur.hinted = true
     revealedAt = idx
     pad?.reveal()
   }
@@ -65,10 +98,22 @@
     pad?.hint()
   }
 
+  /** Noch einmal von vorn und aus dem Kopf schreiben – ändert die Bewertung nicht */
+  function redraw() {
+    attempt++
+    cur = blank()
+    idx = 0
+    revealedAt = -1
+    finished = false
+  }
+
   function onKey(e: KeyboardEvent) {
     const k = shortcut(e)
     if (!k) return
-    if (noData && !paperRevealed) {
+    if (free && k === 'ArrowRight') {
+      consume(e)
+      onnext?.()
+    } else if (noData && !paperRevealed) {
       if (isPrimary(k)) {
         consume(e)
         paperRevealed = true
@@ -81,12 +126,20 @@
         consume(e)
         tip()
       }
+    } else if (k === 'n' && finished && !noData) {
+      consume(e)
+      redraw()
+    } else if (free) {
+      if (isPrimary(k)) {
+        consume(e)
+        onnext?.()
+      }
     } else if (k === '1' || k === '2') {
       consume(e)
-      onrate(k === '1' ? 1 : 3)
+      onrate?.(k === '1' ? 1 : 3)
     } else if (finished && isPrimary(k)) {
       consume(e)
-      onrate(suggested)
+      onrate?.(suggested)
     }
   }
 </script>
@@ -95,7 +148,7 @@
 
 <div class="quiz quiz-layout fade-in">
   <div class="q-side">
-    <p class="label">Schreiben</p>
+    <p class="label">{free ? (outline ? 'Nachzeichnen' : 'Zeichnen') : 'Schreiben'}</p>
     <div class="prompt">
       <div class="meaning">{word.m}</div>
       <div class="pinyin-row">
@@ -126,8 +179,8 @@
         {/if}
       </div>
     {:else}
-      {#key idx}
-        <WritingPad bind:this={pad} char={chars[idx]} mode="test" oncomplete={charDone} onerror={() => (noData = true)} />
+      {#key `${attempt}-${idx}`}
+        <WritingPad bind:this={pad} char={chars[idx]} mode="test" {outline} oncomplete={charDone} onerror={() => (noData = true)} />
       {/key}
     {/if}
   </div>
@@ -135,13 +188,21 @@
   <div class="q-after">
     {#if finished}
       <div class="result fade-in">
-        {#if hinted}
-          <span class="badge accent">mit Hilfe</span>
-        {:else if !resultText}
-          <span class="badge good">fehlerfrei</span>
+        {#if free || !first}
+          <span class="badge {resultClass(cur)}">{resultLabel(cur)}</span>
         {:else}
-          <span class="badge">{resultText}</span>
+          <span class="badge {resultClass(first)}">{resultLabel(first)}</span>
+          {#if attempt > 0}<span class="badge {resultClass(cur)}">neu: {resultLabel(cur)}</span>{/if}
         {/if}
+        {#if !noData}
+          <button class="btn ghost small redo" onclick={redraw} title="Noch einmal aus dem Kopf schreiben (N)">
+            <Icon name="replay" size={18} /> Neu zeichnen <kbd class="key">N</kbd>
+          </button>
+        {/if}
+      </div>
+    {:else if free && !noData}
+      <div class="result">
+        <button class="btn ghost small" onclick={() => onnext?.()}>Überspringen <kbd class="key">→</kbd></button>
       </div>
     {/if}
   </div>
@@ -156,9 +217,11 @@
         <Icon name="bulb" size={22} /> Tipp <kbd class="key">T</kbd>
       </button>
       <button class="btn" onclick={showSolution}>Lösung zeigen <kbd class="key">↵</kbd></button>
+    {:else if free}
+      <button class="btn primary" onclick={() => onnext?.()}>Weiter <kbd class="key">↵</kbd></button>
     {:else}
-      <button class="btn" class:bad={finished && suggested === 1} onclick={() => onrate(1)}>Nochmal <kbd class="key">1</kbd></button>
-      <button class="btn" class:good={!finished || suggested === 3} onclick={() => onrate(3)}>Gewusst <kbd class="key">2</kbd></button>
+      <button class="btn" class:bad={finished && suggested === 1} onclick={() => onrate?.(1)}>Nochmal <kbd class="key">1</kbd></button>
+      <button class="btn" class:good={!finished || suggested === 3} onclick={() => onrate?.(3)}>Gewusst <kbd class="key">2</kbd></button>
     {/if}
   </div>
 </div>
@@ -236,7 +299,13 @@
   .result {
     min-height: 40px;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .redo {
+    min-height: 40px;
   }
   /* Querformat: linke Spalte mit größerer Schrift */
   @media (min-width: 900px) and (min-height: 560px) and (orientation: landscape) {

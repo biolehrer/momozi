@@ -5,11 +5,12 @@ Web-App zum Üben chinesischer Schriftzeichen (Kurzzeichen) – für das Handy g
 - **Fertige Sets:** HSK 1–6 (HSK 3.0, Prüfungsfassung 2026) mit von Hand geprüften deutschen Bedeutungen und Lesungen; in „Decks“ einzeln zuschaltbar
 - **Eigene Decks:** Wörter suchen (Zeichen, Pinyin oder Deutsch) – standardmäßig nur in den HSK-Wörtern, mit dem Schalter „Auch im Wörterbuch suchen“ zusätzlich in rund 160.000 HanDeDict-Wörtern (farblich abgesetzt); jedes Wort lässt sich zum Ansehen öffnen (Strichfolge, Aussprache) und einzeln oder mit „Auswählen“ gesammelt zu einem Deck hinzufügen
 - **Vier Abfragearten**, einzeln abschaltbar:
-  - **Schreiben** – Bedeutung und Pinyin sehen, Zeichen aus dem Gedächtnis schreiben; jeder Strich wird geprüft, „Tipp“ zeigt den nächsten Strich (zählt wie ein Fehler); ist das Zeichen geschrieben, steht es in Druckschrift vor dem Pinyin
+  - **Schreiben** – Bedeutung und Pinyin sehen, Zeichen aus dem Gedächtnis schreiben; jeder Strich wird geprüft, „Tipp“ zeigt den nächsten Strich (zählt wie ein Fehler); ist das Zeichen geschrieben, steht es in Druckschrift vor dem Pinyin; „Neu zeichnen“ schreibt es noch einmal aus dem Kopf (bewertet wird nur der erste Versuch)
   - **Pinyin** – Zeichen sehen, Aussprache erinnern
   - **Töne** – Zeichen sehen, Ton jeder Silbe wischen oder tippen
   - **Bedeutung** – Zeichen sehen, deutsche Bedeutung erinnern
 - **Neue Wörter** werden erst vorgeführt (Strichfolge-Animation) und dann nachgezeichnet
+- **Zeichnen** (Startseite): gelernte Wörter frei schreiben, so oft man mag – aus dem Kopf oder mit Umriss zum Nachzeichnen, alle oder nur aus einem Deck; Wörter, deren Schreiben gerade wackelt, kommen öfter; zählt nicht zum Lernplan
 - **Aussprache** mit echten Aufnahmen, Lücken mit gekennzeichneter KI-Stimme (abschaltbares automatisches Abspielen); bei Pinyin- und Ton-Abfragen erst nach der Antwort
 - **Spaced Repetition** mit FSRS, jede Abfrageart wird einzeln geplant
 - **Gut gemischt:** zwischen zwei Abfragen zum selben Wort liegen mindestens vier andere Karten (auch nach dem Kennenlernen und nach „Nochmal“), neue Wörter kommen zwischen die Wiederholungen; der Fortschritt in Prozent zählt jede Karte einmal und steigt nur mit „Gewusst“
@@ -17,7 +18,7 @@ Web-App zum Üben chinesischer Schriftzeichen (Kurzzeichen) – für das Handy g
 - **Eigene Decks zusammenstellen:** HSK-Wörter ankreuzen, bei Bedarf auch im Wörterbuch suchen oder die Vokabelliste aus dem Kurs einfügen; Decks als Datei teilen und importieren
 - **Sicherung** des Lernstands als Datei (Teilen-Menü), Laden mit Zusammenführen oder Ersetzen; dezente Erinnerung
 - **Handy, Tablet und PC:** auf dem Handy Leiste unten, auf dem iPad hochkant eine Icon-Leiste links, im Querformat und am Rechner eine Seitenleiste; Üben im Querformat zweispaltig mit großer Zeichenfläche
-- **Tastenkürzel** beim Üben: Leertaste/Enter weiter, 1/2 bewerten, 1–5 Töne, T Tipp beim Schreiben, P anhören, Esc beenden
+- **Tastenkürzel** beim Üben: Leertaste/Enter weiter, 1/2 bewerten, 1–5 Töne, T Tipp beim Schreiben, N neu zeichnen, P anhören, Esc beenden; beim Zeichnen zusätzlich U Umriss und → überspringen
 - Alle Daten bleiben lokal auf dem Gerät (IndexedDB), kein Konto, kein Server
 
 ## Entwickeln

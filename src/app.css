@@ -599,3 +599,128 @@ kbd.key,
     transition: none !important;
   }
 }
+
+/* ---------- Übungsansicht (Üben und Zeichnen) ----------
+   Kopfzeile .bar und Inhalt .body. Abfragen bestehen aus .q-side (Aufgabe), .q-stage (Zeichenfläche/Zeichen)
+   und .q-after (Ergebnis). Handy und Hochformat: einfach untereinander, als wären die Hüllen nicht da. */
+.practice {
+  min-height: 100dvh;
+}
+.practice .keys-help {
+  display: none;
+}
+.practice .body .q-side,
+.practice .body .q-stage,
+.practice .body .q-after {
+  display: contents;
+}
+.practice > .bar {
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: calc(var(--safe-top) + 6px) 16px 6px 6px;
+  max-width: 560px;
+  margin: 0 auto;
+}
+.practice > .body {
+  max-width: 560px;
+  margin: 0 auto;
+  /* seitlicher Abstand: Rand bleibt frei für die Zurück-Geste */
+  padding: 4px 24px calc(110px + var(--safe-bottom));
+}
+
+/* Tablet hochkant: etwas breitere Spalte für eine größere Zeichenfläche */
+@media (min-width: 700px) {
+  .practice > .bar,
+  .practice > .body {
+    max-width: 720px;
+  }
+}
+
+/* Querformat (iPad quer, PC): Aufgabe und Tasten links, große Fläche rechts.
+   Gleiche Bedingung wie WIDE_PRACTICE in lib/layout.ts */
+@media (min-width: 900px) and (min-height: 560px) and (orientation: landscape) {
+  .practice {
+    --wide-w: 1120px;
+    --side-w: 360px;
+    --wide-pad: 32px;
+  }
+  .practice > .bar,
+  .practice > .body {
+    max-width: var(--wide-w);
+  }
+  .practice > .bar {
+    padding-left: calc(var(--wide-pad) - 10px);
+    padding-right: var(--wide-pad);
+  }
+  .practice > .body {
+    padding: 4px var(--wide-pad) 24px;
+  }
+  .practice .body .quiz-layout {
+    display: grid;
+    grid-template-columns: var(--side-w) minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      'side stage'
+      'after stage';
+    column-gap: 56px;
+    row-gap: 20px;
+    align-items: start;
+    min-height: calc(100dvh - 120px);
+    padding-top: 0;
+  }
+  .practice .body .q-side,
+  .practice .body .q-after,
+  .practice .body .q-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .practice .body .q-side {
+    grid-area: side;
+    padding-top: 8vh;
+  }
+  .practice .body .q-after {
+    grid-area: after;
+  }
+  .practice .body .q-stage {
+    grid-area: stage;
+    align-self: center;
+  }
+  /* Tasten in der linken Spalte unten statt über die ganze Breite */
+  .practice .dock.bottom:not(.solo) {
+    left: calc(max(0px, (100vw - var(--wide-w)) / 2) + var(--wide-pad));
+    right: auto;
+    width: var(--side-w);
+    bottom: calc(var(--safe-bottom) + 28px);
+    padding: 0;
+    background: none;
+  }
+  .practice .dock.bottom:not(.solo) .dock-inner {
+    max-width: none;
+  }
+}
+
+/* Kürzel-Übersicht unten rechts – nur im Querformat mit Maus/Trackpad */
+@media (min-width: 900px) and (min-height: 560px) and (orientation: landscape) and (hover: hover) and (pointer: fine) {
+  .practice .keys-help {
+    display: block;
+    position: fixed;
+    right: calc(max(0px, (100vw - var(--wide-w)) / 2) + var(--wide-pad));
+    bottom: calc(var(--safe-bottom) + 6px);
+    margin: 0;
+    font-size: 0.75rem;
+  }
+  .practice .keys-help kbd {
+    font: 600 0.7rem/1 var(--font);
+    padding: 2px 5px;
+    border-radius: 5px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+  }
+}

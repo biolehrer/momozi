@@ -34,6 +34,11 @@ export function cardId(key: string, type: QuizType): string {
   return `${key}#${type}`
 }
 
+/** Wie wahrscheinlich man die Karte jetzt noch weiß (0–1, neue Karten 0) – nur lesen, ändert nichts */
+export function retrievability(c: CardRecord, now = new Date()): number {
+  return scheduler.retrievability(c.fsrs, now)
+}
+
 export function toneQuizPossible(w: Word): boolean {
   if (!w.n || w.noTones) return false
   const t = tonesOf(w.n)

@@ -14,6 +14,7 @@
   import Library from './views/Library.svelte'
   import Practice from './views/Practice.svelte'
   import Settings from './views/Settings.svelte'
+  import Sketch from './views/Sketch.svelte'
   import WordForm from './views/WordForm.svelte'
   import WordView from './views/WordView.svelte'
 
@@ -24,7 +25,7 @@
   })
 
   const viewKey = $derived(route.path + '?' + route.query.toString())
-  const fullscreen = $derived(route.path === '/ueben')
+  const fullscreen = $derived(route.path === '/ueben' || route.path === '/zeichnen')
   /** Formulare und Fließtext: auf großen Bildschirmen schmalere Spalte */
   const narrow = $derived(['/einstellungen', '/lizenzen', '/sicherung', '/bearbeiten'].includes(route.path))
 
@@ -57,6 +58,8 @@
         <Home />
       {:else if route.path === '/ueben'}
         <Practice />
+      {:else if route.path === '/zeichnen'}
+        <Sketch />
       {:else if route.path === '/decks'}
         <Decks />
       {:else if route.path === '/deck'}

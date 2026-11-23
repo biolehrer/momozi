@@ -3,6 +3,8 @@
 //   1 / 2            Nochmal / Gewusst
 //   1–5              Töne (5 oder 0 = neutral)
 //   T                Tipp beim Schreiben (nächster Strich)
+//   N                Neu zeichnen (noch einmal aus dem Kopf, zählt nicht für die Bewertung)
+//   U / →            Zeichenmodus: Umriss an/aus, Wort überspringen
 //   P                Aussprache abspielen
 //   Esc              Üben beenden
 

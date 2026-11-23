@@ -2,7 +2,7 @@
   import { onMount } from 'svelte'
   import { go } from '../lib/router.svelte'
   import { app, deckName, install } from '../lib/state.svelte'
-  import { overview, resumableSession, type Overview } from '../lib/srs'
+  import { introducedKeys, overview, resumableSession, type Overview } from '../lib/srs'
   import { isIos, isStandalone } from '../lib/platform'
   import Icon from '../components/Icon.svelte'
   import { formatDate, needsBackup, shouldRemind, snoozeReminder, type BackupStatus } from '../lib/backup'
@@ -13,6 +13,8 @@
   let remind = $state<BackupStatus | null>(null)
   /** roter Punkt am Sicherungs-Symbol: bleibt, auch wenn die Hinweiskarte weggetippt wurde */
   let due = $state(false)
+  /** schon kennengelernte Wörter (alle Decks) – erst dann gibt es etwas zum Zeichnen */
+  let known = $state(0)
 
   async function snooze() {
     remind = null
@@ -23,7 +25,8 @@
   const HINT_KEY = 'zw-ios-hint-dismissed'
 
   onMount(async () => {
-    const [o, s, r, n] = await Promise.all([overview(), resumableSession(), shouldRemind(), needsBackup()])
+    const [o, s, r, n, k] = await Promise.all([overview(), resumableSession(), shouldRemind(), needsBackup(), introducedKeys()])
+    known = k.size
     remind = r
     due = !!n
     ov = o
@@ -102,6 +105,17 @@
       </div>
     {/if}
     <div class="start-inline">{@render start()}</div>
+
+    {#if known > 0}
+      <button class="card sketch-card fade-in" onclick={() => go('/zeichnen')}>
+        <span class="sketch-icon"><Icon name="brush" size={22} /></span>
+        <span class="grow">
+          <span class="sketch-title">Zeichnen</span>
+          <span class="muted small">Gelernte Wörter frei schreiben – zählt nicht zum Lernplan</span>
+        </span>
+        <Icon name="chevron" size={18} />
+      </button>
+    {/if}
   </div>
 
   <div class="col stack">
@@ -278,6 +292,40 @@
   }
   .remind-title {
     font-weight: 600;
+  }
+  .sketch-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    color: var(--ink);
+    font: inherit;
+  }
+  .sketch-card .grow {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .sketch-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .sketch-title {
+    font-weight: 650;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .sketch-card:hover {
+      background: var(--surface-2);
+    }
   }
   .chips {
     display: flex;
