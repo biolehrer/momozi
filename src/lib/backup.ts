@@ -295,13 +295,37 @@ export async function markBackedUp() {
  * mind. 30 Bewertungen seit der letzten Sicherung UND
  * (noch nie gesichert und seit 3 Tagen dabei) bzw. (letzte Sicherung älter als 14 Tage).
  */
+/** Sicherung empfohlen: ≥ 30 Bewertungen seit der letzten Sicherung und 14 Tage her (ohne Sicherung: 3 Tage seit dem ersten Üben) */
+function isDue(s: BackupStatus): boolean {
+  if (s.reviewsSince < 30) return false
+  const since = s.lastAt ?? s.firstReviewAt
+  if (!since) return false
+  return Date.now() - since >= (s.lastAt ? 14 : 3) * DAY
+}
+
 export async function needsBackup(): Promise<BackupStatus | null> {
   if (!app.settings.backupReminder) return null
   const s = await backupStatus()
-  if (s.reviewsSince < 30) return null
-  const since = s.lastAt ?? s.firstReviewAt
-  if (!since) return null
-  return Date.now() - since >= (s.lastAt ? 14 : 3) * DAY ? s : null
+  return isDue(s) ? s : null
+}
+
+/** so lange bleibt das Schild nach einer Sicherung grün */
+const FRESH_DAYS = 7
+
+/**
+ * Zustand des Schild-Symbols auf der Startseite (zurückhaltend in Pastell):
+ *  fresh – in den letzten 7 Tagen gesichert (grün mit Häkchen)
+ *  due   – Sicherung empfohlen, wie bei der Erinnerungskarte (rot mit „!“; nur mit eingeschalteter Erinnerung)
+ *  idle  – sonst (grau)
+ */
+export type BackupLevel = 'fresh' | 'due' | 'idle'
+
+export async function backupLevel(): Promise<{ level: BackupLevel; status: BackupStatus }> {
+  const s = await backupStatus()
+  let level: BackupLevel = 'idle'
+  if (app.settings.backupReminder && isDue(s)) level = 'due'
+  else if (s.lastAt && Date.now() - s.lastAt < FRESH_DAYS * DAY) level = 'fresh'
+  return { level, status: s }
 }
 
 /** Wie needsBackup, aber die Hinweiskarte lässt sich für ein paar Tage wegtippen */

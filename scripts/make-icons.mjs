@@ -27,25 +27,39 @@ const PATHS = data.strokes.map((d) => `<path d="${d.replace(/ ?([MQLCZ]) ?/g, '$
 /**
  * rounded: abgerundete Ecken (Browser, Android „any“, Logo in der App); iOS und Android-„maskable“ runden selbst.
  * scale: Größe der Glyphe; 0.88 füllt das Symbol, „maskable“ braucht Rand für die runde Maske (sichere Zone 80 %).
+ * rich: Papierkörnung und weicher Schatten als SVG-Filter – nur für die PNG-Vorlagen. Safari berechnet Filter in
+ *   <img>-SVGs nur in einfacher Auflösung und vergrößert sie dann (WebKit-Fehler), das Logo wirkte dort verpixelt.
+ *   Ohne „rich“: keine Filter, der Schatten entsteht aus drei versetzten, durchscheinenden Kopien des Zeichens.
  */
-function svg({ rounded, scale }) {
+function svg({ rounded, scale, rich }) {
   const s = scale
   const tx = (512 - CX * s).toFixed(1)
-  const ty = (508 + CY * s).toFixed(1) // 4 Einheiten über der Mitte: optisch mittig mit dem Schatten darunter
+  const ty = 508 + CY * s // 4 Einheiten über der Mitte: optisch mittig mit dem Schatten darunter
+  const at = (dy = 0) => `translate(${tx} ${(ty + dy).toFixed(1)}) scale(${s} -${s})`
   const defs = [
     rounded ? '<clipPath id="r"><rect width="1024" height="1024" rx="224"/></clipPath>' : '',
     `<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${BG[0]}"/><stop offset=".5" stop-color="${BG[1]}"/><stop offset="1" stop-color="${BG[2]}"/></linearGradient>`,
     // warmer Schimmer oben links statt weißem Licht (das ließ das Rot milchig wirken)
     '<radialGradient id="glow" cx=".3" cy=".2" r=".75"><stop offset="0" stop-color="#ffd2b8" stop-opacity=".1"/><stop offset="1" stop-color="#ffd2b8" stop-opacity="0"/></radialGradient>',
     `<linearGradient id="ink" gradientUnits="userSpaceOnUse" x1="0" y1="836" x2="0" y2="-41"><stop offset="0" stop-color="${INK[0]}"/><stop offset="1" stop-color="${INK[1]}"/></linearGradient>`,
-    // feine Papierkörnung, nur in großen Darstellungen sichtbar
-    '<filter id="grain" x="0" y="0" width="1" height="1"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope="0" intercept="1"/></feComponentTransfer></filter>',
-    '<filter id="shadow" x="-10%" y="-10%" width="120%" height="125%"><feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#3f0f07" flood-opacity=".4"/></filter>',
+    rich
+      ? // feine Papierkörnung, nur in großen Darstellungen sichtbar
+        '<filter id="grain" x="0" y="0" width="1" height="1"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope="0" intercept="1"/></feComponentTransfer></filter>' +
+        '<filter id="shadow" x="-10%" y="-10%" width="120%" height="125%"><feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#3f0f07" flood-opacity=".4"/></filter>'
+      : '',
+    `<g id="m">${PATHS}</g>`,
   ].join('')
-  const ground =
-    '<rect width="1024" height="1024" fill="url(#bg)"/><rect width="1024" height="1024" fill="url(#glow)"/>' +
-    '<rect width="1024" height="1024" filter="url(#grain)" opacity=".1" style="mix-blend-mode:overlay"/>'
-  const glyph = `<g filter="url(#shadow)"><g transform="translate(${tx} ${ty}) scale(${s} -${s})" fill="url(#ink)">${PATHS}</g></g>`
+  let ground = '<rect width="1024" height="1024" fill="url(#bg)"/><rect width="1024" height="1024" fill="url(#glow)"/>'
+  if (rich) ground += '<rect width="1024" height="1024" filter="url(#grain)" opacity=".1" style="mix-blend-mode:overlay"/>'
+  const glyph = rich
+    ? `<g filter="url(#shadow)"><use href="#m" transform="${at()}" fill="url(#ink)"/></g>`
+    : [
+        [6, 0.1],
+        [12, 0.08],
+        [18, 0.05],
+      ]
+        .map(([dy, o]) => `<use href="#m" transform="${at(dy)}" fill="#3f0f07" opacity="${o}"/>`)
+        .join('') + `<use href="#m" transform="${at()}" fill="url(#ink)"/>`
   return (
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><defs>${defs}</defs>` +
     (rounded ? `<g clip-path="url(#r)">${ground}</g>` : ground) +
@@ -53,29 +67,27 @@ function svg({ rounded, scale }) {
   )
 }
 
+// Für den Browser (Logo in der App, Browser-Tab, Manifest): ohne Filter, damit es überall scharf ist
 fs.mkdirSync(OUT, { recursive: true })
-const files = {
-  'icon.svg': svg({ rounded: true, scale: 0.88 }),
-  'icon-full.svg': svg({ rounded: false, scale: 0.88 }),
-  'icon-maskable.svg': svg({ rounded: false, scale: 0.7 }),
-}
-for (const [name, text] of Object.entries(files)) fs.writeFileSync(path.join(OUT, name), text)
-console.log(`SVG-Symbole geschrieben nach ${path.relative(ROOT, OUT) || OUT}`)
+fs.writeFileSync(path.join(OUT, 'icon.svg'), svg({ rounded: true, scale: 0.88 }))
+console.log(`icon.svg geschrieben nach ${path.relative(ROOT, OUT) || OUT}`)
 
-// PNG-Fassungen (nur Mac)
+// PNG-Fassungen (nur Mac) aus den Vorlagen mit Körnung und Schatten – groß gerendert, dann verkleinert
 if (process.platform === 'darwin') {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'momozi-icons-'))
-  const png = (svgName, target, size) => {
-    execFileSync('qlmanage', ['-t', '-s', '1024', '-o', tmp, path.join(OUT, svgName)], { stdio: 'ignore' })
-    const rendered = path.join(tmp, `${svgName}.png`)
-    execFileSync('sips', ['-z', String(size), String(size), rendered, '--out', path.join(OUT, target)], { stdio: 'ignore' })
+  const png = (name, options, target, size) => {
+    const src = path.join(tmp, `${name}.svg`)
+    fs.writeFileSync(src, svg({ ...options, rich: true }))
+    execFileSync('qlmanage', ['-t', '-s', '1024', '-o', tmp, src], { stdio: 'ignore' })
+    execFileSync('sips', ['-z', String(size), String(size), `${src}.png`, '--out', path.join(OUT, target)], { stdio: 'ignore' })
   }
-  png('icon.svg', 'icon-512.png', 512)
-  png('icon.svg', 'icon-192.png', 192)
-  png('icon-full.svg', 'apple-touch-icon.png', 180)
-  png('icon-maskable.svg', 'icon-maskable-512.png', 512)
+  const rounded = { rounded: true, scale: 0.88 }
+  png('rounded', rounded, 'icon-512.png', 512)
+  png('rounded', rounded, 'icon-192.png', 192)
+  png('full', { rounded: false, scale: 0.88 }, 'apple-touch-icon.png', 180) // iOS rundet selbst
+  png('maskable', { rounded: false, scale: 0.7 }, 'icon-maskable-512.png', 512) // Android schneidet rund zu
   fs.rmSync(tmp, { recursive: true, force: true })
   console.log('PNG-Symbole erzeugt (qlmanage + sips)')
 } else {
-  console.log('PNG-Symbole bitte auf dem Mac erzeugen (qlmanage + sips) oder aus den SVGs exportieren')
+  console.log('PNG-Symbole bitte auf dem Mac erzeugen (qlmanage + sips)')
 }

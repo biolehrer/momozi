@@ -7,14 +7,16 @@
   import Icon from '../components/Icon.svelte'
   import Logo from '../components/Logo.svelte'
   import { streak } from '../lib/streak.svelte'
-  import { formatDate, needsBackup, shouldRemind, snoozeReminder, type BackupStatus } from '../lib/backup'
+  import { backupLevel, formatDate, shouldRemind, snoozeReminder, type BackupLevel, type BackupStatus } from '../lib/backup'
 
   let ov = $state<Overview | null>(null)
   let resumeLeft = $state(0)
   let resumeDeck = $state('')
   let remind = $state<BackupStatus | null>(null)
   /** roter Punkt am Sicherungs-Symbol: bleibt, auch wenn die Hinweiskarte weggetippt wurde */
-  let due = $state(false)
+  /** Schild oben rechts: grau, grün (frisch gesichert) oder rot (Sicherung empfohlen) – siehe backupLevel() */
+  let shield = $state<BackupLevel>('idle')
+  let lastBackup = $state<number | null>(null)
   /** schon kennengelernte Wörter (alle Decks) – erst dann gibt es etwas zum Zeichnen */
   let known = $state(0)
 
@@ -27,10 +29,11 @@
   const HINT_KEY = 'zw-ios-hint-dismissed'
 
   onMount(async () => {
-    const [o, s, r, n, k] = await Promise.all([overview(), resumableSession(), shouldRemind(), needsBackup(), introducedKeys()])
+    const [o, s, r, b, k] = await Promise.all([overview(), resumableSession(), shouldRemind(), backupLevel(), introducedKeys()])
     known = k.size
     remind = r
-    due = !!n
+    shield = b.level
+    lastBackup = b.status.lastAt
     ov = o
     resumeLeft = s ? s.items.length - s.index : 0
     resumeDeck = s?.deckId ? deckName(s.deckId) : ''
@@ -60,6 +63,13 @@
   }
 
   const todo = $derived(ov ? ov.due + ov.newToday : 0)
+  const shieldLabel = $derived(
+    shield === 'due'
+      ? 'Sicherung – eine neue Sicherung wäre gut'
+      : lastBackup
+        ? `Sicherung – zuletzt gesichert am ${formatDate(lastBackup)}`
+        : 'Sicherung',
+  )
   const dateLabel = new Date().toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' })
 </script>
 
@@ -86,14 +96,8 @@
         {#if streak.warn}<span class="dot" aria-hidden="true"></span>{/if}
       </span>
     {/if}
-    <button
-      class="icon-btn backup-btn"
-      onclick={() => go('/sicherung')}
-      aria-label={due ? 'Sicherung – letzte Sicherung ist länger her' : 'Sicherung'}
-      title="Sicherung"
-    >
-      <Icon name="shield" size={26} />
-      {#if due}<span class="dot" aria-hidden="true"></span>{/if}
+    <button class="icon-btn backup-btn {shield}" onclick={() => go('/sicherung')} aria-label={shieldLabel} title={shieldLabel}>
+      <Icon name={shield === 'due' ? 'shieldAlert' : shield === 'fresh' ? 'shield' : 'shieldEmpty'} size={26} />
     </button>
   </div>
 </header>
@@ -301,6 +305,19 @@
     position: relative;
     color: var(--muted);
     margin-right: -6px;
+  }
+  /* bewusst zurückhaltend: Pastellfläche, Symbol nur gedämpft eingefärbt; die Fläche bündig mit dem Inhalt */
+  .backup-btn.fresh,
+  .backup-btn.due {
+    margin-right: 0;
+  }
+  .backup-btn.fresh {
+    background: var(--good-soft);
+    color: color-mix(in srgb, var(--good) 70%, var(--muted));
+  }
+  .backup-btn.due {
+    background: var(--bad-soft);
+    color: color-mix(in srgb, var(--bad) 65%, var(--muted));
   }
   .dot {
     position: absolute;
