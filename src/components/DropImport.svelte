@@ -6,7 +6,9 @@
   // dieselben Wege wie beim Laden über die Knöpfe (views/Decks.svelte, views/Backup.svelte).
   import Icon from './Icon.svelte'
   import { importDeck, parseFile, type BackupFile } from '../lib/backup'
+  import { announceDecks } from '../lib/celebrate.svelte'
   import { dropped } from '../lib/drop.svelte'
+  import type { CustomDeck } from '../lib/types'
   import { go, route } from '../lib/router.svelte'
 
   /** dragenter/dragleave feuern für jedes Element einzeln – mitzählen, sonst flackert die Fläche */
@@ -95,7 +97,7 @@
   }
 
   async function handle(files: File[]) {
-    const decks: { id: string; name: string }[] = []
+    const decks: CustomDeck[] = []
     const problems: string[] = []
     let backup: BackupFile | null = null
     for (const f of files) {
@@ -111,14 +113,10 @@
       // Lernstand nie still überschreiben: die Seite „Sicherung“ fragt nach
       dropped.backup = backup
       if (route.path !== '/sicherung') go('/sicherung')
-    } else if (decks.length === 1) go(`/deck?id=${decks[0].id}`)
-    else if (decks.length > 1) go('/decks')
-
-    const parts: string[] = []
-    if (decks.length === 1) parts.push(`Deck „${decks[0].name}“ importiert.`)
-    else if (decks.length > 1) parts.push(`${decks.length} Decks importiert.`)
-    parts.push(...problems)
-    if (parts.length) show(parts.join(' '), !decks.length && !backup)
+    }
+    // Erfolg mit Haken-Animation; das Deck öffnet sich danach – außer es geht gerade zur Sicherung
+    announceDecks(decks, !backup)
+    if (problems.length) show(problems.join(' '), !decks.length && !backup)
   }
 </script>
 

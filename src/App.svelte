@@ -2,6 +2,7 @@
   import { onMount } from 'svelte'
   import TabBar from './components/TabBar.svelte'
   import DropImport from './components/DropImport.svelte'
+  import Celebrate from './components/Celebrate.svelte'
   import Icon from './components/Icon.svelte'
   import Logo from './components/Logo.svelte'
   import { scheduleWarmUp } from './lib/offline.svelte'
@@ -85,6 +86,7 @@
     {#if !fullscreen}<TabBar />{/if}
     <!-- Deck- oder Sicherungsdatei ins Fenster ziehen (Mac/PC, iPad) -->
     <DropImport />
+    <Celebrate />
     {#if pwa.needRefresh && !fullscreen}
       <div class="update fade-in" role="status">
         <span class="grow">Neue Version verfügbar</span>

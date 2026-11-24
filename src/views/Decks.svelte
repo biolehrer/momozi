@@ -4,6 +4,7 @@
   import { go } from '../lib/router.svelte'
   import { app, createDeck, isActive, saveDeck, setActive } from '../lib/state.svelte'
   import { importDeck, parseFile } from '../lib/backup'
+  import { announceDecks } from '../lib/celebrate.svelte'
   import { FLAGGED, flaggedWords } from '../lib/marks.svelte'
 
   let creating = $state(false)
@@ -25,8 +26,7 @@
         importError = 'Das ist eine Sicherung des ganzen Lernstands – laden kannst du sie unter Optionen › Sicherung & Übertragen.'
         return
       }
-      const deck = await importDeck(data)
-      go(`/deck?id=${deck.id}`)
+      announceDecks([await importDeck(data)])
     } catch (x) {
       importError = (x as Error).message
     }

@@ -164,6 +164,18 @@ export interface ImportSummary {
   decksUpdated: number
   cardsAdded: number
   cardsUpdated: number
+  /** Nachbereitung, die nicht geklappt hat (Lernstand und Decks sind trotzdem übernommen) */
+  problems: string[]
+}
+
+/** kurze Zusammenfassung für Meldungen, z. B. „120 Karten übernommen · 2 Decks hinzugefügt“ */
+export function summaryText(s: ImportSummary): string {
+  const cards = s.cardsAdded + s.cardsUpdated
+  const parts: string[] = []
+  if (cards) parts.push(`${cards} ${cards === 1 ? 'Karte' : 'Karten'} übernommen`)
+  if (s.decksAdded) parts.push(`${s.decksAdded} ${s.decksAdded === 1 ? 'Deck' : 'Decks'} hinzugefügt`)
+  if (s.decksUpdated) parts.push(`${s.decksUpdated} ${s.decksUpdated === 1 ? 'Deck' : 'Decks'} ergänzt`)
+  return parts.length ? parts.join(' · ') : 'Alles war schon auf dem neuesten Stand'
 }
 
 function reviveCard(c: CardRecord): CardRecord {
@@ -186,20 +198,40 @@ function lastReview(c: CardRecord): number {
  * merge: für jede Karte gewinnt der neuere Lernstand, Decks werden vereinigt, Einstellungen bleiben.
  * replace: das Gerät übernimmt genau den Stand der Sicherung.
  */
+/**
+ * Arbeit in einer Transaktion: scheitert ein Schritt (z. B. eine beschädigte Karte in der Datei), wird alles
+ * zurückgenommen – sonst blieben die bis dahin geschriebenen Teile gespeichert.
+ */
+async function allOrNothing(tx: { abort(): void; done: Promise<void> }, work: () => Promise<void>) {
+  try {
+    await work()
+  } catch (e) {
+    tx.done.catch(() => {}) // der Abbruch meldet sich hier als Fehler – erwartet
+    try {
+      tx.abort()
+    } catch {
+      /* schon beendet */
+    }
+    throw e
+  }
+  await tx.done
+}
+
 export async function importBackup(b: BackupFile, mode: 'merge' | 'replace'): Promise<ImportSummary> {
   const d = await db()
-  const sum: ImportSummary = { decksAdded: 0, decksUpdated: 0, cardsAdded: 0, cardsUpdated: 0 }
+  const sum: ImportSummary = { decksAdded: 0, decksUpdated: 0, cardsAdded: 0, cardsUpdated: 0, problems: [] }
   const decks = b.decks.map((x) => ({ ...x, words: cleanWords(x.words) }))
   const cards = b.cards.map(reviveCard)
 
   if (mode === 'replace') {
     const tx = d.transaction(['decks', 'cards', 'log', 'meta'], 'readwrite')
-    await Promise.all([tx.objectStore('decks').clear(), tx.objectStore('cards').clear(), tx.objectStore('log').clear()])
-    for (const deck of decks) await tx.objectStore('decks').put(deck)
-    for (const c of cards) await tx.objectStore('cards').put(c)
-    for (const l of b.log ?? []) await tx.objectStore('log').add(l)
-    await tx.objectStore('meta').delete('session')
-    await tx.done
+    await allOrNothing(tx, async () => {
+      await Promise.all([tx.objectStore('decks').clear(), tx.objectStore('cards').clear(), tx.objectStore('log').clear()])
+      for (const deck of decks) await tx.objectStore('decks').put(deck)
+      for (const c of cards) await tx.objectStore('cards').put(c)
+      for (const l of b.log ?? []) await tx.objectStore('log').add(l)
+      await tx.objectStore('meta').delete('session')
+    })
     sum.decksAdded = decks.length
     sum.cardsAdded = cards.length
     app.settings = { ...DEFAULT_SETTINGS, ...b.settings, types: { ...DEFAULT_SETTINGS.types, ...b.settings?.types } }
@@ -208,44 +240,57 @@ export async function importBackup(b: BackupFile, mode: 'merge' | 'replace'): Pr
     const localCards = new Map((await allCards()).map((x) => [x.id, x]))
     const localLog = new Set((await d.getAll('log')).map((l) => `${l.cardId}|${l.at}`))
     const tx = d.transaction(['decks', 'cards', 'log'], 'readwrite')
-    for (const deck of decks) {
-      const local = localDecks.get(deck.id)
-      if (!local) {
-        await tx.objectStore('decks').put(deck)
-        sum.decksAdded++
-        continue
+    await allOrNothing(tx, async () => {
+      for (const deck of decks) {
+        const local = localDecks.get(deck.id)
+        if (!local) {
+          await tx.objectStore('decks').put(deck)
+          sum.decksAdded++
+          continue
+        }
+        const keys = new Set(local.words.map(wordKey))
+        const extra = deck.words.filter((w) => !keys.has(wordKey(w)))
+        if (extra.length) {
+          await tx.objectStore('decks').put({ ...local, words: [...local.words, ...extra] })
+          sum.decksUpdated++
+        }
       }
-      const keys = new Set(local.words.map(wordKey))
-      const extra = deck.words.filter((w) => !keys.has(wordKey(w)))
-      if (extra.length) {
-        await tx.objectStore('decks').put({ ...local, words: [...local.words, ...extra] })
-        sum.decksUpdated++
+      for (const c of cards) {
+        const local = localCards.get(c.id)
+        if (!local) {
+          await tx.objectStore('cards').put(c)
+          sum.cardsAdded++
+        } else if (lastReview(c) > lastReview(local) || (lastReview(c) === lastReview(local) && c.fsrs.reps > local.fsrs.reps)) {
+          await tx.objectStore('cards').put(c)
+          sum.cardsUpdated++
+        }
       }
-    }
-    for (const c of cards) {
-      const local = localCards.get(c.id)
-      if (!local) {
-        await tx.objectStore('cards').put(c)
-        sum.cardsAdded++
-      } else if (lastReview(c) > lastReview(local) || (lastReview(c) === lastReview(local) && c.fsrs.reps > local.fsrs.reps)) {
-        await tx.objectStore('cards').put(c)
-        sum.cardsUpdated++
+      for (const l of b.log ?? []) {
+        if (!localLog.has(`${l.cardId}|${l.at}`)) await tx.objectStore('log').add(l)
       }
-    }
-    for (const l of b.log ?? []) {
-      if (!localLog.has(`${l.cardId}|${l.at}`)) await tx.objectStore('log').add(l)
-    }
-    await tx.done
+    })
     // neu hinzugekommene Decks so aktiv schalten wie in der Sicherung
     const active = new Set(app.settings.activeDecks)
     for (const deck of decks) if (!localDecks.has(deck.id) && b.settings?.activeDecks?.includes(deck.id)) active.add(deck.id)
     app.settings.activeDecks = [...active]
   }
-  await saveSettings()
-  await importMarks(b.marks, mode === 'replace')
-  await refreshStreak()
-  // Sicherungen aus älteren Versionen auf den aktuellen Datenstand bringen
-  await migrateData(true).catch((e) => console.warn('Datenanpassung übersprungen:', e))
+  // Nachbereitung: Lernstand und Decks sind oben schon gespeichert – scheitert hier etwas, gilt der Import trotzdem
+  // als geklappt, die Seite nennt dann, was fehlt (vorher blieb die Auswahl einfach stehen, ohne Meldung)
+  const steps: [string, () => Promise<unknown>][] = [
+    ['Einstellungen', saveSettings],
+    ['Markierungen', () => importMarks(b.marks, mode === 'replace')],
+    ['Serie', refreshStreak],
+    // Sicherungen aus älteren Versionen auf den aktuellen Datenstand bringen
+    ['Datenanpassung', () => migrateData(true)],
+  ]
+  for (const [name, step] of steps) {
+    try {
+      await step()
+    } catch (e) {
+      console.warn(`Import: ${name} übersprungen`, e)
+      sum.problems.push(`${name} (${(e as Error)?.message ?? e})`)
+    }
+  }
   app.decks = (await allDecks()).sort((a, b2) => a.createdAt - b2.createdAt)
   return sum
 }

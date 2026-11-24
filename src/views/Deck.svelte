@@ -14,6 +14,8 @@
   import { wordKey, type Word } from '../lib/types'
 
   const id = route.query.get('id') ?? ''
+  /** gerade importiert (lib/celebrate.svelte.ts): Seite gleitet sanft herein, während die Erfolgsmeldung ausblendet */
+  const arrived = route.query.get('neu') === '1'
   const set = app.sets.find((s) => s.id === id)
   const custom = $derived(app.decks.find((d) => d.id === id))
   /** automatisches Deck aller markierten Wörter (⚑) */
@@ -90,7 +92,7 @@
   {/snippet}
 </Header>
 
-<div class="page" class:no-dock={!custom}>
+<div class="page" class:no-dock={!custom} class:arrive={arrived}>
   {#if !custom && !set && !flaggedDeck}
     <p>Dieses Deck gibt es nicht (mehr).</p>
   {:else}
@@ -190,6 +192,16 @@
 {/if}
 
 <style>
+  /* nach einem Import: sanft hereingleiten, unter der ausblendenden Erfolgsmeldung */
+  .arrive {
+    animation: arrive 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  @keyframes arrive {
+    from {
+      opacity: 0;
+      transform: translateY(18px) scale(0.985);
+    }
+  }
   .flag-mark {
     color: var(--accent);
     display: inline-flex;

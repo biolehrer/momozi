@@ -13,12 +13,13 @@
     markBackedUp,
     parseFile,
     shareText,
+    summaryText,
     type BackupFile,
     type BackupStatus,
     type ImportSummary,
   } from '../lib/backup'
+  import { announceDecks, celebrate } from '../lib/celebrate.svelte'
   import { dropped } from '../lib/drop.svelte'
-  import { go } from '../lib/router.svelte'
   import { app, saveSettings } from '../lib/state.svelte'
 
   let status = $state<BackupStatus | null>(null)
@@ -29,6 +30,8 @@
   let error = $state('')
   let pending = $state<BackupFile | null>(null)
   let summary = $state<ImportSummary | null>(null)
+  /** läuft gerade ein Import (Knöpfe sperren, „Wird übernommen …“)? */
+  let importing = $state<'merge' | 'replace' | null>(null)
   let fileInput: HTMLInputElement
   let pendingCard: HTMLDivElement | undefined = $state()
 
@@ -77,8 +80,7 @@
     try {
       const data = parseFile(await f.text())
       if (data.type === 'deck') {
-        const deck = await importDeck(data)
-        go(`/deck?id=${deck.id}`)
+        announceDecks([await importDeck(data)])
         return
       }
       pending = data
@@ -88,11 +90,25 @@
   }
 
   async function doImport(mode: 'merge' | 'replace') {
-    if (!pending) return
+    if (!pending || importing) return
     if (mode === 'replace' && !confirm('Wirklich alles auf diesem Gerät durch die Sicherung ersetzen? Der jetzige Lernstand geht dabei verloren.')) return
-    summary = await importBackup(pending, mode)
-    pending = null
-    await refresh()
+    importing = mode
+    error = ''
+    message = ''
+    try {
+      const sum = await importBackup(pending, mode)
+      // geklappt: Auswahl schließen, kurz bestätigen; die Zahlen bleiben darunter stehen
+      pending = null
+      summary = sum
+      celebrate(mode === 'replace' ? 'Lernstand übernommen' : 'Import erfolgreich', summaryText(sum))
+    } catch (x) {
+      console.error('Import fehlgeschlagen', x)
+      const why = String((x as Error)?.message ?? x).replace(/\.+$/, '')
+      error = `Der Import hat nicht geklappt: ${why}. Auf diesem Gerät hat sich nichts geändert.`
+    } finally {
+      importing = null
+    }
+    await refresh().catch((x) => console.warn('Übersicht nicht aktualisiert', x))
   }
 
   const pendingInfo = $derived(
@@ -149,19 +165,24 @@
     <div class="card stack fade-in" bind:this={pendingCard}>
       <h2>Sicherung vom {pendingInfo.date}</h2>
       <p class="small muted">{pendingInfo.decks} eigene Decks · {pendingInfo.cards} geübte Karten</p>
-      <button class="btn primary block" onclick={() => doImport('merge')}>Zusammenführen</button>
+      <button class="btn primary block" disabled={!!importing} onclick={() => doImport('merge')}>
+        {importing === 'merge' ? 'Wird übernommen …' : 'Zusammenführen'}
+      </button>
       <p class="small muted">Empfohlen. Für jede Karte zählt der neuere Lernstand; nichts auf diesem Gerät geht verloren.</p>
-      <button class="btn bad block" onclick={() => doImport('replace')}>Ersetzen</button>
+      <button class="btn bad block" disabled={!!importing} onclick={() => doImport('replace')}>
+        {importing === 'replace' ? 'Wird übernommen …' : 'Ersetzen'}
+      </button>
       <p class="small muted">Dieses Gerät übernimmt genau den Stand der Sicherung.</p>
-      <button class="btn ghost block" onclick={() => (pending = null)}>Abbrechen</button>
+      <button class="btn ghost block" disabled={!!importing} onclick={() => (pending = null)}>Abbrechen</button>
     </div>
   {/if}
 
   {#if summary}
     <div class="notice fade-in">
-      Fertig: {summary.cardsAdded + summary.cardsUpdated} Karten übernommen{#if summary.decksAdded}, {summary.decksAdded}
-        {summary.decksAdded === 1 ? 'Deck' : 'Decks'} hinzugefügt{/if}{#if summary.decksUpdated}, {summary.decksUpdated}
-        {summary.decksUpdated === 1 ? 'Deck' : 'Decks'} ergänzt{/if}.
+      Sicherung übernommen: {summaryText(summary)}.
+      {#if summary.problems.length}
+        <span class="sub">Nicht ganz geklappt: {summary.problems.join(', ')}.</span>
+      {/if}
     </div>
   {/if}
 
