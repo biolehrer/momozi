@@ -67,7 +67,8 @@ export default defineConfig({
       workbox: {
         // fest gespeichert: App, HSK-Sets, Audio-Index (klein)
         globPatterns: ['**/*.{js,css,html,svg,png,webmanifest}', 'data/sets/*.json', 'data/audio.json', 'data/sources.json', 'data/migrations.json'],
-        globIgnores: ['strokes/**', 'audio/**', 'ai-samples/**', 'data/dict.json'],
+        // große Symbole (je ~300 KB wegen der Körnung) braucht nur das System beim Installieren, offline nicht
+        globIgnores: ['strokes/**', 'audio/**', 'ai-samples/**', 'data/dict.json', 'icons/icon-512.png', 'icons/icon-maskable-512.png'],
         navigateFallback: 'index.html',
         clientsClaim: true,
         cleanupOutdatedCaches: true,

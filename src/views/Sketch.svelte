@@ -2,6 +2,7 @@
   // Zeichenmodus: gelernte Wörter frei schreiben, ohne Bewertung – der Lernplan bleibt unberührt (lib/sketch.ts).
   import { onMount } from 'svelte'
   import Icon from '../components/Icon.svelte'
+  import Logo from '../components/Logo.svelte'
   import WriteQuiz from '../components/WriteQuiz.svelte'
   import { consume, shortcut } from '../lib/keys'
   import { back } from '../lib/router.svelte'
@@ -143,7 +144,7 @@
       <p class="muted center">Wird vorbereitet …</p>
     {:else if !word}
       <div class="empty fade-in">
-        <div class="seal zh">墨</div>
+        <Logo size={96} />
         <h2>Noch nichts zum Zeichnen</h2>
         <p class="muted">
           Hier schreibst du Wörter, die du schon kennengelernt hast – so oft du magst, ohne Wertung. Lerne zuerst ein paar
@@ -212,14 +213,5 @@
   }
   .empty p {
     max-width: 26em;
-  }
-  .seal {
-    width: 96px;
-    height: 96px;
-    border-radius: 18px;
-    background: var(--accent);
-    color: var(--accent-ink);
-    font-size: 4rem;
-    line-height: 96px;
   }
 </style>

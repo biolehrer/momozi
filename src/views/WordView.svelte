@@ -110,8 +110,27 @@
     added = true
   }
 
-  function playAll() {
-    pads.forEach((p, i) => setTimeout(() => p?.animate(), i * 1600))
+  /** zählt hoch, sobald eine neue Wiedergabe beginnt – eine ältere bricht dann ab */
+  let playRun = 0
+
+  /** Ganzes Wort wie geschrieben: alle Zeichen leeren, dann eines nach dem anderen, jedes erst nach dem Ende des vorigen */
+  async function playAll() {
+    const run = ++playRun
+    const list = pads.slice(0, chars.length)
+    if (list.length > 1) list.forEach((p) => p?.blank())
+    for (let i = 0; i < list.length; i++) {
+      if (i > 0) await new Promise((r) => setTimeout(r, 250))
+      if (run !== playRun) return
+      await list[i]?.animate()
+      if (run !== playRun) return
+    }
+  }
+
+  /** Einzelnes Zeichen antippen: laufende Wiedergabe beenden, die übrigen Zeichen wieder zeigen */
+  function playOne(i: number) {
+    playRun++
+    pads.forEach((p, j) => j !== i && p?.show())
+    void pads[i]?.animate()
   }
 </script>
 
@@ -137,7 +156,7 @@
       <div class="card stack center">
         <div class="pads">
           {#each chars as c, i (i)}
-            <button class="pad-btn" onclick={() => pads[i]?.animate()} aria-label="Strichfolge von {c} abspielen">
+            <button class="pad-btn" onclick={() => playOne(i)} aria-label="Strichfolge von {c} abspielen">
               <WritingPad bind:this={pads[i]} char={c} mode="view" fixedSize={padSize} />
             </button>
           {/each}

@@ -118,10 +118,23 @@
     demoThenTrace()
   }
 
-  /** Nur Animation abspielen (Ansicht-Modus) */
-  export function animate() {
-    if (!writer || status !== 'ready') return
-    writer.animateCharacter()
+  /** Nur Animation abspielen (Ansicht-Modus) – erfüllt sich, wenn sie fertig ist (true) oder abgebrochen wurde */
+  export function animate(): Promise<boolean> {
+    const w = writer
+    if (!w || status !== 'ready') return Promise.resolve(false)
+    return new Promise((resolve) => {
+      void w.animateCharacter({ onComplete: (r) => resolve(!r?.canceled) })
+    })
+  }
+
+  /** Zeichen sofort ausblenden (vor dem Abspielen mehrerer Zeichen) – bricht eine laufende Animation ab */
+  export function blank() {
+    if (writer && status === 'ready') void writer.hideCharacter({ duration: 0 })
+  }
+
+  /** Zeichen sofort vollständig zeigen – bricht eine laufende Animation ab */
+  export function show() {
+    if (writer && status === 'ready') void writer.showCharacter({ duration: 0 })
   }
 
   /** Kantenlänge: so groß wie möglich, ohne dass die Ansicht scrollen muss */

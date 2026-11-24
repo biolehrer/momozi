@@ -3,6 +3,7 @@
   import TabBar from './components/TabBar.svelte'
   import DropImport from './components/DropImport.svelte'
   import Icon from './components/Icon.svelte'
+  import Logo from './components/Logo.svelte'
   import { scheduleWarmUp } from './lib/offline.svelte'
   import { applyUpdate, pwa } from './lib/pwa.svelte'
   import { route } from './lib/router.svelte'
@@ -51,7 +52,7 @@
     <button class="btn" onclick={() => location.reload()}>Neu laden</button>
   </div>
 {:else if !app.ready}
-  <div class="splash zh" aria-label="Lädt">墨</div>
+  <div class="splash" role="status" aria-label="Lädt"><Logo size={88} /></div>
 {:else}
   <div class="shell" class:nav={!fullscreen} class:narrow>
     {#key viewKey}
@@ -121,7 +122,5 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 4rem;
-    color: var(--accent);
   }
 </style>

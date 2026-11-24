@@ -74,7 +74,7 @@ uv venv .venv-tts --python 3.12
 VIRTUAL_ENV=.venv-tts uv pip install "kokoro>=0.9" "misaki[zh]>=0.9" soundfile lameenc
 ```
 
-Die App-Symbole entstehen mit `node scripts/make-icons.mjs` (SVG) und werden auf dem Mac mit `sips` in PNG umgewandelt.
+Die App-Symbole entstehen mit `node scripts/make-icons.mjs` aus den Pinselstrichen von 墨 (SVG, auf dem Mac auch gleich die PNG-Fassungen über `qlmanage` und `sips`). `public/icons/icon.svg` ist zugleich das Logo in der App.
 
 ## Veröffentlichen
 

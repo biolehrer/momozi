@@ -4,6 +4,7 @@
   //  Tablet hochkant (≥ 700 px): schmale Icon-Leiste links
   //  Tablet quer / PC (≥ 1100 px): Seitenleiste links mit Namen
   import Icon from './Icon.svelte'
+  import Logo from './Logo.svelte'
   import { goTab, route } from '../lib/router.svelte'
   import { streak } from '../lib/streak.svelte'
 
@@ -25,7 +26,7 @@
 
 <nav class="tabbar" aria-label="Hauptnavigation">
   <div class="brand" aria-hidden="true">
-    <span class="logo zh">墨</span>
+    <Logo size={44} />
     <span class="name">Momozì</span>
   </div>
   <div class="inner">
@@ -98,18 +99,6 @@
     outline: 2px solid var(--accent);
     outline-offset: -2px;
   }
-  .logo {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    background: var(--accent);
-    color: var(--accent-ink);
-    font-size: 1.85rem;
-    line-height: 44px;
-    text-align: center;
-    flex-shrink: 0;
-  }
-
   /* ---------- Rail: schmale Leiste links ---------- */
   @media (min-width: 700px) {
     .tabbar {

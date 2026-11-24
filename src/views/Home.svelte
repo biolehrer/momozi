@@ -5,6 +5,7 @@
   import { introducedKeys, overview, resumableSession, type Overview } from '../lib/srs'
   import { isIos, isStandalone } from '../lib/platform'
   import Icon from '../components/Icon.svelte'
+  import Logo from '../components/Logo.svelte'
   import { streak } from '../lib/streak.svelte'
   import { formatDate, needsBackup, shouldRemind, snoozeReminder, type BackupStatus } from '../lib/backup'
 
@@ -64,7 +65,7 @@
 
 <header class="hero">
   <div class="inner">
-    <div class="logo zh" aria-hidden="true">墨</div>
+    <div class="logo" aria-hidden="true"><Logo size={52} /></div>
     <div class="spacer">
       <!-- mit Seitenleiste steht der App-Name schon links -->
       <h1><span class="phone-title">Momozì</span><span class="wide-title">Heute</span></h1>
@@ -231,14 +232,6 @@
     text-overflow: ellipsis;
   }
   .logo {
-    width: 52px;
-    height: 52px;
-    border-radius: 14px;
-    background: var(--accent);
-    color: var(--accent-ink);
-    font-size: 2.2rem;
-    line-height: 52px;
-    text-align: center;
     flex-shrink: 0;
   }
   .tiles {
