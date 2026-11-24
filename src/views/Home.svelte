@@ -306,18 +306,12 @@
     color: var(--muted);
     margin-right: -6px;
   }
-  /* bewusst zurückhaltend: Pastellfläche, Symbol nur gedämpft eingefärbt; die Fläche bündig mit dem Inhalt */
-  .backup-btn.fresh,
-  .backup-btn.due {
-    margin-right: 0;
-  }
+  /* bewusst zurückhaltend: nur das Schild gedämpft eingefärbt, keine Fläche */
   .backup-btn.fresh {
-    background: var(--good-soft);
-    color: color-mix(in srgb, var(--good) 70%, var(--muted));
+    color: color-mix(in srgb, var(--good) 75%, var(--muted));
   }
   .backup-btn.due {
-    background: var(--bad-soft);
-    color: color-mix(in srgb, var(--bad) 65%, var(--muted));
+    color: color-mix(in srgb, var(--bad) 70%, var(--muted));
   }
   .dot {
     position: absolute;
