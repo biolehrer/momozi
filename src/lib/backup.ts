@@ -222,6 +222,11 @@ export async function importBackup(b: BackupFile, mode: 'merge' | 'replace'): Pr
   const sum: ImportSummary = { decksAdded: 0, decksUpdated: 0, cardsAdded: 0, cardsUpdated: 0, problems: [] }
   const decks = b.decks.map((x) => ({ ...x, words: cleanWords(x.words) }))
   const cards = b.cards.map(reviveCard)
+  // Verlauf als frische, schlichte Objekte: was IndexedDB nicht klonen kann (z. B. ein reaktiver Proxy), bräche
+  // sonst den Import ab; unvollständige Einträge fallen weg
+  const log: ReviewLogRecord[] = (b.log ?? [])
+    .filter((l) => l && typeof l.cardId === 'string' && Number.isFinite(Number(l.at)))
+    .map((l) => ({ cardId: l.cardId, type: l.type, rating: Number(l.rating), at: Number(l.at) }))
 
   if (mode === 'replace') {
     const tx = d.transaction(['decks', 'cards', 'log', 'meta'], 'readwrite')
@@ -229,7 +234,7 @@ export async function importBackup(b: BackupFile, mode: 'merge' | 'replace'): Pr
       await Promise.all([tx.objectStore('decks').clear(), tx.objectStore('cards').clear(), tx.objectStore('log').clear()])
       for (const deck of decks) await tx.objectStore('decks').put(deck)
       for (const c of cards) await tx.objectStore('cards').put(c)
-      for (const l of b.log ?? []) await tx.objectStore('log').add(l)
+      for (const l of log) await tx.objectStore('log').add(l)
       await tx.objectStore('meta').delete('session')
     })
     sum.decksAdded = decks.length
@@ -265,7 +270,7 @@ export async function importBackup(b: BackupFile, mode: 'merge' | 'replace'): Pr
           sum.cardsUpdated++
         }
       }
-      for (const l of b.log ?? []) {
+      for (const l of log) {
         if (!localLog.has(`${l.cardId}|${l.at}`)) await tx.objectStore('log').add(l)
       }
     })

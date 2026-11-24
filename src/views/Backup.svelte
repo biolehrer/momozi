@@ -28,7 +28,9 @@
   let ready = $state(false)
   let message = $state('')
   let error = $state('')
-  let pending = $state<BackupFile | null>(null)
+  // „raw“: die Sicherung bleibt ein schlichtes Objekt – ein tief reaktiver Zustand würde jeden Eintrag in einen
+  // Proxy hüllen, und den kann IndexedDB nicht speichern („could not be cloned“)
+  let pending = $state.raw<BackupFile | null>(null)
   let summary = $state<ImportSummary | null>(null)
   /** läuft gerade ein Import (Knöpfe sperren, „Wird übernommen …“)? */
   let importing = $state<'merge' | 'replace' | null>(null)
