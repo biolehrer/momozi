@@ -1,20 +1,25 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
+  import { onMount, untrack } from 'svelte'
+  import CountUp from '../components/CountUp.svelte'
   import Icon from '../components/Icon.svelte'
   import LearnCard from '../components/LearnCard.svelte'
   import RevealQuiz from '../components/RevealQuiz.svelte'
+  import Seal from '../components/Seal.svelte'
   import ToneQuiz from '../components/ToneQuiz.svelte'
   import WriteQuiz from '../components/WriteQuiz.svelte'
   import { consume, isPrimary, shortcut } from '../lib/keys'
   import { back, route } from '../lib/router.svelte'
   import { deckName } from '../lib/state.svelte'
   import { requeue } from '../lib/order'
-  import { isFlagged, setMark } from '../lib/marks.svelte'
-  import { practicedNow, refreshStreak } from '../lib/streak.svelte'
+  import { FLAGGED, isFlagged, setMark } from '../lib/marks.svelte'
+  import { flameShownToday, markFlameShown, milestones } from '../lib/motion'
+  import { practicedNow, refreshStreak, streak } from '../lib/streak.svelte'
   import {
     buildSession,
     clearSession,
+    introducedKeys,
     markIntroduced,
+    overview,
     rateCard,
     resumableSession,
     saveSession,
@@ -32,7 +37,16 @@
   const steps: Step[] = []
   let canUndo = $state(false)
 
+  /** Stand vor der Übung – für „+1“ bei der Serie und Meilensteine auf dem Abschluss-Bildschirm */
+  let before = { known: 0, days: 0, today: false }
+
+  /** Abschluss-Bildschirm: ehrlich unterscheiden, ob für heute alles erledigt ist oder noch etwas ansteht */
+  type Finale = { title: string; zh?: string; sub: string; streakUp: boolean; marks: string[] }
+  let finale = $state<Finale | null>(null)
+  let finishing = false
+
   onMount(async () => {
+    before = { known: (await introducedKeys()).size, days: streak.days, today: streak.today }
     let s = route.query.get('fortsetzen') ? await resumableSession() : undefined
     s ??= await buildSession(route.query.get('deck') ?? undefined)
     session = s
@@ -46,6 +60,42 @@
   const goal = $derived(session ? session.items.length - session.stats.again : 0)
   const done = $derived(session ? session.stats.good + session.stats.learned : 0)
   const percent = $derived(goal ? Math.floor((done / goal) * 100) : 0)
+
+  // Ende erreicht: Abschluss vorbereiten (nach „Rückgängig“ zurück zur Karte: wieder weg)
+  $effect(() => {
+    if (!session) return
+    if (item) {
+      finale = null
+      return
+    }
+    if (total > 0 && !finishing && untrack(() => !finale)) {
+      finishing = true
+      void prepareFinale().finally(() => (finishing = false))
+    }
+  })
+
+  async function prepareFinale() {
+    const s = session
+    if (!s) return
+    const deckId = s.deckId
+    const [ov, keys] = await Promise.all([deckId === FLAGGED ? null : overview(deckId), introducedKeys()])
+    const name = deckId ? deckName(deckId) : ''
+    const left = ov ? ov.due + ov.newToday : 0
+    let f: Pick<Finale, 'title' | 'zh' | 'sub'>
+    if (deckId === FLAGGED) f = { title: 'Runde geschafft!', sub: 'Alle markierten Wörter geübt.' }
+    else if (left === 0)
+      f = deckId
+        ? { title: `„${name}“ erledigt!`, sub: 'Für heute ist hier nichts mehr fällig.' }
+        : { title: 'Alles für heute erledigt!', zh: '明天见', sub: 'bis morgen!' }
+    else {
+      const rest = [ov!.due ? `${ov!.due} fällig` : '', ov!.newToday ? `${ov!.newToday} neu` : ''].filter(Boolean).join(' · ')
+      f = { title: 'Runde geschafft!', sub: `${deckId ? `In „${name}“ heute noch` : 'Für heute noch'}: ${rest}` }
+    }
+    // die Serie ist mit dieser Übung gewachsen – einmal am Tag sichtbar aufflammen (sonst auf der Startseite)
+    const streakUp = !before.today && streak.today && !flameShownToday()
+    if (streakUp) markFlameShown()
+    finale = { ...f, streakUp, marks: milestones([before.known, keys.size], [before.days, streak.days]) }
+  }
 
   async function persist() {
     if (session) await saveSession($state.snapshot(session) as Session)
@@ -185,7 +235,10 @@
     <button class="icon-btn small-icon" disabled={!canUndo} onclick={undo} aria-label="Rückgängig" title="Letzten Schritt rückgängig machen (Z)">
       <Icon name="undo" size={22} />
     </button>
-    <span class="count small" aria-hidden="true">{percent}&#8239;%</span>
+    <!-- bei jedem Fortschritt kurz grün aufpulsieren -->
+    {#key done}
+      <span class="count small" class:pop={done > 0} aria-hidden="true">{percent}&#8239;%</span>
+    {/key}
   </header>
   {#if session?.deckId}<p class="deck-label small muted">{deckName(session.deckId)}</p>{/if}
 
@@ -193,23 +246,42 @@
     {#if !session}
       <p class="muted center">Wird vorbereitet …</p>
     {:else if !item}
-      <div class="done fade-in">
+      <div class="done">
         {#if total === 0}
-          <div class="seal zh">休</div>
-          <h2>Gerade gibt es nichts zu üben</h2>
+          <Seal char="休" />
+          <h2 class="rise" style:--d="0.3s">Gerade gibt es nichts zu üben</h2>
           {#if session.deckId}
             <p class="muted">In „{deckName(session.deckId)}“ ist gerade nichts fällig und alle Wörter sind schon eingeführt.</p>
           {:else}
             <p class="muted">Alle fälligen Karten sind erledigt und das Tageslimit für neue Wörter ist erreicht – oder es ist kein Deck aktiv.</p>
           {/if}
         {:else}
-          <div class="seal zh">好</div>
-          <h2>Geschafft!</h2>
-          <div class="stats">
-            <div><strong>{session.stats.learned}</strong><span>neu gelernt</span></div>
-            <div><strong>{session.stats.good}</strong><span>gewusst</span></div>
-            <div><strong>{session.stats.again}</strong><span>nochmal</span></div>
-          </div>
+          <!-- Abschluss: 好 schreibt sich, dann Titel, Zahlen, Serie und Meilensteine nacheinander -->
+          <Seal char="好" />
+          {#if finale}
+            <h2 class="rise" style:--d="0.25s">{finale.title}</h2>
+            <p class="muted sub rise" style:--d="0.35s">
+              {#if finale.zh}<span class="zh">{finale.zh}</span> – {/if}{finale.sub}
+            </p>
+            <div class="stats rise" style:--d="0.45s">
+              <div><strong><CountUp value={session.stats.learned} from={0} delay={550} /></strong><span>neu gelernt</span></div>
+              <div><strong><CountUp value={session.stats.good} from={0} delay={650} /></strong><span>gewusst</span></div>
+              <div><strong><CountUp value={session.stats.again} from={0} delay={750} /></strong><span>nochmal</span></div>
+            </div>
+            {#if streak.days > 0}
+              <div class="streak-row rise" class:ignite={finale.streakUp} style:--d="0.8s">
+                <span class="flame"><Icon name="flame" size={20} /></span>
+                <span>
+                  <strong><CountUp value={streak.days} from={finale.streakUp ? streak.days - 1 : streak.days} delay={1100} /></strong>
+                  {streak.days === 1 ? 'Tag' : 'Tage'} in Folge
+                </span>
+                {#if finale.streakUp}<span class="plus">+1</span>{/if}
+              </div>
+            {/if}
+            {#each finale.marks as m, i (m)}
+              <div class="milestone" style:--d="{1.3 + i * 0.15}s"><Icon name="star" size={18} /> {m}</div>
+            {/each}
+          {/if}
         {/if}
       </div>
       <div class="dock bottom solo">
@@ -268,11 +340,22 @@
     opacity: 0.3;
   }
   .count {
+    display: inline-block;
+    transform-origin: right center;
     min-width: 3.5em;
     text-align: right;
     font-weight: 650;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
+  }
+  .count.pop {
+    animation: count-pop 0.4s ease-out;
+  }
+  @keyframes count-pop {
+    from {
+      color: var(--good);
+      transform: scale(1.22);
+    }
   }
   .center {
     text-align: center;
@@ -286,14 +369,87 @@
     gap: 12px;
     padding-top: 10vh;
   }
-  .seal {
-    width: 96px;
-    height: 96px;
-    border-radius: 18px;
-    background: var(--accent);
-    color: var(--accent-ink);
-    font-size: 4rem;
-    line-height: 96px;
+  .done h2 {
+    margin: 6px 0 0;
+  }
+  .done .sub {
+    margin: -6px 0 0;
+  }
+  /* nacheinander von unten einblenden; die Verzögerung steht je Element in --d */
+  .rise {
+    animation: rise 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: var(--d, 0s);
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+  .streak-row,
+  .milestone {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-weight: 650;
+  }
+  .streak-row {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .flame {
+    display: inline-flex;
+  }
+  .flame :global(svg path) {
+    fill: currentColor;
+    fill-rule: evenodd;
+  }
+  /* Serie gerade gewachsen: Flamme zündet, „+1“ steigt auf */
+  .streak-row.ignite .flame {
+    animation: ignite 0.7s ease-out both;
+    animation-delay: calc(var(--d) + 0.15s);
+  }
+  @keyframes ignite {
+    0% {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+    55% {
+      opacity: 1;
+      transform: scale(1.35) rotate(-8deg);
+    }
+    75% {
+      transform: scale(0.92) rotate(4deg);
+    }
+  }
+  .plus {
+    font-size: 0.85rem;
+    color: var(--good);
+    animation: plus 0.6s ease-out both;
+    animation-delay: calc(var(--d) + 0.5s);
+  }
+  @keyframes plus {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+  .milestone {
+    background: var(--good-soft);
+    color: var(--good);
+    animation: milestone 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+    animation-delay: var(--d);
+  }
+  .milestone :global(svg path) {
+    fill: currentColor;
+  }
+  @keyframes milestone {
+    from {
+      opacity: 0;
+      transform: scale(0.7);
+    }
   }
   .stats {
     display: flex;

@@ -37,6 +37,8 @@
   let host: HTMLDivElement
   let size = $state(0)
   let status = $state<'loading' | 'ready' | 'error'>('loading')
+  /** Zeichen fertig geschrieben: kurzer grüner Lichtring um die Fläche */
+  let solved = $state(false)
   let writer: HanziWriter | null = null
   let mistakes = 0
   let hinted = false
@@ -79,6 +81,7 @@
       },
       onComplete: () => {
         quizzing = false
+        solved = true
         if (!destroyed) oncomplete?.({ mistakes, hinted, tips: tipped.size })
       },
     })
@@ -203,7 +206,7 @@
 <svelte:window onresize={onResize} />
 
 <div class="pad-wrap" class:inline={fixedSize !== undefined} bind:this={wrap}>
-  <div class="pad" style:width="{size}px" style:height="{size}px" class:interactive={mode !== 'view'}>
+  <div class="pad" style:width="{size}px" style:height="{size}px" class:interactive={mode !== 'view'} class:solved>
     <svg class="grid" viewBox="0 0 100 100" aria-hidden="true" preserveAspectRatio="none">
       <rect x="0.5" y="0.5" width="99" height="99" rx="3" class="frame" />
       <line x1="1.5" y1="1.5" x2="98.5" y2="98.5" />
@@ -237,6 +240,21 @@
     -webkit-user-select: none;
     user-select: none;
     -webkit-touch-callout: none;
+  }
+  .pad.solved {
+    animation: solved 0.7s ease-out;
+  }
+  @keyframes solved {
+    from {
+      box-shadow:
+        0 0 0 0 color-mix(in srgb, var(--good) 45%, transparent),
+        0 1px 0 var(--line);
+    }
+    to {
+      box-shadow:
+        0 0 0 14px color-mix(in srgb, var(--good) 0%, transparent),
+        0 1px 0 var(--line);
+    }
   }
   .pad.interactive {
     /* Finger zeichnet, Seite scrollt/zoomt dabei nicht */

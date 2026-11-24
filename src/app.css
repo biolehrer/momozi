@@ -649,6 +649,16 @@ kbd.key,
   padding: 4px 24px calc(110px + var(--safe-bottom));
 }
 
+/* nächste Aufgabe weich einblenden – nur Deckkraft: eine Verschiebung würde die fest stehenden Tasten unten mitziehen */
+.practice .quiz-layout {
+  animation: card-in 0.2s ease-out;
+}
+@keyframes card-in {
+  from {
+    opacity: 0;
+  }
+}
+
 /* Tablet hochkant: etwas breitere Spalte für eine größere Zeichenfläche */
 @media (min-width: 700px) {
   .practice > .bar,

@@ -4,8 +4,10 @@
   import { app, deckName, install } from '../lib/state.svelte'
   import { introducedKeys, overview, resumableSession, type Overview } from '../lib/srs'
   import { isIos, isStandalone } from '../lib/platform'
+  import CountUp from '../components/CountUp.svelte'
   import Icon from '../components/Icon.svelte'
   import Logo from '../components/Logo.svelte'
+  import { flameShownToday, lastHome, markFlameShown } from '../lib/motion'
   import { streak } from '../lib/streak.svelte'
   import { backupLevel, formatDate, shouldRemind, snoozeReminder, type BackupLevel, type BackupStatus } from '../lib/backup'
 
@@ -19,6 +21,12 @@
   let lastBackup = $state<number | null>(null)
   /** schon kennengelernte Wörter (alle Decks) – erst dann gibt es etwas zum Zeichnen */
   let known = $state(0)
+
+  // Zurück vom Üben: Zahlen zählen vom zuletzt gezeigten Stand aus, der Balken wächst (lib/motion.ts)
+  const prev = { ...lastHome }
+  let grow = $state(false)
+  /** heute geübt, aber die Flamme ist noch nicht sichtbar aufgeflammt (z. B. Übung vor dem Ende beendet) */
+  const igniteFlame = streak.today && streak.days > 0 && !flameShownToday()
 
   async function snooze() {
     remind = null
@@ -34,6 +42,10 @@
     remind = r
     shield = b.level
     lastBackup = b.status.lastAt
+    Object.assign(lastHome, { due: o.due, newToday: o.newToday, learned: o.learned, total: o.total })
+    if (igniteFlame) markFlameShown()
+    // erst mit dem alten Stand zeichnen, dann zum neuen wachsen lassen
+    requestAnimationFrame(() => requestAnimationFrame(() => (grow = true)))
     ov = o
     resumeLeft = s ? s.items.length - s.index : 0
     resumeDeck = s?.deckId ? deckName(s.deckId) : ''
@@ -63,6 +75,11 @@
   }
 
   const todo = $derived(ov ? ov.due + ov.newToday : 0)
+  const learnedPct = $derived.by(() => {
+    if (!ov || !ov.total) return 0
+    const now = (ov.learned / ov.total) * 100
+    return grow || prev.learned === undefined || !prev.total ? now : (prev.learned / prev.total) * 100
+  })
   const shieldLabel = $derived(
     shield === 'due'
       ? 'Sicherung – eine neue Sicherung wäre gut'
@@ -85,6 +102,7 @@
       <span
         class="streak"
         class:lit={streak.today}
+        class:ignite={igniteFlame}
         role="img"
         aria-label="Serie: {streak.days} {streak.days === 1 ? 'Tag' : 'Tage'} in Folge geübt{streak.today
           ? ''
@@ -92,7 +110,7 @@
         title="{streak.days} {streak.days === 1 ? 'Tag' : 'Tage'} in Folge geübt{streak.today ? '' : ' – heute noch nicht'}"
       >
         <Icon name="flame" size={18} />
-        <span class="streak-num">{streak.days}</span>
+        <span class="streak-num"><CountUp value={streak.days} from={igniteFlame ? streak.days - 1 : undefined} delay={450} /></span>
         {#if streak.warn}<span class="dot" aria-hidden="true"></span>{/if}
       </span>
     {/if}
@@ -107,11 +125,11 @@
 <div class="page home" class:with-sketch={known > 0}>
   <div class="tiles">
     <div class="tile">
-      <span class="num">{ov ? ov.due : '–'}</span>
+      <span class="num">{#if ov}<CountUp value={ov.due} from={prev.due} />{:else}–{/if}</span>
       <span class="lbl">fällig</span>
     </div>
     <div class="tile">
-      <span class="num">{ov ? ov.newToday : '–'}</span>
+      <span class="num">{#if ov}<CountUp value={ov.newToday} from={prev.newToday} />{:else}–{/if}</span>
       <span class="lbl">neue Wörter</span>
     </div>
   </div>
@@ -121,9 +139,9 @@
       <div class="row">
         <span>Gelernt</span>
         <span class="spacer"></span>
-        <span class="muted">{ov.learned} von {ov.total} Wörtern</span>
+        <span class="muted"><CountUp value={ov.learned} from={prev.learned} duration={900} /> von {ov.total} Wörtern</span>
       </div>
-      <div class="bar"><div class="fill" style:width="{ov.total ? (ov.learned / ov.total) * 100 : 0}%"></div></div>
+      <div class="bar"><div class="fill" style:width="{learnedPct}%"></div></div>
     </div>
   {/if}
   <div class="start-inline">{@render start()}</div>
@@ -271,6 +289,35 @@
   .fill {
     height: 100%;
     background: var(--good);
+    transition: width 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  /* erstes Üben heute: Flamme zündet einmal sichtbar */
+  .streak.ignite {
+    animation: chip-glow 1.4s ease-out 0.25s;
+  }
+  .streak.ignite :global(svg) {
+    animation: ignite 0.8s ease-out 0.25s both;
+  }
+  @keyframes chip-glow {
+    from {
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent);
+    }
+    to {
+      box-shadow: 0 0 0 12px color-mix(in srgb, var(--accent) 0%, transparent);
+    }
+  }
+  @keyframes ignite {
+    0% {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+    55% {
+      opacity: 1;
+      transform: scale(1.35) rotate(-8deg);
+    }
+    75% {
+      transform: scale(0.92) rotate(4deg);
+    }
   }
   .streak {
     position: relative;

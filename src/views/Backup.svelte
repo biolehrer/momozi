@@ -26,7 +26,6 @@
   let counts = $state({ decks: 0, cards: 0 })
   let prepared: { name: string; text: string } | null = null
   let ready = $state(false)
-  let message = $state('')
   let error = $state('')
   // „raw“: die Sicherung bleibt ein schlichtes Objekt – ein tief reaktiver Zustand würde jeden Eintrag in einen
   // Proxy hüllen, und den kann IndexedDB nicht speichern („could not be cloned“)
@@ -43,7 +42,6 @@
     if (!b) return
     dropped.backup = null
     error = ''
-    message = ''
     summary = null
     pending = b
     // nach dem Seitenwechsel (der nach oben scrollt) zur Auswahl Zusammenführen/Ersetzen
@@ -67,7 +65,7 @@
     const r = await shareText(prepared.name, prepared.text, 'Momozì-Sicherung')
     if (r === 'aborted') return
     await markBackedUp()
-    message = r === 'shared' ? 'Sicherung erstellt.' : `Sicherung als „${prepared.name}“ heruntergeladen.`
+    celebrate('Sicherung gespeichert', r === 'shared' ? 'Bewahre die Datei gut auf.' : `Heruntergeladen als „${prepared.name}“`)
     await refresh()
   }
 
@@ -77,7 +75,6 @@
     input.value = ''
     if (!f) return
     error = ''
-    message = ''
     summary = null
     try {
       const data = parseFile(await f.text())
@@ -96,7 +93,6 @@
     if (mode === 'replace' && !confirm('Wirklich alles auf diesem Gerät durch die Sicherung ersetzen? Der jetzige Lernstand geht dabei verloren.')) return
     importing = mode
     error = ''
-    message = ''
     try {
       const sum = await importBackup(pending, mode)
       // geklappt: Auswahl schließen, kurz bestätigen; die Zahlen bleiben darunter stehen
@@ -160,7 +156,6 @@
     <input bind:this={fileInput} type="file" accept="application/json,.json" hidden onchange={onFile} />
   </div>
 
-  {#if message}<div class="notice fade-in">{message}</div>{/if}
   {#if error}<div class="notice error fade-in">{error}</div>{/if}
 
   {#if pending && pendingInfo}
