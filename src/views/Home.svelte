@@ -5,6 +5,7 @@
   import { introducedKeys, overview, resumableSession, type Overview } from '../lib/srs'
   import { isIos, isStandalone } from '../lib/platform'
   import Icon from '../components/Icon.svelte'
+  import { streak } from '../lib/streak.svelte'
   import { formatDate, needsBackup, shouldRemind, snoozeReminder, type BackupStatus } from '../lib/backup'
 
   let ov = $state<Overview | null>(null)
@@ -69,6 +70,21 @@
       <h1><span class="phone-title">Momozì</span><span class="wide-title">Heute</span></h1>
       <p class="muted small">{dateLabel}</p>
     </div>
+    {#if streak.days > 0}
+      <span
+        class="streak"
+        class:lit={streak.today}
+        role="img"
+        aria-label="Serie: {streak.days} {streak.days === 1 ? 'Tag' : 'Tage'} in Folge geübt{streak.today
+          ? ''
+          : ' – heute noch nicht'}"
+        title="{streak.days} {streak.days === 1 ? 'Tag' : 'Tage'} in Folge geübt{streak.today ? '' : ' – heute noch nicht'}"
+      >
+        <Icon name="flame" size={18} />
+        <span class="streak-num">{streak.days}</span>
+        {#if streak.warn}<span class="dot" aria-hidden="true"></span>{/if}
+      </span>
+    {/if}
     <button
       class="icon-btn backup-btn"
       onclick={() => go('/sicherung')}
@@ -204,8 +220,15 @@
     align-items: center;
     gap: 14px;
   }
+  .hero .spacer {
+    min-width: 0;
+  }
   .hero p {
     margin: 2px 0 0;
+    /* Datum einzeilig, auch mit Serien-Flamme daneben */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .logo {
     width: 52px;
@@ -251,6 +274,35 @@
   .fill {
     height: 100%;
     background: var(--good);
+  }
+  .streak {
+    position: relative;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 9px 4px 6px;
+    border-radius: 999px;
+    color: var(--muted);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  /* heute schon geübt: Flamme leuchtet */
+  .streak.lit {
+    color: var(--accent);
+    border-color: var(--accent-soft);
+    background: var(--accent-soft);
+  }
+  /* gefüllt, die innere Flamme bleibt ausgespart */
+  .streak.lit :global(svg path) {
+    fill: currentColor;
+    fill-rule: evenodd;
+  }
+  .streak .dot {
+    top: -2px;
+    right: -2px;
   }
   .backup-btn {
     position: relative;

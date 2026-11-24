@@ -1,18 +1,23 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import Header from '../components/Header.svelte'
+  import Hanzi from '../components/Hanzi.svelte'
+  import Pinyin from '../components/Pinyin.svelte'
   import Icon from '../components/Icon.svelte'
   import { loadSet } from '../lib/data'
-  import { displayPinyin, searchKey } from '../lib/pinyin'
+  import { searchKey } from '../lib/pinyin'
   import { back, go, route } from '../lib/router.svelte'
   import { introducedKeys, overview, type Overview } from '../lib/srs'
   import { deckFile, shareText } from '../lib/backup'
   import { app, isActive, removeDeck, saveDeck, setActive } from '../lib/state.svelte'
+  import { FLAGGED, flaggedWords, isFlagged, isHidden } from '../lib/marks.svelte'
   import { wordKey, type Word } from '../lib/types'
 
   const id = route.query.get('id') ?? ''
   const set = app.sets.find((s) => s.id === id)
   const custom = $derived(app.decks.find((d) => d.id === id))
+  /** automatisches Deck aller markierten Wörter (⚑) */
+  const flaggedDeck = id === FLAGGED
 
   let setWords = $state<Word[]>([])
   let known = $state(new Set<string>())
@@ -27,8 +32,8 @@
     ;[known, deckOv] = await Promise.all([introducedKeys(), overview(id)])
   })
 
-  const words = $derived(custom ? custom.words : setWords)
-  const title = $derived(custom?.name ?? set?.name ?? 'Deck')
+  const words = $derived(flaggedDeck ? flaggedWords() : custom ? custom.words : setWords)
+  const title = $derived(flaggedDeck ? 'Markiert' : (custom?.name ?? set?.name ?? 'Deck'))
   const shown = $derived.by(() => {
     const q = filter.trim().toLowerCase()
     if (!q) return words
@@ -86,7 +91,7 @@
 </Header>
 
 <div class="page" class:no-dock={!custom}>
-  {#if !custom && !set}
+  {#if !custom && !set && !flaggedDeck}
     <p>Dieses Deck gibt es nicht (mehr).</p>
   {:else}
     {#if renaming}
@@ -106,16 +111,22 @@
 
     <div class="card stack">
       {#if set}<div class="muted small">{set.description}</div>{/if}
+      {#if flaggedDeck}
+        <div class="muted small">
+          Alle Wörter, die du beim Üben oder auf der Wortseite mit ⚑ markiert hast. „Üben“ nimmt hier alle auf einmal dran – auch
+          wenn sie noch nicht fällig sind.
+        </div>
+      {/if}
       <div class="row">
         <span>{words.length} {words.length === 1 ? 'Wort' : 'Wörter'} · {learnedCount} gelernt</span>
       </div>
-      <label class="row">
+      {#if !flaggedDeck}<label class="row">
         <span class="spacer">
           <span>In tägliche Übung aufnehmen</span>
           <span class="muted small sub">Gilt für „Üben starten“ auf der Startseite</span>
         </span>
         <input type="checkbox" class="switch" checked={isActive(id)} onchange={(e) => setActive(id, e.currentTarget.checked)} />
-      </label>
+      </label>{/if}
       {#if words.length}
         {@const todo = deckOv ? deckOv.due + deckOv.newToday : 0}
         <button class="btn primary block" disabled={!deckOv || todo === 0} onclick={() => go(`/ueben?deck=${encodeURIComponent(id)}`)}>
@@ -123,6 +134,8 @@
             Dieses Deck üben
           {:else if todo === 0}
             Dieses Deck: gerade nichts zu üben
+          {:else if flaggedDeck}
+            Markierte üben · {deckOv.due + deckOv.newToday} {deckOv.due + deckOv.newToday === 1 ? 'Karte' : 'Karten'}
           {:else}
             Dieses Deck üben · {deckOv.due} fällig, {deckOv.newToday} neu
           {/if}
@@ -137,22 +150,30 @@
     {#if words.length}
       <div class="list words cols three">
         {#each shown as w (wordKey(w))}
-          <button class="list-item" onclick={() => openWord(w)}>
-            <span class="zh chars" lang="zh-Hans">{w.s}</span>
+          <button class="list-item" class:hidden-word={isHidden(w)} onclick={() => openWord(w)}>
+            <span class="zh chars" lang="zh-Hans"><Hanzi s={w.s} n={w.n} /></span>
             <span class="grow">
-              <span class="pinyin">{w.n ? displayPinyin(w.n) : ''}</span>
+              <span class="pinyin"><Pinyin n={w.n} /></span>
               <span class="muted small ellipsis meaning">{w.m}</span>
             </span>
+            {#if isHidden(w)}<span class="badge">ausgeblendet</span>{:else if isFlagged(w)}<span class="flag-mark" title="markiert"
+                ><Icon name="flag" size={16} /></span
+              >{/if}
             {#if known.has(wordKey(w))}<span class="dot learned" title="gelernt"></span>{/if}
           </button>
         {/each}
       </div>
     {:else}
       <div class="card empty">
+        {#if flaggedDeck}
+          <p>Noch keine markierten Wörter.</p>
+          <p class="muted small">Markiere schwierige Wörter beim Üben oben mit ⚑ oder auf der Wortseite.</p>
+        {:else}
         <p>Noch keine Wörter in diesem Deck.</p>
         <p class="muted small">
           Über „Wörter hinzufügen“ HSK-Vokabeln ankreuzen, im Wörterbuch suchen oder die Vokabelliste aus dem Kurs einfügen.
         </p>
+        {/if}
       </div>
     {/if}
   {/if}
@@ -169,6 +190,16 @@
 {/if}
 
 <style>
+  .flag-mark {
+    color: var(--accent);
+    display: inline-flex;
+  }
+  .flag-mark :global(svg) {
+    fill: currentColor;
+  }
+  .hidden-word {
+    opacity: 0.55;
+  }
   .filter {
     margin: 14px 0 10px;
   }

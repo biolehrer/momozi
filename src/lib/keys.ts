@@ -5,6 +5,8 @@
 //   T                Tipp beim Schreiben (nächster Strich)
 //   N                Neu zeichnen (noch einmal aus dem Kopf, zählt nicht für die Bewertung)
 //   U / →            Zeichenmodus: Umriss an/aus, Wort überspringen
+//   M                Wort markieren (⚑)
+//   Z / ⌫            letzten Schritt rückgängig machen
 //   P                Aussprache abspielen
 //   Esc              Üben beenden
 

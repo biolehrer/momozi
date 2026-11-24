@@ -1,8 +1,10 @@
 <script lang="ts">
   // Abfragen „Pinyin“ und „Bedeutung“: Zeichen sehen, Antwort erinnern, aufdecken, selbst bewerten.
   import SpeakButton from './SpeakButton.svelte'
+  import Hanzi from './Hanzi.svelte'
+  import Pinyin from './Pinyin.svelte'
   import { consume, isPrimary, shortcut } from '../lib/keys'
-  import { alsoPinyin, displayPinyin } from '../lib/pinyin'
+  import { alsoPinyin } from '../lib/pinyin'
   import type { Word } from '../lib/types'
 
   let { word, type, onrate }: { word: Word; type: 'pinyin' | 'meaning'; onrate: (grade: 1 | 3) => void } = $props()
@@ -30,7 +32,7 @@
     <p class="label">{type === 'pinyin' ? 'Wie spricht man das aus?' : 'Was bedeutet das?'}</p>
   </div>
   <div class="q-stage">
-    <div class="chars zh {size}" lang="zh-Hans">{word.s}</div>
+    <div class="chars zh {size}" lang="zh-Hans"><Hanzi s={word.s} n={word.n} color={shown} /></div>
   </div>
 
   <div class="q-after">
@@ -46,12 +48,12 @@
     <div class="answer" class:shown>
       {#if shown}
         {#if type === 'pinyin'}
-          <div class="main">{displayPinyin(word.n)}</div>
+          <div class="main"><Pinyin n={word.n} /></div>
           {#if word.a?.length}<div class="sub">{alsoPinyin(word.a)}</div>{/if}
           <div class="sub">{word.m}</div>
         {:else}
           <div class="main">{word.m}</div>
-          {#if word.n}<div class="sub">{displayPinyin(word.n)}</div>{/if}
+          {#if word.n}<div class="sub"><Pinyin n={word.n} /></div>{/if}
         {/if}
       {:else}
         <div class="placeholder">Antwort im Kopf überlegen …</div>

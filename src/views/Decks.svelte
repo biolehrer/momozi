@@ -4,8 +4,10 @@
   import { go } from '../lib/router.svelte'
   import { app, createDeck, isActive, saveDeck, setActive } from '../lib/state.svelte'
   import { importDeck, parseFile } from '../lib/backup'
+  import { FLAGGED, flaggedWords } from '../lib/marks.svelte'
 
   let creating = $state(false)
+  const flagged = $derived(flaggedWords().length)
   let name = $state('')
   let importError = $state('')
   let fileInput: HTMLInputElement
@@ -69,6 +71,18 @@
 
   <p class="section-title">Eigene Decks</p>
   <div class="list cols">
+    {#if flagged}
+      <!-- automatisch: alle markierten Wörter (⚑), nicht für die tägliche Übung -->
+      <div class="list-item flagged">
+        <button class="grow open" onclick={() => go(`/deck?id=${FLAGGED}`)}>
+          <div>
+            <span class="flag-icon"><Icon name="flag" size={18} /></span>
+            <strong>Markiert</strong> <span class="muted small">· {flagged} {flagged === 1 ? 'Wort' : 'Wörter'}</span>
+          </div>
+          <div class="muted small">Automatisch: alle Wörter mit ⚑</div>
+        </button>
+      </div>
+    {/if}
     {#each app.decks as d (d.id)}
       <div class="list-item">
         <button class="grow open" onclick={() => go(`/deck?id=${d.id}`)}>
@@ -117,6 +131,14 @@
 <input bind:this={fileInput} type="file" accept="application/json,.json" hidden onchange={onFile} />
 
 <style>
+  .flag-icon {
+    color: var(--accent);
+    vertical-align: -3px;
+    margin-right: 4px;
+  }
+  .flag-icon :global(svg) {
+    fill: currentColor;
+  }
   .open {
     border: none;
     background: transparent;

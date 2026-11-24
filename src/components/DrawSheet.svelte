@@ -3,9 +3,9 @@
   // ändert den Lernstand nicht (hier wird nichts bewertet oder gespeichert außer der Umriss-Einstellung).
   import { onMount } from 'svelte'
   import Icon from './Icon.svelte'
+  import Pinyin from './Pinyin.svelte'
   import WritingPad from './WritingPad.svelte'
   import { consume, isPrimary, shortcut } from '../lib/keys'
-  import { displayPinyin } from '../lib/pinyin'
   import type { Word } from '../lib/types'
 
   let { word, onclose }: { word: Word; onclose: () => void } = $props()
@@ -116,7 +116,7 @@
 <div class="sheet" role="dialog" aria-modal="true" aria-label="Selbst zeichnen">
   <header class="head">
     <div class="info">
-      <div class="pinyin">{displayPinyin(word.n)}</div>
+      <div class="pinyin"><Pinyin n={word.n} /></div>
       <div class="muted small meaning">{word.m}</div>
     </div>
     <button class="icon-btn" bind:this={closeBtn} onclick={onclose} aria-label="Schließen" title="Schließen (Esc)">

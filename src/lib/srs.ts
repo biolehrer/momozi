@@ -5,6 +5,7 @@ import { loadSet } from './data'
 import { app } from './state.svelte'
 import { tonesOf } from './pinyin'
 import { orderSession, type DueCard } from './order'
+import { FLAGGED, flaggedWords, isHidden } from './marks.svelte'
 import { QUIZ_TYPES, wordKey, type CardRecord, type QuizType, type Session, type Word } from './types'
 
 const scheduler = fsrs({ enable_fuzz: true, request_retention: 0.9 })
@@ -57,6 +58,7 @@ export function typesFor(w: Word): QuizType[] {
 
 /** Wörter eines Decks (eigenes Deck oder HSK-Set) */
 export async function wordsOfDeck(id: string): Promise<Word[]> {
+  if (id === FLAGGED) return flaggedWords()
   const custom = app.decks.find((d) => d.id === id)
   if (custom) return custom.words
   if (app.sets.some((s) => s.id === id)) return (await loadSet(id)).words
@@ -101,7 +103,10 @@ export interface Overview {
 
 /** Überblick über die aktiven Decks – oder nur über ein Deck (dann ohne Tageslimit für neue Wörter) */
 export async function overview(deckId?: string): Promise<Overview> {
-  const [words, cards, intro] = await Promise.all([deckId ? wordsOfDecks([deckId]) : activeWords(), cardMap(), introducedToday()])
+  const [all, cards, intro] = await Promise.all([deckId ? wordsOfDecks([deckId]) : activeWords(), cardMap(), introducedToday()])
+  // ausgeblendete Wörter zählen nicht mit; das Deck „Markiert“ übt alle seine Karten, auch nicht fällige
+  const words = all.filter((w) => !isHidden(w))
+  const everything = deckId === FLAGGED
   const end = endOfToday()
   const now = Date.now()
   let due = 0
@@ -116,7 +121,7 @@ export async function overview(deckId?: string): Promise<Overview> {
       continue
     }
     learned++
-    for (const c of existing) if (isDue(c, now, end)) due++
+    for (const c of existing) if (everything || isDue(c, now, end)) due++
   }
   const newToday = deckId ? fresh : Math.max(0, Math.min(fresh, app.settings.newPerDay - intro))
   return { due, newToday, learned, total: words.length }
@@ -127,7 +132,9 @@ export async function overview(deckId?: string): Promise<Overview> {
  * Mit deckId nur dieses Deck – dann alle neuen Wörter des Decks (z. B. Vokabeln der letzten Kursstunde).
  */
 export async function buildSession(deckId?: string): Promise<Session> {
-  const [words, cards, intro] = await Promise.all([deckId ? wordsOfDecks([deckId]) : activeWords(), cardMap(), introducedToday()])
+  const [all, cards, intro] = await Promise.all([deckId ? wordsOfDecks([deckId]) : activeWords(), cardMap(), introducedToday()])
+  const words = all.filter((w) => !isHidden(w))
+  const everything = deckId === FLAGGED
   const end = endOfToday()
   const now = Date.now()
   const due: DueCard[] = []
@@ -142,7 +149,7 @@ export async function buildSession(deckId?: string): Promise<Session> {
     }
     types.forEach((type, i) => {
       const c = existing[i]
-      if (isDue(c, now, end)) due.push({ item: { kind: 'quiz', word: w, type }, at: c ? c.fsrs.due.getTime() : 0 })
+      if (everything || isDue(c, now, end)) due.push({ item: { kind: 'quiz', word: w, type }, at: c ? c.fsrs.due.getTime() : 0 })
     })
   }
   const limit = deckId ? Infinity : Math.max(0, app.settings.newPerDay - intro)
@@ -169,8 +176,16 @@ export async function resumableSession(): Promise<Session | undefined> {
   return undefined
 }
 
+/** Alles, was nötig ist, um eine Bewertung zurückzunehmen (Übung: „Rückgängig“) */
+export interface RatingUndo {
+  id: string
+  /** Karte vor der Bewertung (undefined: gab es noch nicht) */
+  prev: CardRecord | undefined
+  logKey: number
+}
+
 /** Bewertung speichern: grade 1 = nochmal, 3 = gewusst */
-export async function rateCard(word: Word, type: QuizType, grade: 1 | 3): Promise<CardRecord> {
+export async function rateCard(word: Word, type: QuizType, grade: 1 | 3): Promise<RatingUndo> {
   const k = wordKey(word)
   const id = cardId(k, type)
   const d = await db()
@@ -179,28 +194,51 @@ export async function rateCard(word: Word, type: QuizType, grade: 1 | 3): Promis
   const { card } = scheduler.next(existing?.fsrs ?? createEmptyCard(now), now, grade === 1 ? Rating.Again : Rating.Good)
   const rec: CardRecord = { id, wordKey: k, type, fsrs: card, createdAt: existing?.createdAt ?? now.getTime() }
   const tx = d.transaction(['cards', 'log'], 'readwrite')
-  await Promise.all([
+  const [, logKey] = await Promise.all([
     tx.objectStore('cards').put(rec),
     tx.objectStore('log').add({ cardId: id, type, rating: grade, at: now.getTime() }),
     tx.done,
   ])
-  return rec
+  return { id, prev: existing, logKey }
 }
 
-/** Neues Wort gilt als eingeführt: leere Karten anlegen, Tageszähler erhöhen */
-export async function markIntroduced(word: Word) {
+/** Bewertung zurücknehmen: Karte genau wie vorher, Eintrag im Protokoll weg */
+export async function undoRating(u: RatingUndo) {
+  const d = await db()
+  const tx = d.transaction(['cards', 'log'], 'readwrite')
+  await Promise.all([
+    u.prev ? tx.objectStore('cards').put(u.prev) : tx.objectStore('cards').delete(u.id),
+    tx.objectStore('log').delete(u.logKey),
+    tx.done,
+  ])
+}
+
+/** Neues Wort gilt als eingeführt: leere Karten anlegen, Tageszähler erhöhen. Gibt die neu angelegten Karten zurück. */
+export async function markIntroduced(word: Word): Promise<string[]> {
   const d = await db()
   const k = wordKey(word)
   const now = new Date()
+  const created: string[] = []
   const tx = d.transaction('cards', 'readwrite')
   for (const type of typesFor(word)) {
     const id = cardId(k, type)
     if (!(await tx.store.get(id))) {
       await tx.store.put({ id, wordKey: k, type, fsrs: createEmptyCard(now), createdAt: now.getTime() })
+      created.push(id)
     }
   }
   await tx.done
   await setMeta('intro:' + today(), (await introducedToday()) + 1)
+  return created
+}
+
+/** Kennenlernen zurücknehmen: angelegte (leere) Karten löschen, Tageszähler wieder senken */
+export async function undoIntroduced(created: string[]) {
+  const d = await db()
+  const tx = d.transaction('cards', 'readwrite')
+  for (const id of created) await tx.store.delete(id)
+  await tx.done
+  await setMeta('intro:' + today(), Math.max(0, (await introducedToday()) - 1))
 }
 
 export async function wordProgress(word: Word): Promise<Map<QuizType, CardRecord>> {

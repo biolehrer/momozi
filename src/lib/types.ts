@@ -88,6 +88,8 @@ export interface Settings {
   autoplay: boolean
   /** dezent an eine Sicherung erinnern */
   backupReminder: boolean
+  /** Zeichen und Pinyin nach Ton einfärben (Farben wie in Pleco); fehlt in älteren Einstellungen */
+  toneColors?: boolean
 }
 
 export type SessionItem =

@@ -2,8 +2,10 @@
   // Abfrage „Töne“: Zeichen sehen, Ton jeder Silbe angeben – per Taste oder Wischgeste
   // (waagerecht = 1, nach oben = 2, Haken ˇ = 3, nach unten = 4, Tippen = neutral).
   import SpeakButton from './SpeakButton.svelte'
+  import Pinyin from './Pinyin.svelte'
+  import { app } from '../lib/state.svelte'
   import { consume, isPrimary, shortcut } from '../lib/keys'
-  import { alsoPinyin, displayPinyin, markedSyllables, splitNumeric, tonesOf } from '../lib/pinyin'
+  import { alsoPinyin, markedSyllables, splitNumeric, tonesOf } from '../lib/pinyin'
   import type { Word } from '../lib/types'
 
   let { word, onrate }: { word: Word; onrate: (grade: 1 | 3) => void } = $props()
@@ -11,6 +13,7 @@
   const chars = $derived([...word.s])
   const tones = $derived(tonesOf(word.n))
   const syls = $derived(markedSyllables(word.n))
+  const toneColors = $derived(!!app.settings.toneColors)
   /** Hauptlesung und weitere richtige Lesungen (wahlweise neutral, Grundform von 一/不) mit gleicher Silbenzahl */
   const variants = $derived([word.n, ...(word.a ?? [])].filter((v) => splitNumeric(v).length === tones.length))
   /** Positionen, die abgefragt werden (Erhua-„r“ nicht) */
@@ -128,7 +131,7 @@
                 &nbsp;
               {/if}
             </div>
-            <div class="zh char">{c}</div>
+            <div class="zh char {finished && toneColors && tones[i] ? `tone${tones[i]}` : ''}">{c}</div>
           </div>
         {/each}
       </div>
@@ -142,7 +145,7 @@
     {#if finished}
       <div class="summary card">
         <div class="pinyin-row">
-          <span class="pinyin">{displayPinyin(word.n)}</span>
+          <span class="pinyin"><Pinyin n={word.n} /></span>
           <SpeakButton {word} auto size={40} />
         </div>
         {#if word.a?.length}<div class="muted small">{alsoPinyin(word.a)}</div>{/if}

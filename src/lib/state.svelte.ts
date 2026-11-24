@@ -3,6 +3,8 @@ import { allDecks, deleteDeck, getMeta, putDeck, setMeta } from './db'
 import { loadSetIndex } from './data'
 import { loadAudioIndex } from './audio.svelte'
 import { migrateData } from './migrate'
+import { FLAGGED, loadMarks } from './marks.svelte'
+import { refreshStreak, startStreakClock } from './streak.svelte'
 import type { CustomDeck, Settings, SetInfo } from './types'
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -12,6 +14,7 @@ export const DEFAULT_SETTINGS: Settings = {
   activeDecks: ['hsk1'],
   autoplay: true,
   backupReminder: true,
+  toneColors: false,
 }
 
 export const app = $state({
@@ -57,7 +60,8 @@ export async function initApp() {
     await saveSettings()
   }
   app.decks = decks.sort((a, b) => a.createdAt - b.createdAt)
-  ;[app.sets] = await Promise.all([loadSetIndex(), loadAudioIndex()])
+  ;[app.sets] = await Promise.all([loadSetIndex(), loadAudioIndex(), loadMarks(), refreshStreak()])
+  startStreakClock()
   applyTheme()
   app.ready = true
   // Browser bitten, die Daten nicht automatisch zu löschen
@@ -119,5 +123,6 @@ export async function setActive(id: string, on: boolean) {
 }
 
 export function deckName(id: string): string {
+  if (id === FLAGGED) return 'Markiert'
   return app.decks.find((d) => d.id === id)?.name ?? app.sets.find((s) => s.id === id)?.name ?? 'Deck'
 }

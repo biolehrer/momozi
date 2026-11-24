@@ -4,6 +4,8 @@
   import { onMount, tick } from 'svelte'
   import { SvelteMap } from 'svelte/reactivity'
   import Header from '../components/Header.svelte'
+  import Hanzi from '../components/Hanzi.svelte'
+  import Pinyin from '../components/Pinyin.svelte'
   import Icon from '../components/Icon.svelte'
   import SpeakButton from '../components/SpeakButton.svelte'
   import { loadDictionary, searchDictionary, type DictEntry } from '../lib/data'
@@ -18,10 +20,10 @@
     type LibItem,
     type PasteEntry,
   } from '../lib/library'
-  import { displayPinyin } from '../lib/pinyin'
   import { back, go, route } from '../lib/router.svelte'
   import { rememberSearch, restoreSearch } from '../lib/search.svelte'
   import { app, createDeck, saveDeck, setActive } from '../lib/state.svelte'
+  import { isFlagged, isHidden } from '../lib/marks.svelte'
   import { wordKey } from '../lib/types'
 
   const fromDeck = route.query.get('deck')
@@ -294,7 +296,7 @@
           <div class="options">
             {#each p.options as o (o.key)}
               <button class="opt" class:on={selected.has(o.key)} onclick={() => pick(p, o)}>
-                <span class="pinyin">{displayPinyin(o.word.n)} {#if !o.set}<span class="badge dict">Wörterbuch</span>{/if}</span>
+                <span class="pinyin"><Pinyin n={o.word.n} /> {#if !o.set}<span class="badge dict">Wörterbuch</span>{/if}</span>
                 <span class="muted small ellipsis">{o.word.m}</span>
               </button>
             {/each}
@@ -325,12 +327,13 @@
             {#if isSel || isIn}<Icon name="check" size={16} stroke={3} />{/if}
           </span>
         {/if}
-        <span class="zh chars" lang="zh-Hans">{it.word.s}</span>
+        <span class="zh chars" lang="zh-Hans"><Hanzi s={it.word.s} n={it.word.n} /></span>
         <span class="info">
           <span class="top">
-            <span class="pinyin">{it.word.n ? displayPinyin(it.word.n) : ''}</span>
+            <span class="pinyin"><Pinyin n={it.word.n} /></span>
             {#if it.set}<span class="badge">{it.set}</span>{:else}<span class="badge dict">Wörterbuch</span>{/if}
             {#if isIn}<span class="badge good">im Deck</span>{/if}
+            {#if isHidden(it.word)}<span class="badge">ausgeblendet</span>{:else if isFlagged(it.word)}<span class="badge accent">⚑</span>{/if}
           </span>
           <span class="muted small meaning">{it.word.m}</span>
         </span>

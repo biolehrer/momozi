@@ -9,11 +9,28 @@
   import { back, route } from '../lib/router.svelte'
   import { deckName } from '../lib/state.svelte'
   import { requeue } from '../lib/order'
-  import { buildSession, clearSession, markIntroduced, rateCard, resumableSession, saveSession } from '../lib/srs'
+  import { isFlagged, setMark } from '../lib/marks.svelte'
+  import { practicedNow, refreshStreak } from '../lib/streak.svelte'
+  import {
+    buildSession,
+    clearSession,
+    markIntroduced,
+    rateCard,
+    resumableSession,
+    saveSession,
+    undoIntroduced,
+    undoRating,
+    type RatingUndo,
+  } from '../lib/srs'
   import type { Session, SessionItem } from '../lib/types'
 
   let session = $state<Session | null>(null)
   let busy = false
+
+  /** Rückgängig: je Schritt der Stand der Sitzung davor und was in der Datenbank zurückzunehmen ist */
+  type Step = { before: Session } & ({ kind: 'rate'; undo: RatingUndo } | { kind: 'learn'; created: string[] })
+  const steps: Step[] = []
+  let canUndo = $state(false)
 
   onMount(async () => {
     let s = route.query.get('fortsetzen') ? await resumableSession() : undefined
@@ -46,7 +63,11 @@
     if (busy || !session || !item || item.kind !== 'quiz') return
     busy = true
     try {
-      await rateCard(item.word, item.type, grade)
+      const before = $state.snapshot(session) as Session
+      const undo = await rateCard(item.word, item.type, grade)
+      steps.push({ before, kind: 'rate', undo })
+      canUndo = true
+      practicedNow()
       if (grade === 1) {
         session.stats.again++
         // später in dieser Sitzung noch einmal – mit Abstand zu den anderen Karten desselben Wortes
@@ -64,9 +85,34 @@
     if (busy || !session || !item) return
     busy = true
     try {
-      await markIntroduced(item.word)
+      const before = $state.snapshot(session) as Session
+      const created = await markIntroduced(item.word)
+      steps.push({ before, kind: 'learn', created })
+      canUndo = true
       session.stats.learned++
       await advance()
+    } finally {
+      busy = false
+    }
+  }
+
+  /** Wort der aktuellen Karte markieren (⚑) bzw. Markierung aufheben – landet im Deck „Markiert“ */
+  function toggleFlag() {
+    if (item) void setMark(item.word, { flag: !isFlagged(item.word) })
+  }
+
+  /** Letzten Schritt zurücknehmen: Karte und Sitzung genau wie vorher, die Karte kommt noch einmal */
+  async function undo() {
+    if (busy || !steps.length) return
+    busy = true
+    try {
+      const step = steps.pop()!
+      if (step.kind === 'rate') await undoRating(step.undo)
+      else await undoIntroduced(step.created)
+      session = step.before
+      await persist()
+      canUndo = steps.length > 0
+      await refreshStreak()
     } finally {
       busy = false
     }
@@ -86,6 +132,13 @@
         consume(e)
         btn.click()
       }
+    } else if (k === 'm' && item) {
+      consume(e)
+      toggleFlag()
+    } else if (k === 'z' || k === 'Backspace') {
+      if (!canUndo) return
+      consume(e)
+      void undo()
     } else if (session && !item && isPrimary(k)) {
       consume(e)
       back('/')
@@ -118,6 +171,20 @@
     >
       <div class="fill" style:width="{goal ? (done / goal) * 100 : 0}%"></div>
     </div>
+    <button
+      class="icon-btn small-icon"
+      class:flag-on={!!item && isFlagged(item.word)}
+      disabled={!item}
+      aria-pressed={!!item && isFlagged(item.word)}
+      onclick={toggleFlag}
+      aria-label="Wort markieren"
+      title="Wort markieren – landet im Deck „Markiert“ (M)"
+    >
+      <Icon name="flag" size={22} />
+    </button>
+    <button class="icon-btn small-icon" disabled={!canUndo} onclick={undo} aria-label="Rückgängig" title="Letzten Schritt rückgängig machen (Z)">
+      <Icon name="undo" size={22} />
+    </button>
     <span class="count small" aria-hidden="true">{percent}&#8239;%</span>
   </header>
   {#if session?.deckId}<p class="deck-label small muted">{deckName(session.deckId)}</p>{/if}
@@ -166,7 +233,7 @@
   </main>
   {#if item}
     <p class="keys-help small muted" aria-hidden="true">
-      <kbd>↵</kbd> weiter · <kbd>1</kbd> <kbd>2</kbd> bewerten · <kbd>1</kbd>–<kbd>5</kbd> Töne · <kbd>T</kbd> Tipp · <kbd>N</kbd> neu zeichnen · <kbd>P</kbd> anhören · <kbd>Esc</kbd> beenden
+      <kbd>↵</kbd> weiter · <kbd>1</kbd> <kbd>2</kbd> bewerten · <kbd>1</kbd>–<kbd>5</kbd> Töne · <kbd>T</kbd> Tipp · <kbd>N</kbd> neu zeichnen · <kbd>M</kbd> markieren · <kbd>Z</kbd> rückgängig · <kbd>P</kbd> anhören · <kbd>Esc</kbd> beenden
     </p>
   {/if}
 </div>
@@ -190,6 +257,15 @@
   .deck-label {
     text-align: center;
     margin: -2px 0 0;
+  }
+  .flag-on {
+    color: var(--accent);
+  }
+  .flag-on :global(svg) {
+    fill: currentColor;
+  }
+  .small-icon:disabled {
+    opacity: 0.3;
   }
   .count {
     min-width: 3.5em;

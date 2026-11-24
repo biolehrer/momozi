@@ -2,14 +2,17 @@
   import { onMount } from 'svelte'
   import DrawSheet from '../components/DrawSheet.svelte'
   import Header from '../components/Header.svelte'
+  import Hanzi from '../components/Hanzi.svelte'
+  import Pinyin from '../components/Pinyin.svelte'
   import Icon from '../components/Icon.svelte'
   import SpeakButton from '../components/SpeakButton.svelte'
   import { audioFor } from '../lib/audio.svelte'
   import WritingPad from '../components/WritingPad.svelte'
   import { loadSet } from '../lib/data'
   import { SENSE_SEP } from '../lib/meaning'
-  import { alsoPinyin, displayPinyin } from '../lib/pinyin'
+  import { alsoPinyin } from '../lib/pinyin'
   import { back, go, route } from '../lib/router.svelte'
+  import { FLAGGED, flaggedWords, isFlagged, isHidden, setMark } from '../lib/marks.svelte'
   import { typesFor, wordProgress } from '../lib/srs'
   import { app, createDeck, saveDeck, setActive } from '../lib/state.svelte'
   import { QUIZ_LABEL, wordKey, type CardRecord, type QuizType, type Word } from '../lib/types'
@@ -55,7 +58,14 @@
       word = parseInline()
     } else {
       const sid = fromSearch ? setId : deckId
-      const words = custom ? custom.words : app.sets.some((s) => s.id === sid) ? (await loadSet(sid)).words : []
+      const words =
+        sid === FLAGGED
+          ? flaggedWords()
+          : custom
+            ? custom.words
+            : app.sets.some((s) => s.id === sid)
+              ? (await loadSet(sid)).words
+              : []
       word = words.find((w) => wordKey(w) === key) ?? null
     }
     if (word) progress = await wordProgress(word)
@@ -143,8 +153,8 @@
         </div>
         <div class="pinyin-row">
           <!-- Druckschrift neben der Handschrift oben: manche Zeichen sehen geschrieben anders aus -->
-          <span class="hanzi zh" lang="zh-Hans">{word.s}</span>
-          {#if word.n}<span class="pinyin">{displayPinyin(word.n)}</span>{/if}
+          <span class="hanzi zh" lang="zh-Hans"><Hanzi s={word.s} n={word.n} /></span>
+          {#if word.n}<span class="pinyin"><Pinyin n={word.n} /></span>{/if}
           <SpeakButton {word} size={44} />
         </div>
         {#if word.a?.length}<div class="muted small">{alsoPinyin(word.a)}</div>{/if}
@@ -190,6 +200,19 @@
         {/if}
 
         <p class="section-title">Lernstand</p>
+        <!-- Markieren und Ausblenden gelten für das Wort überall (lib/marks.svelte.ts) -->
+        <div class="mark-row">
+          <button class="btn small" class:flag-on={isFlagged(word)} aria-pressed={isFlagged(word)} onclick={() => setMark(word!, { flag: !isFlagged(word!) })}>
+            <Icon name="flag" size={18} />
+            {isFlagged(word) ? 'Markiert' : 'Markieren'}
+          </button>
+          <button class="btn small" aria-pressed={isHidden(word)} onclick={() => setMark(word!, { hidden: !isHidden(word!) })}>
+            {isHidden(word) ? 'Wieder einblenden' : 'Ausblenden'}
+          </button>
+        </div>
+        {#if isHidden(word)}
+          <p class="muted small hidden-note">Ausgeblendet – kommt beim Üben und im Zeichenmodus nicht dran, bis du es wieder einblendest.</p>
+        {/if}
         <div class="list">
           {#each typesFor(word) as t (t)}
             <div class="list-item">
@@ -236,6 +259,24 @@
     gap: 8px;
     justify-content: center;
     flex-wrap: wrap;
+  }
+  .mark-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .mark-row .btn {
+    flex: 1;
+  }
+  .flag-on {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .flag-on :global(svg) {
+    fill: currentColor;
+  }
+  .hidden-note {
+    margin: -2px 0 10px;
   }
   .pad-actions {
     display: flex;

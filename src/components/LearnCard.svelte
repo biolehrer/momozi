@@ -1,9 +1,11 @@
 <script lang="ts">
   // Neues Wort kennenlernen: Wort, Pinyin, Bedeutung; je Zeichen Strichfolge ansehen und nachzeichnen.
   import SpeakButton from './SpeakButton.svelte'
+  import Hanzi from './Hanzi.svelte'
+  import Pinyin from './Pinyin.svelte'
   import WritingPad from './WritingPad.svelte'
   import { consume, isPrimary, shortcut } from '../lib/keys'
-  import { alsoPinyin, displayPinyin } from '../lib/pinyin'
+  import { alsoPinyin } from '../lib/pinyin'
   import type { Word } from '../lib/types'
 
   let { word, ondone }: { word: Word; ondone: () => void } = $props()
@@ -49,9 +51,9 @@
   <div class="q-side">
     <span class="badge accent">Neues Wort</span>
     <div class="head">
-      <div class="word zh" lang="zh-Hans">{word.s}</div>
+      <div class="word zh" lang="zh-Hans"><Hanzi s={word.s} n={word.n} /></div>
       <div class="info">
-        {#if word.n}<div class="pinyin">{displayPinyin(word.n)}</div>{/if}
+        {#if word.n}<div class="pinyin"><Pinyin n={word.n} /></div>{/if}
         {#if word.a?.length}<div class="muted small">{alsoPinyin(word.a)}</div>{/if}
         <div class="meaning">{word.m}</div>
       </div>

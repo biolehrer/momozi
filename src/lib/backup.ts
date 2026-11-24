@@ -4,6 +4,8 @@
 import { allCards, allDecks, db, getMeta, setMeta } from './db'
 import { app, createDeck, DEFAULT_SETTINGS, saveDeck, saveSettings, setActive } from './state.svelte'
 import { migrateData, migrateWords } from './migrate'
+import { importMarks, marks, type Mark } from './marks.svelte'
+import { refreshStreak } from './streak.svelte'
 import { today } from './srs'
 import { wordKey, type CardRecord, type CustomDeck, type ReviewLogRecord, type Settings, type Word } from './types'
 
@@ -20,6 +22,8 @@ export interface BackupFile {
   decks: CustomDeck[]
   cards: CardRecord[]
   log: ReviewLogRecord[]
+  /** markierte und ausgeblendete Wörter (seit 0.9.0, fehlt in älteren Sicherungen) */
+  marks?: Record<string, Mark>
 }
 
 export interface DeckFile {
@@ -44,6 +48,7 @@ export async function buildBackup(): Promise<BackupFile> {
     decks,
     cards,
     log,
+    marks: JSON.parse(JSON.stringify(marks.map)) as Record<string, Mark>,
   }
 }
 
@@ -237,6 +242,8 @@ export async function importBackup(b: BackupFile, mode: 'merge' | 'replace'): Pr
     app.settings.activeDecks = [...active]
   }
   await saveSettings()
+  await importMarks(b.marks, mode === 'replace')
+  await refreshStreak()
   // Sicherungen aus älteren Versionen auf den aktuellen Datenstand bringen
   await migrateData(true).catch((e) => console.warn('Datenanpassung übersprungen:', e))
   app.decks = (await allDecks()).sort((a, b2) => a.createdAt - b2.createdAt)

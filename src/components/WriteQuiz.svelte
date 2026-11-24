@@ -3,9 +3,10 @@
   // Auch für den Zeichenmodus (free): ohne Bewertung, mit „Weiter“, wahlweise mit Umriss zum Nachzeichnen.
   import Icon from './Icon.svelte'
   import SpeakButton from './SpeakButton.svelte'
+  import Hanzi from './Hanzi.svelte'
+  import Pinyin from './Pinyin.svelte'
   import WritingPad from './WritingPad.svelte'
   import { consume, isPrimary, shortcut } from '../lib/keys'
-  import { displayPinyin } from '../lib/pinyin'
   import type { Word } from '../lib/types'
 
   let {
@@ -152,8 +153,8 @@
     <div class="prompt">
       <div class="meaning">{word.m}</div>
       <div class="pinyin-row">
-        {#if showWord}<span class="hanzi zh fade-in" lang="zh-Hans">{word.s}</span>{/if}
-        {#if word.n}<span class="pinyin">{displayPinyin(word.n)}</span>{/if}
+        {#if showWord}<span class="hanzi zh fade-in" lang="zh-Hans"><Hanzi s={word.s} n={word.n} /></span>{/if}
+        {#if word.n}<span class="pinyin"><Pinyin n={word.n} /></span>{/if}
         <SpeakButton {word} auto size={40} />
       </div>
     </div>

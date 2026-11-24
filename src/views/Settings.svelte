@@ -118,6 +118,28 @@
     {/each}
   </div>
 
+  <label class="card row tone-colors">
+    <span class="spacer">
+      <span>Töne farbig</span>
+      <span class="muted small block">
+        Zeichen und Pinyin in der Farbe ihres Tons, wie in Pleco:
+        <span class="preview"
+          ><span class="tone1">mā</span> <span class="tone2">má</span> <span class="tone3">mǎ</span> <span class="tone4">mà</span>
+          <span class="tone5">ma</span></span
+        >. In Abfragen erst nach dem Aufdecken.
+      </span>
+    </span>
+    <input
+      type="checkbox"
+      class="switch"
+      checked={!!app.settings.toneColors}
+      onchange={async (e) => {
+        app.settings.toneColors = e.currentTarget.checked
+        await saveSettings()
+      }}
+    />
+  </label>
+
   <p class="section-title">Offline</p>
   <div class="card stack small offline">
     <div class="row">
@@ -252,5 +274,12 @@
   }
   .card p {
     margin: 0;
+  }
+  .tone-colors {
+    margin-top: 12px;
+  }
+  .preview {
+    font-weight: 700;
+    white-space: nowrap;
   }
 </style>

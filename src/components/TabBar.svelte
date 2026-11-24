@@ -5,6 +5,7 @@
   //  Tablet quer / PC (≥ 1100 px): Seitenleiste links mit Namen
   import Icon from './Icon.svelte'
   import { goTab, route } from '../lib/router.svelte'
+  import { streak } from '../lib/streak.svelte'
 
   const tabs = [
     { path: '/', label: 'Start', icon: 'home' },
@@ -30,7 +31,11 @@
   <div class="inner">
     {#each tabs as t (t.path)}
       <button class="tab" class:current={isCurrent(t.path)} aria-current={isCurrent(t.path) ? 'page' : undefined} onclick={() => goTab(t.path)}>
-        <Icon name={t.icon} size={24} />
+        <span class="icon-wrap">
+          <Icon name={t.icon} size={24} />
+          <!-- kurz vor Mitternacht, Serie läuft, heute noch nicht geübt (lib/streak.svelte.ts) -->
+          {#if t.path === '/' && streak.warn && route.path !== '/'}<span class="dot" aria-label="Heute noch nicht geübt"></span>{/if}
+        </span>
         <span>{t.label}</span>
       </button>
     {/each}
@@ -38,6 +43,20 @@
 </nav>
 
 <style>
+  .icon-wrap {
+    position: relative;
+    display: inline-flex;
+  }
+  .icon-wrap .dot {
+    position: absolute;
+    top: -2px;
+    right: -4px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--bad);
+    border: 2px solid var(--bg);
+  }
   .tabbar {
     position: fixed;
     left: 0;

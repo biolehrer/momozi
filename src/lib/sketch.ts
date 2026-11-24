@@ -4,6 +4,7 @@ import { allCards } from './db'
 import { loadSet } from './data'
 import { cardId, retrievability } from './srs'
 import { app } from './state.svelte'
+import { FLAGGED, flaggedWords, isHidden } from './marks.svelte'
 import { wordKey, type Word } from './types'
 
 export interface SketchGroup {
@@ -15,10 +16,13 @@ export interface SketchGroup {
 /** Gelernte (schon kennengelernte) Wörter je eigenem Deck und HSK-Set; leere Gruppen fallen weg */
 export async function learnedGroups(): Promise<SketchGroup[]> {
   const known = new Set((await allCards()).map((c) => c.wordKey))
-  const groups: SketchGroup[] = app.decks.map((d) => ({ id: d.id, name: d.name, words: d.words.filter((w) => known.has(wordKey(w))) }))
+  // ausgeblendete Wörter nie; markierte auch, wenn noch nicht gelernt (bewusst ausgewählt)
+  const learned = (w: Word) => known.has(wordKey(w)) && !isHidden(w)
+  const groups: SketchGroup[] = [{ id: FLAGGED, name: 'Markiert', words: flaggedWords().filter((w) => !isHidden(w)) }]
+  groups.push(...app.decks.map((d) => ({ id: d.id, name: d.name, words: d.words.filter(learned) })))
   for (const s of app.sets) {
     const set = await loadSet(s.id)
-    groups.push({ id: s.id, name: s.name, words: set.words.filter((w) => known.has(wordKey(w))) })
+    groups.push({ id: s.id, name: s.name, words: set.words.filter(learned) })
   }
   return groups.filter((g) => g.words.length)
 }
