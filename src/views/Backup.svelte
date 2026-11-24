@@ -17,6 +17,7 @@
     type BackupStatus,
     type ImportSummary,
   } from '../lib/backup'
+  import { dropped } from '../lib/drop.svelte'
   import { go } from '../lib/router.svelte'
   import { app, saveSettings } from '../lib/state.svelte'
 
@@ -29,6 +30,20 @@
   let pending = $state<BackupFile | null>(null)
   let summary = $state<ImportSummary | null>(null)
   let fileInput: HTMLInputElement
+  let pendingCard: HTMLDivElement | undefined = $state()
+
+  // per Drag & Drop abgelegte Sicherung (components/DropImport.svelte): weiter wie nach „Sicherung laden“
+  $effect(() => {
+    const b = dropped.backup
+    if (!b) return
+    dropped.backup = null
+    error = ''
+    message = ''
+    summary = null
+    pending = b
+    // nach dem Seitenwechsel (der nach oben scrollt) zur Auswahl Zusammenführen/Ersetzen
+    setTimeout(() => pendingCard?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 80)
+  })
 
   async function refresh() {
     ready = false
@@ -131,7 +146,7 @@
   {#if error}<div class="notice error fade-in">{error}</div>{/if}
 
   {#if pending && pendingInfo}
-    <div class="card stack fade-in">
+    <div class="card stack fade-in" bind:this={pendingCard}>
       <h2>Sicherung vom {pendingInfo.date}</h2>
       <p class="small muted">{pendingInfo.decks} eigene Decks · {pendingInfo.cards} geübte Karten</p>
       <button class="btn primary block" onclick={() => doImport('merge')}>Zusammenführen</button>
