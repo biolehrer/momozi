@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
+  import DrawSheet from '../components/DrawSheet.svelte'
   import Header from '../components/Header.svelte'
   import Icon from '../components/Icon.svelte'
   import SpeakButton from '../components/SpeakButton.svelte'
@@ -37,6 +38,8 @@
   let progress = $state(new Map<QuizType, CardRecord>())
   let loaded = $state(false)
   let pads: (WritingPad | undefined)[] = $state([])
+  /** Popup „Selbst zeichnen“ offen? */
+  let drawing = $state(false)
 
   function parseInline(): Word | null {
     try {
@@ -129,7 +132,15 @@
             </button>
           {/each}
         </div>
-        <button class="btn small" onclick={playAll}><Icon name="play" size={18} /> Strichfolge abspielen</button>
+        <div class="pad-actions">
+          <button class="btn small" onclick={playAll} aria-label="Strichfolge abspielen">
+            <Icon name="play" size={18} /> Strichfolge
+          </button>
+          <!-- nur Übung: das Popup bewertet nichts und ändert den Lernstand nicht -->
+          <button class="btn small" onclick={() => (drawing = true)} aria-label="Selbst zeichnen">
+            <Icon name="brush" size={18} /> Zeichnen
+          </button>
+        </div>
         <div class="pinyin-row">
           <!-- Druckschrift neben der Handschrift oben: manche Zeichen sehen geschrieben anders aus -->
           <span class="hanzi zh" lang="zh-Hans">{word.s}</span>
@@ -193,6 +204,9 @@
     {#if custom}
       <button class="btn bad block" onclick={removeFromDeck}><Icon name="trash" size={20} /> Aus „{custom.name}“ entfernen</button>
     {/if}
+    {#if drawing}
+      <DrawSheet {word} onclose={() => (drawing = false)} />
+    {/if}
   {/if}
 </div>
 
@@ -222,6 +236,12 @@
     gap: 8px;
     justify-content: center;
     flex-wrap: wrap;
+  }
+  .pad-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
   }
   .pad-btn {
     border: none;

@@ -3,7 +3,7 @@
 Web-App zum Üben chinesischer Schriftzeichen (Kurzzeichen) – für das Handy gemacht, installierbar, auf Deutsch.
 
 - **Fertige Sets:** HSK 1–6 (HSK 3.0, Prüfungsfassung 2026) mit von Hand geprüften deutschen Bedeutungen und Lesungen; in „Decks“ einzeln zuschaltbar
-- **Eigene Decks:** Wörter suchen (Zeichen, Pinyin oder Deutsch) – standardmäßig nur in den HSK-Wörtern, mit dem Schalter „Auch im Wörterbuch suchen“ zusätzlich in rund 160.000 HanDeDict-Wörtern (farblich abgesetzt); jedes Wort lässt sich zum Ansehen öffnen (Strichfolge, Aussprache) und einzeln oder mit „Auswählen“ gesammelt zu einem Deck hinzufügen
+- **Eigene Decks:** Wörter suchen (Zeichen, Pinyin oder Deutsch) – standardmäßig nur in den HSK-Wörtern, mit dem Schalter „Auch im Wörterbuch suchen“ zusätzlich in rund 160.000 HanDeDict-Wörtern (farblich abgesetzt); jedes Wort lässt sich zum Ansehen öffnen (Strichfolge, Aussprache, „Zeichnen“ als Popup zum Selbstschreiben – ohne Einfluss auf den Lernstand) und einzeln oder mit „Auswählen“ gesammelt zu einem Deck hinzufügen
 - **Vier Abfragearten**, einzeln abschaltbar:
   - **Schreiben** – Bedeutung und Pinyin sehen, Zeichen aus dem Gedächtnis schreiben; jeder Strich wird geprüft, „Tipp“ zeigt den nächsten Strich (zählt wie ein Fehler); ist das Zeichen geschrieben, steht es in Druckschrift vor dem Pinyin; „Neu zeichnen“ schreibt es noch einmal aus dem Kopf (bewertet wird nur der erste Versuch)
   - **Pinyin** – Zeichen sehen, Aussprache erinnern
