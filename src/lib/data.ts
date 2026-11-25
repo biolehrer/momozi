@@ -56,6 +56,8 @@ export interface DictEntry {
   pm?: string
   /** Malus für seltene Zeichen (siehe rarity), wird zum Suchwert addiert */
   r?: number
+  /** Zahl der Einträge, in denen das Wort steckt (siehe compounds), bei Bedarf berechnet */
+  c?: number
 }
 
 /**
@@ -93,11 +95,45 @@ function shownLower(e: DictEntry): string {
   return e.pm
 }
 
-function glossExact(ml: string, q: string): boolean {
-  return ml.split(/\s*[;/,]\s*/).some((raw) => {
-    const g = raw.replace(/[!?.…]+$/, '').trim()
-    return g === q || g.replace(/^(sich|etw\.|jmdn\.|jmdm\.)\s+/, '') === q
-  })
+/** Klammerzusätze entfernen: „italien (staat in süd europa)“ → „italien“ */
+function stripParens(s: string): string {
+  return s.replace(/\([^)]*\)?/g, ' ').replace(/\s+/g, ' ').trim()
+}
+
+function glossList(head: string): string[] {
+  return head
+    .split(/\s*[;/,]\s*/)
+    .map((g) => g.replace(/[!?.…]+$/, '').trim())
+    .filter(Boolean)
+}
+
+const sameGloss = (g: string, q: string) => g === q || g.replace(/^(sich|etw\.|jmdn\.|jmdm\.)\s+/i, '') === q
+
+/**
+ * Ist das Suchwort eine der Bedeutungen (ohne Klammerzusatz)? 0 = die einzige Bedeutung (咖啡 „Kaffee“),
+ * 0.1 = die erste von mehreren, 0.2 = eine spätere; null = keine. `caseOk`: auch in Groß-/Kleinschreibung gleich.
+ */
+function glossTier(head: string, headCase: string, ql: string, q: string): { tier: number; caseOk: boolean } | null {
+  const gl = glossList(head)
+  const i = gl.findIndex((g) => sameGloss(g, ql))
+  if (i < 0) return null
+  const caseOk = sameGloss(glossList(headCase)[i] ?? '', q)
+  return { tier: gl.length === 1 ? 0 : i === 0 ? 0.1 : 0.2, caseOk }
+}
+
+/**
+ * In wie vielen anderen Einträgen steckt das Wort (日本 → 日本人, 日本语 …)? Grobes Maß dafür, wie gebräuchlich es ist –
+ * entscheidet bei fast gleich guten Treffern (日本 vor 东洋 für „Japan“). Wird nur für die besten Treffer berechnet.
+ */
+function compounds(e: DictEntry, pool: DictEntry[]): number {
+  // Einzelzeichen stecken in sehr vielen Wörtern ganz anderer Bedeutung – das sagt über ihre eigene nichts
+  if ([...e.s].length < 2) return 0
+  if (e.c === undefined) {
+    let n = 0
+    for (const o of pool) if (o.s.length > e.s.length && o.s.includes(e.s)) n++
+    e.c = n
+  }
+  return e.c
 }
 
 /**
@@ -129,16 +165,27 @@ export function searchDictionary(dict: DictEntry[], query: string, boost?: Set<s
         else if (e.pk === pk) score = tk ? 1.2 : 0.4
         else if (pk.length >= 2 && e.pk.startsWith(pk)) score = 3.5
       }
-      if (ql.length >= 2) {
-        const i = e.ml.indexOf(ql)
+      if (ql.length >= 2 && e.ml.includes(ql)) {
+        // Klammerzusätze zählen nicht als Bedeutung: „Italien (Staat in Süd Europa)“ ist ein genauer Treffer für
+        // „Italien“, „Turin (Stadt in Italien)“ dagegen nur eine Erklärung – sonst verdrängen hunderte Orte das Land
+        const head = stripParens(e.ml)
+        const i = head.indexOf(ql)
+        let s2: number
         if (i >= 0) {
-          const boundary = i === 0 || /[\s;/(,"„]/.test(e.ml[i - 1])
-          let s2 = glossExact(e.ml, ql) ? 0.2 : boundary ? 2 : 4
-          // Passt nur in den weiteren Bedeutungen, nicht in der angezeigten Kurzbedeutung
-          // (门 „Schule“ als Denkrichtung, 宗 „Sekte, Schule“): nach hinten
-          if (!shownLower(e).includes(ql)) s2 += 0.5
-          if (s2 < score) score = s2
+          const headCase = stripParens(e.m)
+          const boundary = i === 0 || /[\s;/,"„-]/.test(head[i - 1])
+          const g = glossTier(head, headCase, ql, q)
+          s2 = g ? g.tier : boundary ? 2 : 4
+          // Groß-/Kleinschreibung passt nicht: „gehen“ meint das Verb, nicht 竞走 „Gehen (Sportdisziplin)“,
+          // „essen“ nicht die Stadt 埃森 „Essen“
+          if (!(g ? g.caseOk : headCase.slice(i, i + q.length) === q)) s2 += 0.3
+        } else {
+          s2 = 5 // nur in einer Klammer-Erklärung
         }
+        // Passt nur in den weiteren Bedeutungen, nicht in der angezeigten Kurzbedeutung
+        // (门 „Schule“ als Denkrichtung, 宗 „Sekte, Schule“): nach hinten
+        if (!shownLower(e).includes(ql)) s2 += 0.5
+        if (s2 < score) score = s2
       }
       if (score < 99) hits.push({ e, score })
     }
@@ -149,6 +196,12 @@ export function searchDictionary(dict: DictEntry[], query: string, boost?: Set<s
     if (boost?.has(h.e.s)) h.score -= 0.5
   }
   hits.sort((a, b) => a.score - b.score)
+  // Fast gleich gute Spitzentreffer: das gebräuchlichere Wort zuerst (höchstens 0,15 Unterschied)
+  const top = hits.slice(0, 12).filter((h) => h.score < 1)
+  if (top.length > 1) {
+    for (const h of top) h.score -= Math.min(0.15, 0.05 * Math.log10(1 + compounds(h.e, dict)))
+    hits.sort((a, b) => a.score - b.score)
+  }
   return hits.slice(0, limit).map((h) => h.e)
 }
 
