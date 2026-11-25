@@ -33,3 +33,12 @@ export function shortMeaning(senses: string, maxItems = 3, maxLen = 48): string 
   }
   return out
 }
+
+/**
+ * Die ersten weiteren Bedeutungen für die Lernansichten („auch: a · b · c“) – nur wenn die Liste von Hand
+ * nach Alltagsgebrauch sortiert ist (h) und sich von der Hauptbedeutung unterscheidet; sonst ''.
+ */
+export function alsoMeanings(w: { m: string; x?: string; h?: 1 }, max = 3): string {
+  if (!w.h || !w.x || w.x === w.m) return ''
+  return 'auch: ' + w.x.split(SENSE_SEP).slice(0, max).join(' · ')
+}

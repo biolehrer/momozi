@@ -1,7 +1,7 @@
 // Lernstand an korrigierte Wortdaten anpassen (Tabelle: public/data/migrations.json,
 // erzeugt von scripts/build-migrations.mjs):
 //   - Karten und Verlauf von alten Wortschlüsseln auf neue umschreiben (z. B. 一起 yī qǐ -> yì qǐ)
-//   - Kopien in eigenen Decks auffrischen: Lesung, weitere Bedeutungen, weitere richtige Lesungen und –
+//   - Kopien in eigenen Decks auffrischen: Lesung, weitere Bedeutungen (samt Kennzeichen h), weitere richtige Lesungen und –
 //     nur wenn sie noch der früheren Fassung entspricht – die Kurzbedeutung (selbst geänderte bleiben)
 // Läuft einmal je Version der Tabelle, außerdem nach dem Einspielen einer Sicherung.
 import { db, getMeta } from './db'
@@ -40,6 +40,8 @@ function refreshWord(w: Word, mig: Migrations, sets: Map<string, Word>): Word {
   if (w.m === sw.m || mig.meanings[key]?.includes(w.m)) out.m = sw.m
   if (sw.x) out.x = sw.x
   else delete out.x
+  if (sw.h) out.h = sw.h
+  else delete out.h
   if (sw.a?.length) out.a = sw.a
   else delete out.a
   return out

@@ -25,6 +25,8 @@ export interface Word {
   m: string
   /** weitere Bedeutungen (Gruppen durch " / " getrennt) */
   x?: string
+  /** 1 = weitere Bedeutungen von Hand nach Alltagsgebrauch sortiert: die ersten erscheinen beim Lernen */
+  h?: 1
   /**
    * weitere richtige Lesungen in Zahlenschreibweise, z. B. wahlweise neutraler Ton ("tai4 yang5" zu "tai4 yang2")
    * oder die Grundform von 一/不 ("yi1 qi3" zu "yi4 qi3"); die Ton-Abfrage wertet sie ebenfalls als richtig

@@ -44,6 +44,7 @@
     const w: Word = { s, n: parsed?.numeric ?? '', m: meaning.trim() }
     if (parsed && !parsed.hasTones) w.noTones = true
     if (original?.x) w.x = original.x
+    if (original?.x && original.h) w.h = original.h
     const key = wordKey(w)
     const others = deck.words.filter((x) => wordKey(x) !== editKey)
     if (others.some((x) => wordKey(x) === key)) {

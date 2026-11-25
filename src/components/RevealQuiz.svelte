@@ -5,12 +5,14 @@
   import Pinyin from './Pinyin.svelte'
   import { consume, isPrimary, shortcut } from '../lib/keys'
   import { alsoPinyin } from '../lib/pinyin'
+  import { alsoMeanings } from '../lib/meaning'
   import type { Word } from '../lib/types'
 
   let { word, type, onrate }: { word: Word; type: 'pinyin' | 'meaning'; onrate: (grade: 1 | 3) => void } = $props()
 
   let shown = $state(false)
   const size = $derived([...word.s].length > 3 ? 'm' : 'l')
+  const also = $derived(alsoMeanings(word))
 
   function onKey(e: KeyboardEvent) {
     const k = shortcut(e)
@@ -51,8 +53,10 @@
           <div class="main"><Pinyin n={word.n} /></div>
           {#if word.a?.length}<div class="sub">{alsoPinyin(word.a)}</div>{/if}
           <div class="sub">{word.m}</div>
+          {#if also}<p class="also-line">{also}</p>{/if}
         {:else}
           <div class="main">{word.m}</div>
+          {#if also}<p class="also-line">{also}</p>{/if}
           {#if word.n}<div class="sub"><Pinyin n={word.n} /></div>{/if}
         {/if}
       {:else}

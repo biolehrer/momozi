@@ -6,11 +6,13 @@
   import { app } from '../lib/state.svelte'
   import { consume, isPrimary, shortcut } from '../lib/keys'
   import { alsoPinyin, markedSyllables, splitNumeric, tonesOf } from '../lib/pinyin'
+  import { alsoMeanings } from '../lib/meaning'
   import type { Word } from '../lib/types'
 
   let { word, onrate }: { word: Word; onrate: (grade: 1 | 3) => void } = $props()
 
   const chars = $derived([...word.s])
+  const also = $derived(alsoMeanings(word))
   const tones = $derived(tonesOf(word.n))
   const syls = $derived(markedSyllables(word.n))
   const toneColors = $derived(!!app.settings.toneColors)
@@ -150,6 +152,7 @@
         </div>
         {#if word.a?.length}<div class="muted small">{alsoPinyin(word.a)}</div>{/if}
         <div class="muted">{word.m}</div>
+        {#if also}<p class="also-line">{also}</p>{/if}
         <div class="verdict" class:ok={wrongCount === 0}>
           {wrongCount === 0 ? 'Alle Töne richtig' : `${wrongCount} von ${order.length} falsch`}
         </div>

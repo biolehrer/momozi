@@ -10,7 +10,9 @@
 //   overrides/<set>.json|.tsv  Lesung/Bedeutung vorhandener Wörter korrigieren (Wort <TAB> Bedeutung [<TAB> Pinyin])
 //   additions/<set>.tsv        Wörter der Prüfungsliste, die in der Quelle fehlen (Wort <TAB> Pinyin <TAB> Bedeutung)
 //   alternatives.tsv           Schreibweise wie in der Prüfungsliste + weitere richtige Formen für die Ton-Abfrage
-//   extras.tsv                 „Weitere Bedeutungen“ von Hand ersetzen (Wort <TAB> Pinyin <TAB> Text, "-" = keine)
+//   extras.tsv                 „Weitere Bedeutungen“ von Hand ersetzen (Wort <TAB> Pinyin <TAB> Text, "-" = keine);
+//                              in sortierten Stufen (SORTED_SETS) bekommen solche Wörter h: 1 – die App zeigt dann
+//                              die ersten drei Gruppen beim Lernen
 
 import fs from 'node:fs'
 import path from 'node:path'
@@ -236,6 +238,9 @@ function alternativesFor(s, n) {
 }
 
 /** extras.tsv: Wort, Lesung, „Weitere Bedeutungen“ ("-" = keine anzeigen) */
+// Stufen, deren Handlisten schon nach heutigem Alltagsgebrauch sortiert sind (Neuordnung 25.11.2026);
+// nur dort bekommen Wörter h: 1 und die App zeigt die ersten drei Gruppen beim Lernen. HSK 4–6 folgen.
+const SORTED_SETS = new Set(['hsk1', 'hsk2', 'hsk3'])
 const EXTRAS = new Map()
 for (const [s, n, text] of readTsv(path.join(DATA_DIR, 'extras.tsv'))) {
   EXTRAS.set(`${s}|${normalizeNumeric(n)}`, { text: text === '-' ? '' : text, used: false })
@@ -338,12 +343,15 @@ for (const set of SETS) {
     const english = (e.forms.find((f) => normalizeNumeric(f.transcriptions.numeric) === n) ?? e.forms[0]).meanings.slice(0, 3).join('; ')
     review.push([s, reading, meaning, english, flag].join('\t'))
 
+    const extra = extrasFor(s, n, altRow?.alts)
     const word = {
       s,
       n: display,
       m: meaning,
-      x: extrasFor(s, n, altRow?.alts) ?? (entry ? entry.high.slice(0, 6).join(SENSE_SEP) : ''),
+      x: extra ?? (entry ? entry.high.slice(0, 6).join(SENSE_SEP) : ''),
     }
+    // h: „Weitere Bedeutungen“ von Hand gepflegt und nach Gebrauch sortiert – die App zeigt die ersten beim Lernen
+    if (extra && SORTED_SETS.has(set.id)) word.h = 1
     if (altRow?.alts.length) word.a = altRow.alts
     words.push(word)
   }
@@ -362,12 +370,14 @@ for (const set of SETS) {
     for (const ch of s) if (!hasStrokeData(ch)) problems.push(`${set.id} ${s}: keine Strichdaten für ${ch}`)
     if (!meaning) problems.push(`${set.id} ${s} [${n}]: Ergänzung ohne Bedeutung`)
     const entry = findEntry(s, n)
+    const hand = extra ? (extra === '-' ? '' : extra) : extrasFor(s, n, altRow?.alts)
     const word = {
       s,
       n: display,
       m: meaning,
-      x: extra ? (extra === '-' ? '' : extra) : (extrasFor(s, n, altRow?.alts) ?? (entry ? entry.high.slice(0, 6).join(SENSE_SEP) : '')),
+      x: hand ?? (entry ? entry.high.slice(0, 6).join(SENSE_SEP) : ''),
     }
+    if (hand && SORTED_SETS.has(set.id)) word.h = 1
     if (altRow?.alts.length) word.a = altRow.alts
     const k = sortKey(display)
     const at = words.findIndex((w) => sortKey(w.n) > k)

@@ -116,6 +116,7 @@ function cleanWords(list: unknown): Word[] {
     if (!w || typeof w.s !== 'string' || !CJK.test(w.s) || typeof w.m !== 'string') continue
     const word: Word = { s: w.s, n: typeof w.n === 'string' ? w.n : '', m: w.m.slice(0, 200) }
     if (typeof w.x === 'string') word.x = w.x.slice(0, 600)
+    if (w.h === 1 && word.x) word.h = 1
     if (Array.isArray(w.a)) {
       const a = w.a.filter((x): x is string => typeof x === 'string' && x.length <= 40).slice(0, 6)
       if (a.length) word.a = a

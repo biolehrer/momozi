@@ -6,11 +6,13 @@
   import WritingPad from './WritingPad.svelte'
   import { consume, isPrimary, shortcut } from '../lib/keys'
   import { alsoPinyin } from '../lib/pinyin'
+  import { alsoMeanings } from '../lib/meaning'
   import type { Word } from '../lib/types'
 
   let { word, ondone }: { word: Word; ondone: () => void } = $props()
 
   const chars = $derived([...word.s])
+  const also = $derived(alsoMeanings(word))
   let idx = $state(0)
   let traced = $state(false)
   let run = $state(0)
@@ -59,6 +61,7 @@
       </div>
       <SpeakButton {word} auto />
     </div>
+    {#if also}<p class="also-line">{also}</p>{/if}
 
     {#if chars.length > 1}
       <p class="muted small step">Zeichen {idx + 1} von {chars.length}: <span class="zh">{chars[idx]}</span></p>

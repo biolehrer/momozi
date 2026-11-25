@@ -201,6 +201,16 @@ h2 {
   font-size: 0.875rem;
 }
 
+/* „auch: …“ – die ersten weiteren Bedeutungen unter der Hauptbedeutung (lib/meaning.ts alsoMeanings) */
+.also-line {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: var(--muted);
+  max-width: 34em;
+  text-wrap: pretty;
+}
+
 /* ---------- Seitenaufbau ---------- */
 
 .page {

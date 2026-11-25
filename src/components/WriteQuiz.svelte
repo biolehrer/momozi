@@ -4,6 +4,7 @@
   import Icon from './Icon.svelte'
   import SpeakButton from './SpeakButton.svelte'
   import Hanzi from './Hanzi.svelte'
+  import { alsoMeanings } from '../lib/meaning'
   import Pinyin from './Pinyin.svelte'
   import WritingPad from './WritingPad.svelte'
   import { consume, isPrimary, shortcut } from '../lib/keys'
@@ -63,6 +64,8 @@
   // Druckschrift vor dem Pinyin erst, wenn das ganze Wort bekannt ist – vorher würde man es nur abschreiben.
   // Mit Umriss ist das Zeichen ohnehin zu sehen.
   const showWord = $derived(outline || finished || paperRevealed || revealedAt === chars.length - 1)
+  /** weitere Bedeutungen erst nach dem Schreiben – vorher wären es zusätzliche Hinweise */
+  const also = $derived(finished || paperRevealed ? alsoMeanings(word) : '')
 
   function resultLabel(r: Result): string {
     if (r.hinted) return 'mit Hilfe'
@@ -187,6 +190,7 @@
   </div>
 
   <div class="q-after">
+    {#if also}<p class="also-line fade-in">{also}</p>{/if}
     {#if finished}
       <div class="result fade-in">
         {#if free || !first}

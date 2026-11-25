@@ -35,7 +35,7 @@ export function isHidden(w: Word): boolean {
 export async function setMark(w: Word, change: { flag?: boolean; hidden?: boolean }) {
   const k = wordKey(w)
   const prev = marks.map[k]
-  const word: Word = { s: w.s, n: w.n, m: w.m, ...(w.x ? { x: w.x } : {}), ...(w.a?.length ? { a: [...w.a] } : {}) }
+  const word: Word = { s: w.s, n: w.n, m: w.m, ...(w.x ? { x: w.x } : {}), ...(w.h ? { h: w.h } : {}), ...(w.a?.length ? { a: [...w.a] } : {}) }
   marks.map[k] = { flag: prev?.flag, hidden: prev?.hidden, ...change, at: Date.now(), word }
   await setMeta('marks', marks.map)
 }

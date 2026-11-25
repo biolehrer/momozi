@@ -10,6 +10,7 @@ Web-App zum Üben chinesischer Schriftzeichen (Kurzzeichen) – für das Handy g
   - **Töne** – Zeichen sehen, Ton jeder Silbe wischen oder tippen
   - **Bedeutung** – Zeichen sehen, deutsche Bedeutung erinnern
 - **Neue Wörter** werden erst vorgeführt (Strichfolge-Animation) und dann nachgezeichnet
+- **Weitere Bedeutungen nach Alltagsgebrauch:** bei HSK 1–3 von Hand sortiert (heutige Bedeutung zuerst, klassische nur als gekennzeichneter Zusatz); die ersten drei stehen klein als „auch: …“ unter der Hauptbedeutung – beim Kennenlernen, nach dem Aufdecken und nach dem Schreiben; die Wortseite zeigt die ganze Liste
 - **Zeichnen** (Startseite): gelernte Wörter frei schreiben, so oft man mag – aus dem Kopf oder mit Umriss zum Nachzeichnen, alle oder nur aus einem Deck; Wörter, deren Schreiben gerade wackelt, kommen öfter; zählt nicht zum Lernplan
 - **Aussprache** mit echten Aufnahmen, Lücken mit gekennzeichneter KI-Stimme (abschaltbares automatisches Abspielen); bei Pinyin- und Ton-Abfragen erst nach der Antwort
 - **Spaced Repetition** mit FSRS, jede Abfrageart wird einzeln geplant; **Rückgängig** (↶ oder Z) nimmt Vertipper beim Bewerten Schritt für Schritt zurück
