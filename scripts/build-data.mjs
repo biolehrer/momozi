@@ -238,9 +238,9 @@ function alternativesFor(s, n) {
 }
 
 /** extras.tsv: Wort, Lesung, „Weitere Bedeutungen“ ("-" = keine anzeigen) */
-// Stufen, deren Handlisten schon nach heutigem Alltagsgebrauch sortiert sind (Neuordnung 25.11.2026);
-// nur dort bekommen Wörter h: 1 und die App zeigt die ersten drei Gruppen beim Lernen. HSK 4–6 folgen.
-const SORTED_SETS = new Set(['hsk1', 'hsk2', 'hsk3'])
+// Stufen, deren Handlisten schon nach heutigem Alltagsgebrauch sortiert sind (Neuordnung 25.11.2026, HSK 4 am selben Tag);
+// nur dort bekommen Wörter h: 1 und die App zeigt die ersten drei Gruppen beim Lernen. HSK 5–6 folgen.
+const SORTED_SETS = new Set(['hsk1', 'hsk2', 'hsk3', 'hsk4'])
 const EXTRAS = new Map()
 for (const [s, n, text] of readTsv(path.join(DATA_DIR, 'extras.tsv'))) {
   EXTRAS.set(`${s}|${normalizeNumeric(n)}`, { text: text === '-' ? '' : text, used: false })
