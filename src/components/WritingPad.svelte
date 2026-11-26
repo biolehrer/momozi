@@ -60,18 +60,23 @@
   // Hanzi Writer nimmt bei Berührungen immer evt.touches[0] – liegt der Handballen mit auf, springt der Strich
   // dorthin. Darum wertet die Fläche Berührungen selbst aus und reicht nur den zeichnenden Kontakt als
   // Mausereignisse weiter (Maus und Trackpad laufen unverändert direkt zu Hanzi Writer).
-  // Safari meldet je Kontakt, ob es der Apple Pencil ist (touchType „stylus“): Der Stift zeichnet sofort und
-  // hat immer Vorrang. Finger bzw. Handballen zeichnen erst, wenn sie sich bewegen – und gar nicht mehr,
-  // sobald kurz zuvor mit dem Stift geschrieben wurde.
+  // Safari meldet je Kontakt, ob es der Apple Pencil ist (touchType „stylus“): Der Stift zeichnet sofort und hat
+  // immer Vorrang – ein Finger- bzw. Handballen-Strich, der schon läuft, verschwindet spurlos. Finger zeichnen,
+  // sobald sie sich bewegen; kurz nach dem Stift erst ab etwas längerer Bewegung (ein aufliegender Handballen
+  // rutscht selten so weit), und direkt nach einem Stift-Strich gar nicht.
   type PenTouch = Touch & { touchType?: string }
-  /** so lange nach dem letzten Stift-Kontakt zeichnen Finger und Handballen nicht */
-  const PEN_HOLD_MS = 2 * 60_000
+  /** so lange nach dem letzten Stift-Kontakt zeichnet ein neu aufgesetzter Finger bzw. Handballen gar nicht */
+  const PEN_LOCK_MS = 1500
+  /** so lange nach dem letzten Stift-Kontakt braucht ein Finger die längere Bewegung MOVE_NEAR_PEN_PX */
+  const PEN_NEAR_MS = 2 * 60_000
   /** so weit muss sich ein Finger bewegen, bevor er zeichnet – ein aufliegender Handballen bewegt sich kaum */
   const MOVE_PX = 6
+  const MOVE_NEAR_PEN_PX = 24
   let activeTouch: number | null = null
   /** zeichnet gerade der Stift (nicht ein Finger bzw. der Handballen)? */
   let activePen = false
-  let pendingTouch: { id: number; x: number; y: number } | null = null
+  /** aufgesetzte Finger bzw. Handballen, die noch nicht zeichnen: Weg seit dem Aufsetzen, nötige Bewegung */
+  const pending = new Map<number, { path: [number, number][]; need: number }>()
   /** gerade endender Strich zählt nicht als Fehler (siehe endStroke) */
   let voidStroke = false
 
@@ -80,18 +85,29 @@
     target?.dispatchEvent(new MouseEvent(type, { clientX: x, clientY: y, bubbles: true, cancelable: true }))
   }
 
-  function startStroke(id: number, pen: boolean, x: number, y: number) {
+  /** Strich beginnen – beim Finger samt dem Weg, den er schon zurückgelegt hat */
+  function startStroke(id: number, pen: boolean, path: [number, number][]) {
     activeTouch = id
     activePen = pen
-    pendingTouch = null
+    pending.clear()
+    const [[x, y], ...rest] = path
     sendMouse('mousedown', x, y)
+    for (const [mx, my] of rest) sendMouse('mousemove', mx, my)
   }
 
   /**
-   * Strich beenden – Hanzi Writer bewertet ihn wie gewohnt. discard: kein Fehler zählen
+   * Strich beenden – Hanzi Writer bewertet ihn wie gewohnt. discard: spurlos verwerfen, ohne Bewertung
    * (Handballen-Strich, den der Stift ablöst, oder eine vom System abgebrochene Berührung).
    */
   function endStroke(discard: boolean) {
+    if (discard) {
+      // Hanzi Writer überspringt Striche aus einem einzigen Punkt: den laufenden Strich darauf kürzen (internes
+      // Feld von Hanzi Writer 3.x). Gäbe es das Feld einmal nicht mehr, würde der Strich bewertet, zählte dank
+      // voidStroke aber trotzdem nicht als Fehler.
+      const quiz = (writer as unknown as { _quiz?: { _userStroke?: { points?: unknown[] } } } | null)?._quiz
+      const points = quiz?._userStroke?.points
+      if (Array.isArray(points) && points.length > 1) points.length = 1
+    }
     voidStroke = discard
     sendMouse('mouseup')
     voidStroke = false
@@ -105,7 +121,7 @@
     const changed = Array.from(e.changedTouches) as PenTouch[]
     if (changed.some((t) => t.touchType === 'stylus')) lastPen = now
     const inPad = padEl.contains(e.target as Node)
-    if (!inPad && activeTouch === null && pendingTouch === null) return
+    if (!inPad && activeTouch === null && pending.size === 0) return
     // Hanzi Writer bekommt die Berührung nicht selbst zu sehen; während eines Strichs löst der Handballen
     // auch außerhalb der Fläche nichts aus (kein Tippen auf Knöpfe, kein Scrollen)
     e.stopPropagation()
@@ -116,26 +132,27 @@
         if (!inPad) continue
         if (pen) {
           if (activePen) continue
-          // der Stift löst einen Finger bzw. Handballen ab, der schon zeichnet – dessen Strich zählt nicht
           if (activeTouch !== null) endStroke(true)
-          startStroke(t.identifier, true, t.clientX, t.clientY)
-        } else if (activeTouch === null && pendingTouch === null && now - lastPen > PEN_HOLD_MS) {
-          pendingTouch = { id: t.identifier, x: t.clientX, y: t.clientY }
+          startStroke(t.identifier, true, [[t.clientX, t.clientY]])
+        } else if (activeTouch === null && now - lastPen > PEN_LOCK_MS) {
+          pending.set(t.identifier, { path: [[t.clientX, t.clientY]], need: now - lastPen < PEN_NEAR_MS ? MOVE_NEAR_PEN_PX : MOVE_PX })
         }
       } else if (e.type === 'touchmove') {
+        const wait = pending.get(t.identifier)
         if (t.identifier === activeTouch) {
           sendMouse('mousemove', t.clientX, t.clientY)
-        } else if (pendingTouch?.id === t.identifier && Math.hypot(t.clientX - pendingTouch.x, t.clientY - pendingTouch.y) >= MOVE_PX) {
-          // Finger bewegt sich: ab dem ersten Aufsetzpunkt zeichnen
-          const { x, y } = pendingTouch
-          startStroke(t.identifier, false, x, y)
-          sendMouse('mousemove', t.clientX, t.clientY)
+        } else if (wait) {
+          const { path, need } = wait
+          if (path.length < 300) path.push([t.clientX, t.clientY])
+          else path[path.length - 1] = [t.clientX, t.clientY]
+          // weit genug bewegt: zeichnen, ab dem ersten Aufsetzpunkt – wer zuerst so weit kommt, zeichnet
+          if (Math.hypot(t.clientX - path[0][0], t.clientY - path[0][1]) >= need) startStroke(t.identifier, false, path)
         }
       } else if (t.identifier === activeTouch) {
         endStroke(e.type === 'touchcancel')
-      } else if (pendingTouch?.id === t.identifier) {
-        // Tupfer ohne Bewegung (meist der Handballen): kein Strich
-        pendingTouch = null
+      } else {
+        // Tupfer ohne (genug) Bewegung, meist der Handballen: kein Strich
+        pending.delete(t.identifier)
       }
     }
   }
