@@ -1,7 +1,7 @@
 {
   "name": "momozi",
   "private": true,
-  "version": "0.12.2",
+  "version": "0.12.3",
   "description": "Chinesische Schriftzeichen schreiben üben – Web-App (PWA) mit Spaced Repetition",
   "license": "MIT",
   "type": "module",

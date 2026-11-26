@@ -12,6 +12,7 @@
   import { deckName } from '../lib/state.svelte'
   import { requeue } from '../lib/order'
   import { preloadStrokes } from '../lib/strokes'
+  import { preloadAudio } from '../lib/audio.svelte'
   import { FLAGGED, isFlagged, setMark } from '../lib/marks.svelte'
   import { flameShownToday, markFlameShown, milestones } from '../lib/motion'
   import { practicedNow, refreshStreak, streak } from '../lib/streak.svelte'
@@ -56,7 +57,8 @@
 
   const item = $derived(session && session.index < session.items.length ? session.items[session.index] : null)
 
-  // Strichdaten für die aktuelle und die nächsten Karten mit Zeichenfläche schon laden (Kennenlernen, Schreiben)
+  // Strichdaten für die aktuelle und die nächsten Karten mit Zeichenfläche schon laden (Kennenlernen, Schreiben),
+  // die Aussprache der aktuellen und der nächsten drei Karten schon dekodieren – spielt dann ohne Verzögerung ab
   $effect(() => {
     if (!session) return
     const upcoming = session.items.slice(session.index, session.index + 8)
@@ -64,6 +66,7 @@
       .filter((it) => it.kind === 'learn' || it.type === 'write')
       .slice(0, 3)
       .forEach((it) => preloadStrokes(it.word.s))
+    upcoming.slice(0, 4).forEach((it) => preloadAudio(it.word))
   })
   const total = $derived(session?.items.length ?? 0)
   // Fester Fortschritt: jede Aufgabe zählt einmal und ist erst mit „Gewusst“ (bzw. nach dem Kennenlernen) erledigt.

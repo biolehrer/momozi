@@ -8,6 +8,7 @@
   import { back } from '../lib/router.svelte'
   import { learnedGroups, pickNext, unite, writeWeights, type SketchGroup } from '../lib/sketch'
   import { preloadStrokes } from '../lib/strokes'
+  import { preloadAudio } from '../lib/audio.svelte'
   import { wordKey, type Word } from '../lib/types'
 
   /** zuletzt gewählte Wörter und Umriss – nur Bequemlichkeit, darf fehlen */
@@ -63,9 +64,13 @@
       recent.push(wordKey(word))
       if (recent.length > 20) recent.shift()
       preloadStrokes(word.s)
+      preloadAudio(word)
     }
     upcoming = pickNext(pool, weights, recent)
-    if (upcoming) preloadStrokes(upcoming.s)
+    if (upcoming) {
+      preloadStrokes(upcoming.s)
+      preloadAudio(upcoming)
+    }
     turn++
   }
 
