@@ -7,6 +7,7 @@
   import { consume, shortcut } from '../lib/keys'
   import { back } from '../lib/router.svelte'
   import { learnedGroups, pickNext, unite, writeWeights, type SketchGroup } from '../lib/sketch'
+  import { preloadStrokes } from '../lib/strokes'
   import { wordKey, type Word } from '../lib/types'
 
   /** zuletzt gewählte Wörter und Umriss – nur Bequemlichkeit, darf fehlen */
@@ -53,12 +54,18 @@
     next()
   })
 
+  /** schon ausgewähltes nächstes Wort – seine Strichdaten werden vorab geladen */
+  let upcoming: Word | null = null
+
   function next() {
-    word = pickNext(pool, weights, recent)
+    word = upcoming && pool.includes(upcoming) ? upcoming : pickNext(pool, weights, recent)
     if (word) {
       recent.push(wordKey(word))
       if (recent.length > 20) recent.shift()
+      preloadStrokes(word.s)
     }
+    upcoming = pickNext(pool, weights, recent)
+    if (upcoming) preloadStrokes(upcoming.s)
     turn++
   }
 
@@ -66,6 +73,7 @@
     source = id
     savePrefs()
     recent.length = 0
+    upcoming = null
     next()
   }
 

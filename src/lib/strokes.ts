@@ -17,3 +17,11 @@ export function loadStrokes(ch: string): Promise<unknown> {
   }
   return p
 }
+
+/**
+ * Strichdaten im Voraus laden (die nächsten Karten), damit beim Umblättern kein „Lade Strichfolge …“ erscheint.
+ * Kommt aus dem Offline-Speicher, sonst aus dem Netz; Fehler zeigt erst die Zeichenfläche selbst an.
+ */
+export function preloadStrokes(text: string) {
+  for (const ch of new Set(text)) loadStrokes(ch).catch(() => {})
+}

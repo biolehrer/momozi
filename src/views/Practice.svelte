@@ -11,6 +11,7 @@
   import { back, route } from '../lib/router.svelte'
   import { deckName } from '../lib/state.svelte'
   import { requeue } from '../lib/order'
+  import { preloadStrokes } from '../lib/strokes'
   import { FLAGGED, isFlagged, setMark } from '../lib/marks.svelte'
   import { flameShownToday, markFlameShown, milestones } from '../lib/motion'
   import { practicedNow, refreshStreak, streak } from '../lib/streak.svelte'
@@ -54,6 +55,16 @@
   })
 
   const item = $derived(session && session.index < session.items.length ? session.items[session.index] : null)
+
+  // Strichdaten für die aktuelle und die nächsten Karten mit Zeichenfläche schon laden (Kennenlernen, Schreiben)
+  $effect(() => {
+    if (!session) return
+    const upcoming = session.items.slice(session.index, session.index + 8)
+    upcoming
+      .filter((it) => it.kind === 'learn' || it.type === 'write')
+      .slice(0, 3)
+      .forEach((it) => preloadStrokes(it.word.s))
+  })
   const total = $derived(session?.items.length ?? 0)
   // Fester Fortschritt: jede Aufgabe zählt einmal und ist erst mit „Gewusst“ (bzw. nach dem Kennenlernen) erledigt.
   // Jedes „Nochmal“ hängt eine Kopie an – ohne sie bleibt die Zahl der Aufgaben gleich (gilt auch für alte Sitzungen).

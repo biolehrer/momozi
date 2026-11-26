@@ -1,3 +1,8 @@
+<script module lang="ts">
+  /** letzter Kontakt mit dem Apple Pencil (ms) – gilt für alle Zeichenflächen, siehe onTouch */
+  let lastPen = 0
+</script>
+
 <script lang="ts">
   // Zeichenfläche auf Basis von Hanzi Writer.
   //  mode "learn": Strichfolge wird vorgeführt, danach mit Umriss nachzeichnen (Hinweis nach 1 Fehler)
@@ -34,6 +39,7 @@
   } = $props()
 
   let wrap: HTMLDivElement
+  let padEl: HTMLDivElement
   let host: HTMLDivElement
   let size = $state(0)
   let status = $state<'loading' | 'ready' | 'error'>('loading')
@@ -49,6 +55,90 @@
   let stroke = 0
   /** Striche, für die ein Tipp angesehen wurde – mehrmals derselbe zählt einmal */
   const tipped = new Set<number>()
+
+  // ---------- Berührungen: genau ein Kontakt zeichnet, der Handballen nie ----------
+  // Hanzi Writer nimmt bei Berührungen immer evt.touches[0] – liegt der Handballen mit auf, springt der Strich
+  // dorthin. Darum wertet die Fläche Berührungen selbst aus und reicht nur den zeichnenden Kontakt als
+  // Mausereignisse weiter (Maus und Trackpad laufen unverändert direkt zu Hanzi Writer).
+  // Safari meldet je Kontakt, ob es der Apple Pencil ist (touchType „stylus“): Der Stift zeichnet sofort und
+  // hat immer Vorrang. Finger bzw. Handballen zeichnen erst, wenn sie sich bewegen – und gar nicht mehr,
+  // sobald kurz zuvor mit dem Stift geschrieben wurde.
+  type PenTouch = Touch & { touchType?: string }
+  /** so lange nach dem letzten Stift-Kontakt zeichnen Finger und Handballen nicht */
+  const PEN_HOLD_MS = 2 * 60_000
+  /** so weit muss sich ein Finger bewegen, bevor er zeichnet – ein aufliegender Handballen bewegt sich kaum */
+  const MOVE_PX = 6
+  let activeTouch: number | null = null
+  /** zeichnet gerade der Stift (nicht ein Finger bzw. der Handballen)? */
+  let activePen = false
+  let pendingTouch: { id: number; x: number; y: number } | null = null
+  /** gerade endender Strich zählt nicht als Fehler (siehe endStroke) */
+  let voidStroke = false
+
+  function sendMouse(type: 'mousedown' | 'mousemove' | 'mouseup', x = 0, y = 0) {
+    const target: EventTarget | null = type === 'mouseup' ? document : host.querySelector('svg')
+    target?.dispatchEvent(new MouseEvent(type, { clientX: x, clientY: y, bubbles: true, cancelable: true }))
+  }
+
+  function startStroke(id: number, pen: boolean, x: number, y: number) {
+    activeTouch = id
+    activePen = pen
+    pendingTouch = null
+    sendMouse('mousedown', x, y)
+  }
+
+  /**
+   * Strich beenden – Hanzi Writer bewertet ihn wie gewohnt. discard: kein Fehler zählen
+   * (Handballen-Strich, den der Stift ablöst, oder eine vom System abgebrochene Berührung).
+   */
+  function endStroke(discard: boolean) {
+    voidStroke = discard
+    sendMouse('mouseup')
+    voidStroke = false
+    activeTouch = null
+    activePen = false
+  }
+
+  function onTouch(e: TouchEvent) {
+    if (mode === 'view' || destroyed) return
+    const now = Date.now()
+    const changed = Array.from(e.changedTouches) as PenTouch[]
+    if (changed.some((t) => t.touchType === 'stylus')) lastPen = now
+    const inPad = padEl.contains(e.target as Node)
+    if (!inPad && activeTouch === null && pendingTouch === null) return
+    // Hanzi Writer bekommt die Berührung nicht selbst zu sehen; während eines Strichs löst der Handballen
+    // auch außerhalb der Fläche nichts aus (kein Tippen auf Knöpfe, kein Scrollen)
+    e.stopPropagation()
+    if (e.cancelable) e.preventDefault()
+    for (const t of changed) {
+      const pen = t.touchType === 'stylus'
+      if (e.type === 'touchstart') {
+        if (!inPad) continue
+        if (pen) {
+          if (activePen) continue
+          // der Stift löst einen Finger bzw. Handballen ab, der schon zeichnet – dessen Strich zählt nicht
+          if (activeTouch !== null) endStroke(true)
+          startStroke(t.identifier, true, t.clientX, t.clientY)
+        } else if (activeTouch === null && pendingTouch === null && now - lastPen > PEN_HOLD_MS) {
+          pendingTouch = { id: t.identifier, x: t.clientX, y: t.clientY }
+        }
+      } else if (e.type === 'touchmove') {
+        if (t.identifier === activeTouch) {
+          sendMouse('mousemove', t.clientX, t.clientY)
+        } else if (pendingTouch?.id === t.identifier && Math.hypot(t.clientX - pendingTouch.x, t.clientY - pendingTouch.y) >= MOVE_PX) {
+          // Finger bewegt sich: ab dem ersten Aufsetzpunkt zeichnen
+          const { x, y } = pendingTouch
+          startStroke(t.identifier, false, x, y)
+          sendMouse('mousemove', t.clientX, t.clientY)
+        }
+      } else if (t.identifier === activeTouch) {
+        endStroke(e.type === 'touchcancel')
+      } else if (pendingTouch?.id === t.identifier) {
+        // Tupfer ohne Bewegung (meist der Handballen): kein Strich
+        pendingTouch = null
+      }
+    }
+  }
 
   function colors() {
     const cs = getComputedStyle(document.documentElement)
@@ -74,7 +164,7 @@
       markStrokeCorrectAfterMisses: withOutline ? 3 : 5,
       highlightOnComplete: true,
       onMistake: () => {
-        mistakes++
+        if (!voidStroke) mistakes++
       },
       onCorrectStroke: (d) => {
         stroke = d.strokeNum + 1
@@ -189,7 +279,12 @@
     })
     if (mode === 'learn') demoThenTrace()
     else if (mode === 'test') startQuiz(outline)
+    // vor Hanzi Writer an die Berührungen kommen: Erfassungsphase am Fenster (nur, wo gezeichnet wird)
+    const touchOpts: AddEventListenerOptions = { capture: true, passive: false }
+    const touchTypes = mode === 'view' ? [] : (['touchstart', 'touchmove', 'touchend', 'touchcancel'] as const)
+    for (const t of touchTypes) window.addEventListener(t, onTouch, touchOpts)
     return () => {
+      for (const t of touchTypes) window.removeEventListener(t, onTouch, touchOpts)
       destroyed = true
       cancelAnimationFrame(frame)
       try {
@@ -206,7 +301,7 @@
 <svelte:window onresize={onResize} />
 
 <div class="pad-wrap" class:inline={fixedSize !== undefined} bind:this={wrap}>
-  <div class="pad" style:width="{size}px" style:height="{size}px" class:interactive={mode !== 'view'} class:solved>
+  <div class="pad" bind:this={padEl} style:width="{size}px" style:height="{size}px" class:interactive={mode !== 'view'} class:solved>
     <svg class="grid" viewBox="0 0 100 100" aria-hidden="true" preserveAspectRatio="none">
       <rect x="0.5" y="0.5" width="99" height="99" rx="3" class="frame" />
       <line x1="1.5" y1="1.5" x2="98.5" y2="98.5" />
