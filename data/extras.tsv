@@ -124,7 +124,7 @@
 登记	deng1 ji4	einchecken (Hotel)
 等待	deng3 dai4	erwarten
 系	ji4	-
-洞	dong4	-
+洞	dong4	Null (beim Durchsagen von Ziffern)
 躲	duo3	meiden (躲着他 = ihm aus dem Weg gehen)
 朵	duo3	Blüte (alt)
 反正	fan3 zheng4	überlaufen (vom Feind, alt)
@@ -202,7 +202,7 @@
 一代	yi2 dai4	Epoche
 意外	yi4 wai4	-
 因而	yin1 er2	-
-营业	ying2 ye4	-
+营业	ying2 ye4	Öffnungszeiten (营业时间)
 邮寄	you2 ji4	-
 语气	yu3 qi4	Modus (Grammatik)
 愿望	yuan4 wang4	Traum
@@ -293,7 +293,7 @@
 启示	qi3 shi4	Offenbarung
 起源	qi3 yuan2	-
 前者	qian2 zhe3	-
-强迫	qiang3 po4	-
+强迫	qiang3 po4	zwanghaft (强迫症 = Zwangsstörung)
 亲属	qin1 shu3	-
 清	qing1	deutlich (清楚) / still, ruhig / Qing-Dynastie (1644–1911)
 情节	qing2 jie2	Umstände (eines Falls)
@@ -1661,7 +1661,7 @@
 背后	bei4 hou4	hinter dem Rücken (背后说人 = über andere lästern)
 背景	bei4 jing3	einflussreiche Gönner (有背景 = Beziehungen haben)
 比例	bi3 li4	Maßstab
-彼此	bi3 ci3	-
+彼此	bi3 ci3	ebenfalls (彼此彼此 = gleichfalls)
 必	bi4	-
 必然	bi4 ran2	Notwendigkeit
 必需	bi4 xu1	-
@@ -1681,7 +1681,7 @@
 采取	cai3 qu3	-
 参考	can1 kao3	Orientierung (仅供参考 = nur zur Orientierung)
 藏	cang2	sammeln, aufbewahren (收藏)
-操作	cao1 zuo4	-
+操作	cao1 zuo4	Betriebs- (操作系统 = Betriebssystem)
 册	ce4	-
 测	ce4	vermuten (猜测)
 测试	ce4 shi4	Beta-Version (Software)
@@ -1714,7 +1714,7 @@
 丑	chou3	Clownrolle (Peking-Oper) / Büffel (2. Erdzweig) / schändlich (丑闻 = Skandal)
 处	chu3	auskommen mit (相处) / sich befinden (处于) / bestrafen (处罚)
 初	chu1	erster Monatstag (正月初一 = Neujahrstag)
-处	chu4	-
+处	chu4	Punkt, Seite (长处 = Stärke; 短处 = Schwäche)
 创新	chuang4 xin1	-
 创作	chuang4 zuo4	-
 刺激	ci4 ji1	Nervenkitzel / schockieren (受了刺激 = einen Schock erlitten haben)
@@ -1749,7 +1749,7 @@
 堆	dui1	ein Haufen (一堆人 = ein Haufen Leute)
 对比	dui4 bi3	Verhältnis (Zahlen)
 对象	dui4 xiang4	-
-二手	er4 shou3	-
+二手	er4 shou3	Passiv- (二手烟 = Passivrauchen)
 发挥	fa1 hui1	weiterentwickeln (Gedanken)
 发起	fa1 qi3	-
 发言	fa1 yan2	-
@@ -1798,8 +1798,8 @@
 工艺	gong1 yi4	Kunstgewerbe
 公布	gong1 bu4	-
 公寓	gong1 yu4	-
-恭喜	gong1 xi3	-
-共享	gong4 xiang3	-
+恭喜	gong1 xi3	Neujahrsgruß (恭喜发财 = Glück und Wohlstand!)
+共享	gong4 xiang3	Leih- (共享单车 = Leihfahrrad)
 贡献	gong4 xian4	-
 古	gu3	-
 古代	gu3 dai4	-
@@ -1809,7 +1809,7 @@
 挂号	gua4 hao4	-
 怪	guai4	ganz schön (umg.: 怪冷的 = ziemlich kalt)
 观点	guan1 dian3	-
-光临	guang1 lin2	-
+光临	guang1 lin2	willkommen! (欢迎光临, Begrüßung im Geschäft)
 光明	guang1 ming2	aufrichtig (光明正大)
 广	guang3	verbreiten (推广) / Kanton, Guangdong (kurz: 广州)
 广大	guang3 da4	zahlreich (广大群众 = die breite Masse)
@@ -1817,7 +1817,7 @@
 规律	gui1 lv4	-
 柜子	gui4 zi5	-
 滚	gun3	-
-锅	guo1	-
+锅	guo1	Schuld (umg.: 背锅 = den Kopf hinhalten müssen)
 国画	guo2 hua4	-
 果然	guo3 ran2	-
 过度	guo4 du4	-
@@ -1886,7 +1886,7 @@
 较	jiao4	vergleichen (比较) / kleinlich sein (计较)
 阶段	jie1 duan4	-
 接触	jie1 chu4	-
-接待	jie1 dai4	-
+接待	jie1 dai4	Rezeption (接待处)
 接近	jie1 jin4	-
 接收	jie1 shou1	übernehmen (Betrieb) / Mitglieder aufnehmen
 结	jie2	abschließen (结账 = bezahlen) / sich verbinden (结婚 = heiraten; 结交 = Freundschaft schließen) / erstarren (结冰 = gefrieren)
@@ -1919,7 +1919,7 @@
 控制	kong4 zhi4	-
 库	ku4	Bibliothek, Bestand (数据库 = Datenbank)
 宽	kuan1	nachsichtig (宽容) / locker (宽松)
-老板	lao3 ban3	-
+老板	lao3 ban3	Ladeninhaber(in), Wirt(in) (Anrede im Laden: 老板!)
 乐观	le4 guan1	-
 泪水	lei4 shui3	-
 类	lei4	ähnlich sein (类似)
@@ -1962,7 +1962,7 @@
 面向	mian4 xiang4	gerichtet an (面向学生 = für Studierende)
 描述	miao2 shu4	-
 名称	ming2 cheng1	-
-名牌	ming2 pai2	-
+名牌	ming2 pai2	Marken-, Elite- (名牌大学 = Eliteuniversität)
 摸	mo1	streicheln / herausfinden (摸清情况 = die Lage auskundschaften)
 陌生	mo4 sheng1	-
 某	mou3	-
@@ -2011,7 +2011,7 @@
 墙	qiang2	-
 切	qie1	Tangente (Mathematik)
 亲	qin1	persönlich (亲眼 = mit eigenen Augen) / eng, vertraut (亲密) / Heirat (提亲 = um die Hand anhalten) / Lieber, Liebe (Online-Anrede: 亲)
-亲爱	qin1 ai4	-
+亲爱	qin1 ai4	Schatz, Liebling (亲爱的)
 轻易	qing1 yi4	-
 情景	qing2 jing3	-
 情绪	qing2 xu4	schlechte Laune (闹情绪)
@@ -2020,7 +2020,7 @@
 权	quan2	abwägen (权衡) / vorläufig (alt)
 权利	quan2 li4	-
 劝	quan4	trösten (劝慰)
-群	qun2	-
+群	qun2	Gruppenchat (微信群 = WeChat-Gruppe)
 热爱	re4 ai4	-
 热烈	re4 lie4	-
 热心	re4 xin1	-
@@ -2056,7 +2056,7 @@
 生存	sheng1 cun2	-
 胜	sheng4	gewachsen sein (胜任) / Sehenswürdigkeit (名胜)
 胜利	sheng4 li4	-
-失眠	shi1 mian2	-
+失眠	shi1 mian2	nicht schlafen können
 失误	shi1 wu4	-
 失业	shi1 ye4	-
 石头	shi2 tou5	-
@@ -2102,7 +2102,7 @@
 酸甜苦辣	suan1 tian2 ku3 la4	-
 随	sui2	wie du willst (随你) / im Zuge von (随着)
 随后	sui2 hou4	-
-随手	sui2 shou3	-
+随手	sui2 shou3	im Vorbeigehen (随手关门 = die Tür hinter sich zumachen)
 随意	sui2 yi4	Prost! (nach Belieben trinken, nicht auf ex)
 碎	sui4	geschwätzig (嘴碎) / Scherbe (碎片)
 损失	sun3 shi1	-
@@ -2171,7 +2171,7 @@
 舞台	wu3 tai2	Schauplatz (übertragen)
 物品	wu4 pin3	-
 物业	wu4 ye4	-
-雾	wu4	-
+雾	wu4	Smog (雾霾)
 吸管	xi1 guan3	Pipette
 吸收	xi1 shou1	Mitglieder aufnehmen
 戏	xi4	Oper (京戏 = Peking-Oper) / necken, scherzen / Spiel (游戏)
@@ -2182,7 +2182,7 @@
 显得	xian3 de5	-
 显示	xian3 shi4	-
 县	xian4	-
-现代	xian4 dai4	-
+现代	xian4 dai4	Hyundai (Automarke)
 现实	xian4 shi2	materialistisch (Person)
 线路	xian4 lu4	Stromkreis
 乡	xiang1	Gemeinde (Verwaltung)
@@ -2194,7 +2194,7 @@
 向上	xiang4 shang4	nach Höherem streben (好好学习, 天天向上)
 象征	xiang4 zheng1	-
 橡皮	xiang4 pi2	Gummi
-消费	xiao1 fei4	-
+消费	xiao1 fei4	Verzehr (最低消费 = Mindestverzehr)
 消费者	xiao1 fei4 zhe3	-
 消化	xiao1 hua4	verarbeiten (Informationen)
 消极	xiao1 ji2	-
@@ -2320,13 +2320,13 @@
 重复	chong2 fu4	-
 逐步	zhu2 bu4	-
 主动	zhu3 dong4	Initiative (掌握主动 = die Initiative haben) / Antrieb (Technik)
-主任	zhu3 ren4	-
+主任	zhu3 ren4	Klassenlehrer(in) (班主任)
 主题	zhu3 ti2	Betreff (E-Mail)
 注重	zhu4 zhong4	-
 专心	zhuan1 xin1	-
 装饰	zhuang1 shi4	dekorativ
 状况	zhuang4 kuang4	-
-状态	zhuang4 tai4	-
+状态	zhuang4 tai4	Form (Sport: 状态很好 = in guter Form)
 撞	zhuang4	zufällig treffen (撞见)
 追	zhui1	nachgehen, untersuchen (追究) / werben um (追女孩 = einem Mädchen den Hof machen) / zurückdenken (追忆)
 咨询	zi1 xun2	-
@@ -2348,7 +2348,7 @@
 最佳	zui4 jia1	-
 尊敬	zun1 jing4	sehr geehrte(r) (Anrede)
 池	chi2	Bassin (游泳池 = Schwimmbecken)
-当	dang4	-
+当	dang4	angemessen (恰当 = passend) / verpfänden (当铺 = Pfandhaus)
 呀	ya1	knarren (Lautmalerei)
 平衡	ping2 heng2	ausgeglichen / ausgleichen (平衡收支 = Einnahmen und Ausgaben ausgleichen)
 痛苦	tong4 ku3	qualvoll, schmerzlich
@@ -2416,7 +2416,7 @@
 次数	ci4 shu4	Potenz, Grad (Mathematik)
 刺	ci4	ermorden (刺杀) / beißend (刺鼻 = beißender Geruch) / Gräte (鱼刺)
 从业	cong2 ye4	-
-醋	cu4	-
+醋	cu4	eifersüchtig sein (吃醋)
 脆	cui4	klar (Stimme) / unkompliziert (干脆 = einfach, glatt)
 寸	cun4	-
 搭	da1	aufhängen (搭衣服) / kombinieren (搭配) / ansprechen (搭话)
@@ -2480,7 +2480,7 @@
 风力	feng1 li4	-
 服	fu2	sich geschlagen geben (我服了) / dienen (服兵役 = Wehrdienst leisten) / vertragen (水土不服 = das Klima nicht vertragen)
 幅度	fu2 du4	Amplitude
-福利	fu2 li4	-
+福利	fu2 li4	Goodie (umg.: 发福利 = etwas spendieren)
 辅导	fu3 dao3	-
 辅助	fu3 zhu4	-
 负面	fu4 mian4	-
@@ -2569,7 +2569,7 @@
 火灾	huo3 zai1	-
 货车	huo4 che1	-
 饥饿	ji1 e4	Hungersnot
-机械	ji1 xie4	-
+机械	ji1 xie4	schematisch, stur (fig.)
 机遇	ji1 yu4	-
 机制	ji1 zhi4	maschinell hergestellt
 基金	ji1 jin1	-
@@ -2650,7 +2650,7 @@
 啦	la5	Aufzählung (苹果啦, 香蕉啦 …)
 赖	lai4	abhängig sein (依赖) / nicht gehen wollen (赖着不走) / beschuldigen (别赖我 = schieb es nicht auf mich)
 栏	lan2	Hürde (跨栏 = Hürdenlauf)
-狼	lang2	-
+狼	lang2	Lustmolch (色狼)
 朗读	lang3 du2	-
 听觉	ting1 jue2	-
 提取	ti2 qu3	-
@@ -2726,11 +2726,11 @@
 赔偿	pei2 chang2	-
 配备	pei4 bei4	-
 捧	peng3	hochjubeln, unterstützen (捧场)
-碰撞	peng4 zhuang4	-
+碰撞	peng4 zhuang4	Aufeinandertreffen (fig.: 思想碰撞 = Gedankenaustausch)
 皮	pi2	Pelle (香蕉皮 = Bananenschale) / Teighülle (饺子皮) / frech (这孩子真皮 = das Kind ist ein Frechdachs)
 疲劳	pi2 lao2	-
 片刻	pian4 ke4	-
-飘	piao1	-
+飘	piao1	abheben, überheblich werden (umg.: 你飘了 = du bist wohl abgehoben)
 漂	piao1	-
 贫困	pin2 kun4	-
 频道	pin2 dao4	-
@@ -2782,7 +2782,7 @@
 热点	re4 dian3	-
 热水器	re4 shui3 qi4	-
 人士	ren2 shi4	-
-人事	ren2 shi4	-
+人事	ren2 shi4	Bewusstsein (不省人事 = bewusstlos)
 人为	ren2 wei2	-
 人行道	ren2 xing2 dao4	-
 认定	ren4 ding4	-
@@ -2841,7 +2841,7 @@
 死亡	si3 wang2	-
 松	song1	entspannen (放松) / Fleischflocken (肉松)
 搜集	sou1 ji2	-
-素质	su4 zhi4	-
+素质	su4 zhi4	Benehmen (没素质 = kein Benehmen haben)
 算是	suan4 shi4	-
 损伤	sun3 shang1	-
 塔	ta3	Stupa (buddhistisch)
@@ -2902,7 +2902,7 @@
 文明	wen2 ming2	höflich, gesittet
 文物	wen2 wu4	-
 文献	wen2 xian4	-
-文艺	wen2 yi4	-
+文艺	wen2 yi4	Kultur- (文艺演出 = Kulturveranstaltung)
 闻名	wen2 ming2	-
 污水	wu1 shui3	-
 无疑	wu2 yi2	-
@@ -3072,7 +3072,7 @@
 自杀	zi4 sha1	-
 自我	zi4 wo3	Ego (Psychologie)
 自言自语	zi4 yan2 zi4 yu3	-
-自助	zi4 zhu4	-
+自助	zi4 zhu4	Büfett (自助餐)
 总计	zong3 ji4	-
 总理	zong3 li3	-
 走廊	zou3 lang2	-
@@ -3139,3 +3139,2048 @@
 痛快	tong4 kuai4	-
 歇	xie1	Betrieb einstellen (歇业)
 用心	yong4 xin1	-
+
+# Neuordnung nach heutigem Alltagsgebrauch, HSK 5 (28.11.2026): wichtigste zuerst, die ersten drei erscheinen beim Lernen
+唉	ai4	-
+安全带	an1 quan2 dai4	-
+安慰	an1 wei4	Trost (得到安慰 = Trost finden)
+安装	an1 zhuang1	einbauen, aufstellen; Installation
+熬夜	ao2 ye4	-
+半夜	ban4 ye4	-
+傍晚	bang4 wan3	-
+包含	bao1 han2	beinhalten, umfassen
+包括	bao1 kuo4	enthalten, umfassen
+包装	bao1 zhuang1	Aufmachung (eines Produkts) / ein Image aufbauen (包装明星)
+薄	bao2	wässrig, schwach (Suppe, Wein) / kühl, gleichgültig (Umgang) / mager (Boden)
+宝	bao3	Juwel, Edelstein / Kosewort (宝宝 = Baby, Schatz)
+宝贝	bao3 bei4	Baby, Kind (Kosewort) / Kostbarkeit / Nichtsnutz (ironisch)
+宝贵	bao3 gui4	-
+保	bao3	bewahren, erhalten (保温 = warm halten) / bürgen (保人 = Bürge)
+保持	bao3 chi2	halten, wahren (保持联系 = in Kontakt bleiben)
+保存	bao3 cun2	erhalten, konservieren (保存完好 = gut erhalten)
+报到	bao4 dao4	sich anmelden (Schule, Uni), den Dienst antreten
+报道	bao4 dao4	Reportage, Berichterstattung
+抱怨	bao4 yuan4	sich beklagen, meckern
+被子	bei4 zi5	-
+本领	ben3 ling3	Talent, Geschick
+本人	ben3 ren2	der/die Betreffende selbst (请本人签字 = bitte persönlich unterschreiben)
+本质	ben3 zhi4	Essenz, Kern (本质上 = im Grunde)
+比喻	bi3 yu4	Gleichnis, bildlicher Vergleich (打个比喻 = um es mit einem Bild zu sagen)
+毕竟	bi4 jing4	immerhin (他毕竟是孩子 = er ist immerhin ein Kind)
+避免	bi4 mian3	umgehen, verhindern
+变动	bian4 dong4	Schwankung / Wechsel (人事变动 = Personalwechsel)
+标题	biao1 ti2	Schlagzeile, Betreff (E-Mail)
+表面	biao3 mian4	Äußeres, Anschein (表面上 = dem Anschein nach)
+拨打	bo1 da3	-
+博物馆	bo2 wu4 guan3	-
+补充	bu3 chong1	Nachtrag; zusätzlich (补充说明 = ergänzende Erklärung)
+不良	bu4 liang2	schädlich (不良影响 = schlechter Einfluss)
+不足	bu4 zu2	Schwäche (不足之处 = Schwachstelle) / weniger als (不足十人 = keine zehn Leute)
+步行	bu4 xing2	-
+采用	cai3 yong4	einführen, annehmen (Methode, Vorschlag)
+彩色	cai3 se4	Farb- (彩色电视 = Farbfernseher)
+参与	can1 yu4	-
+曾经	ceng2 jing1	früher, ehemals
+叉子	cha1 zi5	-
+插	cha1	sich einmischen (插嘴 = dazwischenreden) / Blumen arrangieren (插花)
+差别	cha1 bie2	Differenz, Gefälle
+产	chan3	Erzeugnis (特产 = Spezialität) / Vermögen (房产 = Immobilien)
+车库	che1 ku4	-
+车辆	che1 liang4	-
+橙子	cheng2 zi5	-
+车厢	che1 xiang1	Wagen (Zug, U-Bahn)
+车主	che1 zhu3	Autobesitzer(in)
+称赞	cheng1 zan4	preisen, rühmen; Lob
+成本	cheng2 ben3	Aufwand (时间成本 = Zeitaufwand)
+成分	cheng2 fen4	Inhaltsstoff / soziale Herkunft (früher: Klassenzugehörigkeit)
+成果	cheng2 guo3	Errungenschaft, Leistung
+成员	cheng2 yuan2	-
+成长	cheng2 zhang3	Entwicklung (Kind, Firma)
+承担	cheng2 dan1	tragen (承担责任 = Verantwortung tragen)
+城区	cheng2 qu1	-
+乘务员	cheng2 wu4 yuan2	Schaffner(in), Begleitpersonal
+程序	cheng2 xu4	Verfahren (法律程序 = Rechtsweg) / App (小程序 = Mini-App)
+持续	chi2 xu4	nachhaltig (可持续发展 = nachhaltige Entwicklung)
+尺子	chi3 zi5	-
+翅膀	chi4 bang3	-
+充足	chong1 zu2	reichlich (阳光充足 = sonnig)
+宠物	chong3 wu4	-
+臭	chou4	Gestank / mies (臭棋 = schlechter Zug) / heftig (臭骂一顿 = gründlich beschimpfen)
+出版	chu1 ban3	erscheinen, publizieren
+出自	chu1 zi4	-
+初级	chu1 ji2	Grundstufe (初级班 = Anfängerkurs)
+初期	chu1 qi1	-
+除夕	chu2 xi1	-
+处理	chu3 li3	verarbeiten (数据处理 = Datenverarbeitung) / bestrafen / billig abgeben (处理品 = Ramschware)
+传	chuan2	anstecken (传染) / leiten (Strom, Wärme) / überliefern
+传播	chuan2 bo1	propagieren / sich ausbreiten (Krankheit, Gerücht)
+传说	chuan2 shuo1	Sage, Überlieferung
+传统	chuan2 tong3	herkömmlich, konventionell
+床单	chuang2 dan1	-
+创业	chuang4 ye4	Gründung (创业公司 = Start-up)
+创造	chuang4 zao4	kreieren / aufstellen (创造纪录 = einen Rekord aufstellen)
+词汇	ci2 hui4	-
+辞职	ci2 zhi2	-
+此后	ci3 hou4	-
+此前	ci3 qian2	-
+从不	cong2 bu4	-
+促进	cu4 jin4	vorantreiben, beitragen zu
+促使	cu4 shi3	antreiben, bewirken
+促销	cu4 xiao1	den Verkauf ankurbeln; Werbeaktion
+催	cui1	antreiben, beschleunigen
+存放	cun2 fang4	deponieren, abgeben (行李存放 = Gepäckaufbewahrung)
+存款	cun2 kuan3	Guthaben, Bankeinlage
+存在	cun2 zai4	vorhanden sein (存在问题 = es gibt Probleme)
+措施	cuo4 shi1	Schritt, Vorkehrung
+达成	da2 cheng2	erzielen, zustande bringen
+打扮	da3 ban5	herausputzen, schminken / Kleidungsstil
+打包	da3 bao1	zum Mitnehmen einpacken / komprimieren (Datei)
+倒	dao3	pleitegehen (倒闭) / abgesetzt werden (Regierung: 倒台) / mit Gewinn weiterverkaufen (倒卖)
+打听	da3 ting5	nach jmdm./etw. fragen
+大多	da4 duo1	-
+大米	da4 mi3	geschälter Reis (roh)
+大厦	da4 sha4	in Gebäudenamen (… Tower, … Mansion)
+大事	da4 shi4	wichtige Angelegenheit / Hochzeit oder Beerdigung (终身大事 = Heirat)
+大象	da4 xiang4	-
+大型	da4 xing2	-
+大爷	da4 ye5	Onkel (älterer Bruder des Vaters)
+大众	da4 zhong4	Volks-, populär (大众文化 = Populärkultur) / VW (Automarke)
+带动	dai4 dong4	ankurbeln (带动经济 = die Wirtschaft ankurbeln)
+待遇	dai4 yu4	Vergünstigungen, Status
+单独	dan1 du2	separat, getrennt
+单元	dan1 yuan2	-
+担任	dan1 ren4	-
+当地	dang1 di4	einheimisch (当地人 = Einheimische)
+当前	dang1 qian2	aktuell, momentan
+挡	dang3	verdecken, abschirmen (挡风 = vor Wind schützen) / Gang (Auto: 换挡 = schalten)
+导致	dao3 zhi4	-
+道理	dao4 li3	Sinn (有道理 = das leuchtet ein)
+地理	di4 li3	-
+地区	di4 qu1	Gegend, Bezirk
+地下	di4 xia4	geheim (地下工作 = Untergrundarbeit)
+地震	di4 zhen4	-
+的确	di2 que4	-
+登录	deng1 lu4	sich eintragen, registrieren
+等候	deng3 hou4	-
+等于	deng3 yu2	gleichkommen (这等于说 = das heißt so viel wie)
+低头	di1 tou2	-
+递	di4	nacheinander (递增 = stufenweise steigen)
+电动	dian4 dong4	Elektro- (电动车 = E-Bike, Elektroauto)
+电器	dian4 qi4	-
+电视台	dian4 shi4 tai2	-
+电子版	dian4 zi3 ban3	-
+非洲	fei1 zhou1	-
+各行各业	ge4 hang2 ge4 ye4	-
+贵姓	gui4 xing4	-
+降水	jiang4 shui3	-
+轻重	qing1 zhong4	Schweregrad (病情轻重 = wie schwer die Krankheit ist)
+上传	shang4 chuan2	-
+商家	shang1 jia1	Geschäft, Verkäufer (Onlineshop)
+生肖	sheng1 xiao4	-
+数	shu3	gelten als (数他最高 = er ist der Größte) / aufzählen (数不清 = unzählbar)
+甜品	tian2 pin3	-
+调皮	tiao2 pi2	verspielt, schelmisch
+定期	ding4 qi1	befristet (定期存款 = Festgeld)
+丢失	diu1 shi1	-
+豆腐	dou4 fu5	Bohnenquark
+豆浆	dou4 jiang1	-
+独立	du2 li4	sich unabhängig machen; Unabhängigkeit (独立生活 = auf eigenen Beinen stehen)
+独特	du2 te4	unverwechselbar, eigen
+读音	du2 yin1	Lesung (eines Schriftzeichens)
+堵	du3	im Stau stehen (堵车) / bedrückt (心里堵得慌 = es liegt einem schwer auf der Seele)
+度	du4	Maß (适度 = maßvoll) / Kilowattstunde (umg.: 一度电) / Mal (一年一度 = einmal im Jahr)
+短处	duan3 chu4	Fehler, Schwachstelle
+队伍	dui4 wu5	Truppe / Umzug (游行队伍 = Demonstrationszug)
+对待	dui4 dai4	Umgang, Behandlung
+对手	dui4 shou3	Rivale, Konkurrent (不是他的对手 = ihm nicht gewachsen)
+吨	dun1	-
+发表	fa1 biao3	publizieren (Artikel) / halten (发表演讲 = eine Rede halten)
+发布	fa1 bu4	vorstellen (发布会 = Präsentation, Pressekonferenz)
+发达	fa1 da2	blühend (Handel, Wirtschaft) / ausgeprägt (肌肉发达 = muskulös)
+发明	fa1 ming2	-
+番茄	fan1 qie2	-
+反而	fan3 er2	-
+反复	fan3 fu4	unbeständig, schwankend / Rückfall (Krankheit)
+反映	fan3 ying4	reflektieren / Rückmeldung (群众反映 = Stimmen aus der Bevölkerung)
+返回	fan3 hui2	zurück (返回键 = Zurück-Taste)
+范围	fan4 wei2	Rahmen, Reichweite
+方案	fang1 an4	Entwurf, Vorschlag
+防止	fang2 zhi3	verhüten, abwenden
+房屋	fang2 wu1	-
+仿佛	fang3 fu2	gleichsam, wie
+飞行员	fei1 xing2 yuan2	-
+分类	fen1 lei4	Einteilung, Sortierung (垃圾分类 = Mülltrennung)
+分配	fen1 pei4	zuweisen (Arbeit, Wohnung)
+分手	fen1 shou3	auseinandergehen, sich verabschieden
+分享	fen1 xiang3	mitteilen (分享经验 = Erfahrungen austauschen)
+纷纷	fen1 fen1	in Scharen; durcheinander (议论纷纷 = alle reden durcheinander)
+风格	feng1 ge2	-
+扶	fu2	sich festhalten (扶着栏杆 = sich am Geländer festhalten) / fördern (扶贫 = Armut bekämpfen)
+服装	fu2 zhuang1	Kostüm (Theater, Film) / Bekleidungs- (服装店 = Bekleidungsgeschäft)
+福	fu2	Wohl (福利 = Sozialleistungen) / das Glückszeichen 福 (an der Tür zum Neujahr)
+付出	fu4 chu1	bezahlen; Einsatz (付出代价 = einen Preis zahlen)
+妇女	fu4 nv3	-
+复制	fu4 zhi4	vervielfältigen, klonen
+富	fu4	Reichtum; reich an (富含 = reich an …)
+富有	fu4 you3	voller (富有创意 = einfallsreich)
+改进	gai3 jin4	Verbesserung
+改正	gai3 zheng4	berichtigen; Korrektur
+刚好	gang1 hao3	zufällig (刚好碰见他 = ihn zufällig treffen)
+歌曲	ge1 qu3	-
+个人	ge4 ren2	Privat- (个人信息 = persönliche Daten) / ich (个人认为 = ich persönlich finde)
+更新	geng1 xin1	renovieren; Update
+工具	gong1 ju4	Instrument, Gerät; Mittel (交通工具 = Verkehrsmittel)
+工业	gong1 ye4	-
+公平	gong1 ping2	-
+公务员	gong1 wu4 yuan2	Angestellte(r) im öffentlichen Dienst
+功能	gong1 neng2	Fähigkeit, Leistungsvermögen
+沟通	gou1 tong1	verbinden (Straßen, Kulturen) / Austausch, Kommunikation
+古老	gu3 lao3	-
+鼓掌	gu3 zhang3	-
+关闭	guan1 bi4	stilllegen, dichtmachen (Fabrik, Laden)
+观察	guan1 cha2	mustern, untersuchen; Beobachtung
+观念	guan1 nian4	Auffassung (传统观念 = herkömmliche Vorstellungen)
+广场	guang3 chang3	Einkaufszentrum (in Namen: … Plaza)
+规模	gui1 mo2	Ausmaß, Dimension
+规则	gui1 ze2	regelmäßig (不规则 = unregelmäßig)
+国庆	guo2 qing4	Gründungstag der VR China (1. Oktober)
+果实	guo3 shi2	Früchte (fig.: 胜利果实 = Früchte des Sieges)
+过分	guo4 fen4	übermäßig, zu sehr
+海外	hai3 wai4	-
+含量	han2 liang4	-
+含有	han2 you3	beinhalten, aufweisen
+汗水	han4 shui3	-
+好奇	hao4 qi2	wissbegierig; Neugier
+好运	hao3 yun4	viel Glück! (祝你好运)
+好转	hao3 zhuan3	besser werden; Besserung
+合法	he2 fa3	rechtmäßig, erlaubt
+合理	he2 li3	rational, fair (价格合理 = preiswert)
+合同	he2 tong2	-
+合影	he2 ying3	ein gemeinsames Foto machen
+盒饭	he2 fan4	abgepacktes Mittagessen (zum Mitnehmen oder Liefern)
+猴子	hou2 zi5	-
+厚度	hou4 du4	Stärke (Material)
+呼吸	hu1 xi1	Atmung, Atem
+湖	hu2	-
+化学	hua4 xue2	chemisch
+划	hua2	aufschlitzen (划破) / sich lohnen (划得来, 划算) / anreißen (划火柴 = ein Streichholz anzünden)
+话费	hua4 fei4	Handyguthaben, Telefonrechnung
+环节	huan2 jie2	Etappe, Schritt / Programmpunkt (Show, Feier)
+黄瓜	huang2 gua1	-
+黄金	huang2 jin1	Haupt- (黄金时间 = Hauptsendezeit; 黄金周 = Goldene Woche)
+火锅	huo3 guo1	chinesisches Fondue
+伙伴	huo3 ban4	Kamerad(in), Kumpel
+或许	huo4 xu3	-
+货物	huo4 wu4	Ladung, Güter
+机器	ji1 qi4	Gerät; Apparat (国家机器 = Staatsapparat)
+级	ji2	Jahrgangsstufe (三年级 = 3. Klasse) / Rang, Niveau
+急需	ji2 xu1	dringender Bedarf
+疾病	ji2 bing4	-
+集体	ji2 ti3	Gruppe, Gemeinschaft
+集中	ji2 zhong1	zentralisieren / konzentriert (注意力集中 = bei der Sache sein)
+计算机	ji4 suan4 ji1	Rechner
+纪录	ji4 lu4	Protokoll, Aufzeichnung (meist 记录)
+纪录片	ji4 lu4 pian4	-
+技能	ji4 neng2	Geschicklichkeit, Können
+季度	ji4 du4	-
+加工	jia1 gong1	bearbeiten; Verarbeitung (食品加工 = Lebensmittelverarbeitung)
+加热	jia1 re4	aufwärmen, heizen
+加深	jia1 shen1	verstärken (加深印象 = den Eindruck verstärken)
+家电	jia1 dian4	-
+嘉宾	jia1 bin1	Gast (in einer Show)
+假如	jia3 ru2	angenommen, sofern
+驾照	jia4 zhao4	-
+捡	jian3	finden (捡到钱包 = einen Geldbeutel finden) / sammeln
+剪刀	jian3 dao1	-
+建	jian4	errichten, erbauen
+建立	jian4 li4	einrichten, etablieren (建立关系 = Beziehungen knüpfen)
+建设	jian4 she4	errichten, entwickeln (经济建设 = wirtschaftlicher Aufbau)
+建造	jian4 zao4	errichten, konstruieren
+键	jian4	Knopf (Maus, Gerät) / Bindung (Chemie)
+键盘	jian4 pan2	-
+将近	jiang1 jin4	-
+讲话	jiang3 hua4	reden; Ansprache
+讲究	jiang3 jiu5	geschmackvoll, erlesen / Regel, Kniff (有讲究 = da gibt es Regeln)
+讲述	jiang3 shu4	berichten, schildern
+教材	jiao4 cai2	Lehrbuch, Unterrichtsmaterial
+节省	jie2 sheng3	sparsam umgehen mit
+结构	jie2 gou4	Bauweise, Gefüge
+尽力	jin4 li4	alles in seiner Macht Stehende tun
+紧	jin3	dringend (时间很紧 = die Zeit drängt) / knapp bei Kasse (手头紧) / streng (管得紧)
+近年来	jin4 nian2 lai2	-
+近期	jin4 qi1	-
+近日	jin4 ri4	in den nächsten Tagen
+进口	jin4 kou3	Einfuhr; importiert (进口车 = Importauto) / Eingang (Halle, Stadion)
+进一步	jin4 yi2 bu4	einen Schritt weiter
+经典	jing1 dian3	mustergültig; heilige Schriften (佛教经典 = buddhistische Schriften)
+惊喜	jing1 xi3	angenehm überrascht sein
+精力	jing1 li4	Tatkraft (精力充沛 = voller Energie)
+静	jing4	-
+酒吧	jiu3 ba1	-
+居民	ju1 min2	Bewohner(in), Bevölkerung
+居然	ju1 ran2	sogar, doch tatsächlich
+橘子	ju2 zi5	-
+具备	ju4 bei4	erfüllen (具备条件 = die Voraussetzungen erfüllen)
+具有	ju4 you3	-
+剧场	ju4 chang3	-
+据	ju4	besetzen (占据) / Beleg (证据 = Beweis)
+决赛	jue2 sai4	Endspiel
+绝对	jue2 dui4	ganz bestimmt (绝对没问题 = garantiert kein Problem)
+开发	kai1 fa1	Entwicklung (软件开发 = Softwareentwicklung)
+开幕	kai1 mu4	Eröffnung; der Vorhang geht auf
+开幕式	kai1 mu4 shi4	-
+开水	kai1 shui3	abgekochtes Wasser (zum Trinken)
+开展	kai1 zhan3	in Gang bringen (开展活动 = Aktivitäten veranstalten)
+看望	kan4 wang4	jmdm. einen Besuch abstatten (Kranke, Ältere)
+颗	ke1	auch für Sterne, Zähne, Herzen (一颗心)
+可见	ke3 jian4	es zeigt sich, dass / mit bloßem Auge erkennbar (肉眼可见)
+可靠	ke3 kao4	vertrauenswürdig, glaubwürdig
+客观	ke4 guan1	-
+客户	ke4 hu4	Kundschaft, Auftraggeber(in)
+口袋	kou3 dai5	Hosentasche, Beutel
+口味	kou3 wei4	Geschmacksrichtung (什么口味? = welche Sorte?) / Vorliebe
+宽度	kuan1 du4	-
+昆虫	kun1 chong2	-
+扩大	kuo4 da4	ausbauen, ausweiten
+来源	lai2 yuan2	Ursprung, Bezugsquelle (收入来源 = Einkommensquelle)
+老百姓	lao3 bai3 xing4	Normalbürger
+老公	lao3 gong1	-
+老婆	lao3 po5	-
+姥姥	lao3 lao5	-
+姥爷	lao3 ye5	-
+乐趣	le4 qu4	Vergnügen, Lust
+了不起	liao3 bu5 qi3	bemerkenswert, außergewöhnlich
+泪	lei4	-
+厘米	li2 mi3	-
+梨	li2	-
+理论	li3 lun4	diskutieren, streiten (跟他理论 = sich mit ihm auseinandersetzen)
+理由	li3 you2	Argument, Vorwand
+力	li4	Stärke, Fähigkeit / sich bemühen (力争 = sich bemühen um)
+立刻	li4 ke4	-
+利润	li4 run4	Profit
+利益	li4 yi4	Vorteil, Gewinn
+连接	lian2 jie1	Verbindung (网络连接 = Internetverbindung) / Link
+连忙	lian2 mang2	-
+脸色	lian3 se4	Gesichtsausdruck (看脸色 = sich nach jmds. Laune richten)
+恋爱	lian4 ai4	eine Beziehung haben (谈恋爱)
+良好	liang2 hao3	günstig (良好的开端 = ein guter Anfang)
+粮食	liang2 shi5	Grundnahrungsmittel
+列车	lie4 che1	-
+灵活	ling2 huo2	wendig, geschickt, anpassungsfähig
+铃	ling2	Klingelton (铃声)
+领带	ling3 dai4	-
+流感	liu2 gan3	-
+陆地	lu4 di4	-
+路线	lu4 xian4	Kurs, politische Richtung
+论文	lun4 wen2	Abhandlung, Aufsatz; Dissertation (博士论文)
+逻辑	luo2 ji2	-
+毛笔	mao2 bi3	-
+玫瑰	mei2 gui5	-
+媒体	mei2 ti3	Nachrichtenmedien (社交媒体 = soziale Medien)
+迷路	mi2 lu4	sich verirren
+秘书	mi4 shu1	-
+面积	mian4 ji1	Areal
+敏感	min3 gan3	empfindsam, heikel (敏感话题 = heikles Thema)
+名片	ming2 pian4	-
+明显	ming2 xian3	augenscheinlich, merklich
+明星	ming2 xing1	Berühmtheit, Filmstar
+命	ming4	Los (命好 = Glück im Leben haben) / Befehl (命令)
+命运	ming4 yun4	Geschick, Los
+模糊	mo2 hu5	unscharf, undeutlich / verwischen
+模式	mo2 shi4	Methode (商业模式 = Geschäftsmodell)
+目光	mu4 guang1	Augen, Blickfeld / Weitblick (目光远大 = weitsichtig)
+男子	nan2 zi3	Herren- (Sport: 男子组 = Herrenwettbewerb)
+难度	nan2 du4	-
+难以	nan2 yi3	-
+闹钟	nao4 zhong1	-
+年初	nian2 chu1	-
+年代	nian2 dai4	Ära, Epoche (80年代 = die Achtziger)
+年纪	nian2 ji4	Lebensalter (上了年纪 = in die Jahre gekommen)
+年夜饭	nian2 ye4 fan4	-
+牛仔裤	niu2 zai3 ku4	-
+女子	nv3 zi3	Damen- (Sport: 女子组 = Damenwettbewerb)
+哦	o4	aha
+欧洲	ou1 zhou1	-
+拍摄	pai1 she4	drehen (Film), aufnehmen
+碰	peng4	begegnen (碰见) / anfassen (别碰 = nicht anfassen!)
+批准	pi1 zhun3	bewilligen, ratifizieren
+品牌	pin3 pai2	Markenname, Markenware
+品种	pin3 zhong3	Art, Gattung; Sortiment
+平	ping2	unentschieden (打平 = unentschieden spielen) / ruhig, friedlich / einebnen
+平安	ping2 an1	ruhig, friedlich (一路平安 = gute Reise!)
+评价	ping2 jia4	einschätzen; Urteil
+凭借	ping2 jie4	mittels, dank
+屏幕	ping2 mu4	-
+奇迹	qi2 ji4	-
+汽油	qi4 you2	-
+签	qian1	Los (抽签 = Lose ziehen) / Visum (签证) / Holzspießchen (牙签 = Zahnstocher)
+签订	qian1 ding4	abschließen (Vertrag)
+签字	qian1 zi4	-
+前进	qian2 jin4	vorankommen; vorwärts!
+前来	qian2 lai2	anreisen, zu Besuch kommen
+前途	qian2 tu2	Perspektive (有前途 = vielversprechend)
+前往	qian2 wang3	-
+强大	qiang2 da4	gewaltig, kräftig
+强度	qiang2 du4	Festigkeit (Material)
+抢救	qiang3 jiu4	bergen; Notaufnahme (抢救室)
+悄悄	qiao1 qiao1	unbemerkt, unauffällig
+亲情	qin1 qing2	-
+亲人	qin1 ren2	Blutsverwandte
+亲自	qin1 zi4	-
+勤奋	qin2 fen4	eifrig, strebsam
+青	qing1	grün (青菜 = grünes Gemüse) / schwarz (poetisch: 青丝 = schwarzes Haar) / Qinghai (Abk.)
+情感	qing2 gan3	-
+请教	qing3 jiao4	konsultieren, sich belehren lassen
+穷	qiong2	unendlich (无穷) / ständig, sinnlos (umg.: 穷忙 = rastlos ohne Ergebnis schuften)
+区域	qu1 yu4	Bezirk, Zone
+去世	qu4 shi4	-
+全面	quan2 mian4	allseitig, rundum
+全体	quan2 ti3	sämtliche (全体员工 = die ganze Belegschaft)
+缺乏	que1 fa2	mangeln an
+确保	que4 bao3	garantieren
+确定	que4 ding4	bestimmen, endgültig
+确认	que4 ren4	verifizieren; Bestätigung
+群体	qun2 ti3	Population, Kolonie (Biologie)
+燃烧	ran2 shao1	-
+热量	re4 liang4	Wärmemenge (低热量 = kalorienarm)
+人才	ren2 cai2	qualifizierte Leute; gutes Aussehen (一表人才 = stattlich)
+人类	ren2 lei4	-
+人力	ren2 li4	Muskelkraft (人力车 = Rikscha)
+人民币	ren2 min2 bi4	-
+人物	ren2 wu4	Persönlichkeit; Romanfigur
+认	ren4	wiedererkennen / zugeben (认错 = einen Fehler zugeben) / annehmen (认干妈 = eine Patentante annehmen)
+日历	ri4 li4	-
+日用品	ri4 yong4 pin3	Artikel des täglichen Bedarfs
+如	ru2	zum Beispiel (如下 = wie folgt)
+如何	ru2 he2	-
+如今	ru2 jin1	jetzt
+如同	ru2 tong2	-
+软	ruan3	nachgiebig (心软 = weichherzig) / schwach (腿软 = weiche Knie)
+软件	ruan3 jian4	-
+色彩	se4 cai3	Kolorit; Note (fig.: 地方色彩 = Lokalkolorit)
+沙漠	sha1 mo4	-
+傻	sha3	verdutzt (吓傻了 = vor Schreck erstarrt)
+山区	shan1 qu1	-
+删	shan1	streichen, kürzen (Text)
+扇子	shan4 zi5	-
+善良	shan4 liang2	gutmütig, aufrichtig
+善于	shan4 yu2	sich auf etw. verstehen
+赏	shang3	Belohnung (悬赏 = Belohnung aussetzen) / bewundern (赏月 = den Mond betrachten)
+上涨	shang4 zhang3	-
+设计	she4 ji4	gestalten, konzipieren; Entwurf
+设置	she4 zhi4	aufstellen, anlegen (设置障碍 = Hindernisse errichten)
+摄影	she4 ying3	filmen (Film)
+深刻	shen1 ke4	nachhaltig (印象深刻 = ein tiefer Eindruck)
+神话	shen2 hua4	Mythologie / Legende (fig.)
+神秘	shen2 mi4	-
+升	sheng1	befördert werden (升职) / hissen (升旗 = die Flagge hissen)
+生产	sheng1 chan3	fertigen / gebären (Kind)
+生动	sheng1 dong4	plastisch, lebhaft
+生物	sheng1 wu4	Organismus; Bio- (生物学 = Biologie)
+生长	sheng1 zhang3	sich entwickeln; Wachstum
+失恋	shi1 lian4	verlassen werden, eine Trennung erleben
+诗	shi1	Lyrik, Poesie; Buch der Lieder (Abk. für 诗经)
+诗人	shi1 ren2	Poet(in)
+湿	shi1	-
+实现	shi2 xian4	realisieren, wahr werden (梦想实现了 = der Traum ist wahr geworden)
+实验室	shi2 yan4 shi4	-
+市民	shi4 min2	-
+事故	shi4 gu4	Störfall, Panne (医疗事故 = Behandlungsfehler)
+事件	shi4 jian4	Fall, Affäre
+事实	shi4 shi2	Fakten (事实上 = tatsächlich)
+事物	shi4 wu4	Dinge, Erscheinungen
+收获	shou1 huo4	ernten / Ertrag
+收看	shou1 kan4	-
+手术	shou3 shu4	-
+手套	shou3 tao4	-
+手续	shou3 xu4	Verfahren (办手续 = Formalitäten erledigen)
+手指	shou3 zhi3	-
+书法	shu1 fa3	Handschrift
+书房	shu1 fang2	-
+书架	shu1 jia4	-
+舒适	shu1 shi4	angenehm, komfortabel
+蔬菜	shu1 cai4	-
+鼠标	shu3 biao1	-
+树木	shu4 mu4	-
+数据	shu4 ju4	-
+双方	shuang1 fang1	beidseitig, bilateral
+税	shui4	-
+思考	si1 kao3	überlegen
+思想	si1 xiang3	Ideologie, Denkweise (思想开放 = aufgeschlossen)
+搜	sou1	durchkämmen / online nachsehen (搜一下 = mal suchen)
+搜索	sou1 suo3	absuchen; Suchmaschine (搜索引擎)
+宿舍	su4 she4	Unterkunft (für Beschäftigte), Zimmer im Wohnheim
+随时	sui2 shi2	wann immer nötig
+损害	sun3 hai4	beeinträchtigen, schädigen
+缩短	suo1 duan3	kürzen, abkürzen
+他人	ta1 ren2	-
+太太	tai4 tai5	Gattin; Dame (老太太 = alte Dame)
+特产	te4 chan3	-
+特殊	te4 shu1	außergewöhnlich, eigenartig
+提倡	ti2 chang4	propagieren, eintreten für
+提交	ti2 jiao1	vorlegen, unterbreiten
+题目	ti2 mu4	-
+体力	ti3 li4	Kondition (体力好 = fit sein)
+填	tian2	stopfen, auffüllen (填坑 = ein Loch zuschütten)
+挑战	tiao3 zhan4	-
+跳高	tiao4 gao1	hochspringen
+跳远	tiao4 yuan3	weitspringen
+贴	tie1	posten (im Internet) / sich anschmiegen (贴身 = eng anliegend) / Zuschuss (补贴)
+统计	tong3 ji4	zusammenzählen, erfassen
+投	tou2	einwerfen (投币 = Münze einwerfen) / abstimmen (投票) / einsenden (投稿)
+头	tou5	-
+突出	tu1 chu1	hervorstehen, auffallen; herausstellen
+图书	tu2 shu1	Buchbestand (图书馆 = Bibliothek)
+土地	tu3 di4	Grundstück, Territorium
+推动	tui1 dong4	ankurbeln, in Schwung bringen
+退	tui4	zurücktreten, sich zurückziehen / sinken (退烧 = das Fieber geht zurück)
+外婆	wai4 po2	-
+外形	wai4 xing2	Aussehen, Umriss
+完美	wan2 mei3	tadellos, fehlerfrei
+网络	wang3 luo4	-
+往返	wang3 fan3	hin und her (往返票 = Rückfahrkarte)
+违法	wei2 fa3	rechtswidrig; gegen das Gesetz verstoßen
+唯一	wei2 yi1	allein, nur
+维持	wei2 chi2	wahren (维持秩序 = für Ordnung sorgen)
+位于	wei4 yu2	gelegen sein
+位置	wei4 zhi4	Platz, Sitzplatz / Stellung, Posten
+胃	wei4	-
+温暖	wen1 nuan3	herzlich; erwärmen (温暖人心 = das Herz erwärmen)
+文学	wen2 xue2	-
+问卷	wen4 juan4	-
+卧室	wo4 shi4	-
+握	wo4	in der Hand haben (掌握 = beherrschen) / ballen (握拳 = die Faust ballen) / schütteln (握手 = Hände schütteln)
+舞蹈	wu3 dao3	-
+物价	wu4 jia4	Lebenshaltungskosten
+物理	wu4 li3	physikalisch
+系统	xi4 tong3	systematisch (系统地学习 = systematisch lernen)
+西装	xi1 zhuang1	westliche Kleidung
+下载	xia4 zai4	-
+先后	xian1 hou4	-
+显然	xian3 ran2	-
+现场	xian4 chang3	live (现场直播 = Liveübertragung) / Tatort
+现代化	xian4 dai4 hua4	modern (现代化设备 = moderne Ausstattung)
+现象	xian4 xiang4	-
+现状	xian4 zhuang4	Status quo
+限制	xian4 zhi4	beschränken; Limit
+相处	xiang1 chu3	Umgang (好相处 = umgänglich)
+相似	xiang1 si4	-
+享受	xiang3 shou4	in den Genuss kommen (享受待遇 = Leistungen beziehen)
+响声	xiang3 sheng1	Krach, Knall
+想念	xiang3 nian4	sich sehnen nach
+项目	xiang4 mu4	Programmpunkt, Objekt
+消失	xiao1 shi1	-
+销量	xiao1 liang4	-
+销售	xiao1 shou4	Verkauf (销售员 = Verkäufer(in))
+小姐	xiao3 jie3	Fräulein / Prostituierte (Slang: Vorsicht bei der Anrede!)
+小型	xiao3 xing2	-
+效率	xiao4 lv4	-
+心态	xin1 tai4	-
+新郎	xin1 lang2	-
+新娘	xin1 niang2	-
+新型	xin1 xing2	neu entwickelt
+信封	xin4 feng1	-
+信用	xin4 yong4	Kreditwürdigkeit (信用卡 = Kreditkarte)
+形容	xing2 rong2	schildern (无法形容 = unbeschreiblich)
+形式	xing2 shi4	Formalität (走形式 = eine reine Formsache)
+修改	xiu1 gai3	Änderung, Korrektur
+雪糕	xue3 gao1	-
+虚心	xu1 xin1	aufgeschlossen
+需	xu1	-
+需求	xu1 qiu2	-
+选手	xuan3 shou3	Wettkämpfer(in), Kandidat(in)
+学分	xue2 fen1	Credit Points
+学科	xue2 ke1	Disziplin, Studienfach
+学历	xue2 li4	Bildungsweg, Bildungsstand
+学术	xue2 shu4	Gelehrsamkeit, Forschung
+学者	xue2 zhe3	Akademiker(in)
+训练	xun4 lian4	drillen, ausbilden
+压岁钱	ya1 sui4 qian2	-
+鸭子	ya1 zi5	-
+延长	yan2 chang2	ausdehnen
+研发	yan2 fa1	entwickeln (研发新药 = neue Medikamente entwickeln)
+研制	yan2 zhi4	-
+摇	yao2	rütteln, wackeln (摇尾巴 = mit dem Schwanz wedeln)
+药品	yao4 pin3	-
+要不是	yao4 bu2 shi4	-
+夜间	ye4 jian1	-
+夜市	ye4 shi4	-
+一次性	yi2 ci4 xing4	Wegwerf- / auf einmal (一次性付清 = auf einmal bezahlen)
+一路	yi2 lu4	gute Reise! (一路顺风) / ununterbrochen (一路上涨 = immer weiter steigen)
+医疗	yi1 liao2	medizinische Behandlung; Gesundheitswesen
+医学	yi1 xue2	-
+依然	yi1 ran2	wie bisher, dennoch
+移动	yi2 dong4	verschieben / Mobil- (移动支付 = mobiles Bezahlen)
+遗憾	yi2 han4	bedauernswert (很遗憾 = leider)
+以来	yi3 lai2	-
+亿	yi4	-
+意义	yi4 yi4	-
+音量	yin1 liang4	-
+引进	yin3 jin4	importieren, übernehmen (Technik, Fachkräfte)
+印刷	yin4 shua1	Druck- (印刷厂 = Druckerei)
+应当	ying1 dang1	-
+应用	ying4 yong4	Gebrauch; angewandt (应用科学 = angewandte Wissenschaften)
+影片	ying3 pian4	-
+影视	ying3 shi4	-
+硬	ying4	stur, unnachgiebig / mit Gewalt, mit Mühe (硬撑 = sich durchbeißen) / solide (过硬 = einwandfrei)
+硬件	ying4 jian4	Ausstattung (Gebäude, Geräte)
+拥抱	yong1 bao4	-
+拥有	yong1 you3	verfügen über
+用户	yong4 hu4	Abonnent(in), Verbraucher(in)
+用途	yong4 tu2	Verwendungszweck, Einsatzbereich
+优良	you1 liang2	-
+优势	you1 shi4	Überlegenheit, Oberhand
+油条	you2 tiao2	aalglatter Typ (umg.: 老油条)
+悠久	you1 jiu3	-
+邮局	you2 ju2	-
+邮票	you2 piao4	-
+有利	you3 li4	nützlich
+幼儿园	you4 er2 yuan2	-
+娱乐	yu2 le4	Entertainment, Freizeit (娱乐圈 = Showbusiness)
+语文	yu3 wen2	-
+语音	yu3 yin1	Audio, Stimme (语音通话 = Sprachanruf)
+玉米	yu4 mi3	-
+预报	yu4 bao4	vorhersagen
+预防	yu4 fang2	Vorsorge (预防针 = Impfung)
+元旦	yuan2 dan4	-
+原有	yuan2 you3	vorhanden, bisherig
+在场	zai4 chang3	dabei sein, vor Ort
+在内	zai4 nei4	eingerechnet (包括…在内 = einschließlich …)
+在线	zai4 xian4	-
+糟糕	zao1 gao1	miserabel; verflixt!
+增强	zeng1 qiang2	steigern
+赠	zeng4	überreichen; Zugabe (买一赠一 = zwei zum Preis von einem)
+赠送	zeng4 song4	überreichen
+炸	zha2	-
+展现	zhan3 xian4	zur Schau stellen, entfalten
+占线	zhan4 xian4	-
+站台	zhan4 tai2	-
+长度	chang2 du4	-
+长久	chang2 jiu3	langfristig
+长期	chang2 qi1	-
+长途	chang2 tu2	Fernbus, Ferngespräch (长途车, 长途电话)
+涨	zhang3	zunehmen (涨价 = teurer werden; 涨工资 = Lohnerhöhung)
+掌声	zhang3 sheng1	-
+账号	zhang4 hao4	Benutzername
+折扣	zhe2 kou4	-
+哲学	zhe2 xue2	-
+着凉	zhao2 liang2	-
+珍贵	zhen1 gui4	-
+争取	zheng1 qu3	streben nach; gewinnen (争取时间 = Zeit gewinnen)
+整体	zheng3 ti3	Gesamtheit; gesamt
+整整	zheng3 zheng3	-
+政府	zheng4 fu3	Staat, Behörden
+政治	zheng4 zhi4	politisch
+直	zhi2	aufrichtig, offen / geradeaus / ununterbrochen (直哭 = immer weiter weinen)
+直播	zhi2 bo1	Direktübertragung
+至今	zhi4 jin1	-
+志愿者	zhi4 yuan4 zhe3	-
+制订	zhi4 ding4	formulieren
+制作	zhi4 zuo4	anfertigen, fabrizieren
+治疗	zhi4 liao2	therapieren; Therapie
+智慧	zhi4 hui4	Intelligenz; smart (智慧城市 = Smart City)
+中华	zhong1 hua2	feierlicher Name für China (中华人民共和国 = Volksrepublik China)
+中介	zhong1 jie4	Agentur (房屋中介 = Immobilienmakler)
+中外	zhong1 wai4	-
+中医	zhong1 yi1	Arzt/Ärztin für chinesische Medizin
+种类	zhong3 lei4	Gattung, Kategorie
+众多	zhong4 duo1	vielköpfig, bevölkerungsreich
+重大	zhong4 da4	-
+重量	zhong4 liang4	Masse
+周年	zhou1 nian2	-
+猪	zhu1	Dummkopf (Schimpfwort: 笨猪)
+竹子	zhu2 zi5	-
+逐渐	zhu2 jian4	-
+主持	zhu3 chi2	Moderation (主持人 = Moderator(in)) / eintreten für (主持公道 = für Gerechtigkeit sorgen)
+主人	zhu3 ren2	Herr, Eigentümer(in)
+主食	zhu3 shi2	-
+主席	zhu3 xi2	Staatspräsident(in) der VR China (国家主席)
+煮	zhu3	-
+住房	zhu4 fang2	-
+住宿	zhu4 su4	Übernachtung (住宿费 = Übernachtungskosten)
+住址	zhu4 zhi3	-
+注册	zhu4 ce4	eintragen (注册商标 = eingetragene Marke)
+专家	zhuan1 jia1	Spezialist(in), Fachmann/Fachfrau
+转告	zhuan3 gao4	übermitteln
+装修	zhuang1 xiu1	einrichten, ausstatten
+追求	zhui1 qiu2	umwerben (追求她 = ihr den Hof machen)
+姿势	zi1 shi4	Körperhaltung, Stellung
+资格	zi1 ge2	Dienstalter (老资格 = alter Hase)
+资源	zi1 yuan2	Rohstoffe, Bodenschätze (自然资源)
+紫	zi3	-
+子女	zi3 nv3	Söhne und Töchter
+总数	zong3 shu4	-
+总统	zong3 tong3	-
+阻止	zu3 zhi3	stoppen, abblocken
+组成	zu3 cheng2	zusammensetzen
+最初	zui4 chu1	zuerst
+醉	zui4	berauscht, hingerissen (陶醉 = schwelgen) / in Schnaps eingelegt (醉虾 = Schnapsgarnelen)
+
+# Neuordnung nach heutigem Alltagsgebrauch, HSK 6 (28.11.2026): wichtigste zuerst, die ersten drei erscheinen beim Lernen
+案例	an4 li4	Präzedenzfall
+昂贵	ang2 gui4	kostspielig
+白白	bai2 bai2	-
+百分点	bai3 fen1 dian3	-
+百货	bai3 huo4	Konsumgüter
+摆放	bai3 fang4	aufstellen, anrichten
+摆脱	bai3 tuo1	abschütteln, sich losreißen
+拜访	bai4 fang3	jmdm. seine Aufwartung machen
+拜年	bai4 nian2	-
+版本	ban3 ben3	Edition; Fassung
+扮演	ban4 yan3	-
+榜样	bang3 yang4	Beispiel (以…为榜样 = sich … zum Vorbild nehmen)
+棒球	bang4 qiu2	-
+北美洲	bei3 mei3 zhou1	-
+倍增	bei4 zeng1	-
+保健	bao3 jian4	Gesundheitsschutz (保健品 = Nahrungsergänzungsmittel)
+保修	bao3 xiu1	Gewährleistung (保修期 = Garantiezeit)
+保障	bao3 zhang4	Absicherung (社会保障 = soziale Sicherheit)
+报刊	bao4 kan1	Presse
+报社	bao4 she4	-
+暴力	bao4 li4	gewalttätig (家庭暴力 = häusliche Gewalt)
+暴露	bao4 lu4	bloßlegen; ausgesetzt sein (暴露在阳光下 = der Sonne ausgesetzt)
+爆炸	bao4 zha4	bersten, detonieren / Flut (fig.: 信息爆炸 = Informationsflut)
+悲剧	bei1 ju4	-
+北极	bei3 ji2	Nordpolargebiet (北极熊 = Eisbär)
+被动	bei4 dong4	-
+被迫	bei4 po4	-
+奔跑	ben1 pao3	eilen, laufen
+逼	bi1	erzwingen (逼供 = ein Geständnis erpressen) / bedrängen (逼近 = heranrücken)
+必修	bi4 xiu1	Pflichtfach (必修课)
+闭	bi4	zumachen (闭嘴 = halt den Mund!)
+编辑	bian1 ji2	bearbeiten, zusammenstellen
+编写	bian1 xie3	schreiben, ausarbeiten
+便捷	bian4 jie2	-
+兵	bing1	Militär, Truppen / Waffen (兵器)
+病毒	bing4 du2	Computervirus
+脖子	bo2 zi5	Nacken, Genick
+博览会	bo2 lan3 hui4	Weltausstellung (世博会, kurz für 世界博览会)
+不得	bu4 de2	-
+补贴	bu3 tie1	Zulage, Beihilfe
+不曾	bu4 ceng2	-
+不料	bu2 liao4	-
+不时	bu4 shi2	-
+不宜	bu4 yi2	nicht angebracht
+不止	bu4 zhi3	unaufhörlich (大笑不止 = sich vor Lachen nicht halten können)
+步骤	bu4 zhou4	Verfahrensschritt
+部队	bu4 dui4	Streitkräfte, Einheit
+部位	bu4 wei4	Bereich, Teil (auch Gemüse, Kleidung)
+猜测	cai1 ce4	-
+财产	cai2 chan3	-
+财富	cai2 fu4	Vermögen
+财务	cai2 wu4	Finanzabteilung, Buchhaltung
+采购	cai3 gou4	beziehen; Einkäufer(in)
+采集	cai3 ji2	pflücken (采集草药 = Kräuter sammeln)
+彩虹	cai3 hong2	-
+彩票	cai3 piao4	Lotterie (买彩票 = Lotto spielen)
+参展	can1 zhan3	-
+草原	cao3 yuan2	Prärie, Weideland
+策略	ce4 lve4	geschickt, taktisch klug
+差异	cha1 yi4	Abweichung, Diskrepanz
+肠	chang2	Wurst (香肠)
+常年	chang2 nian2	jahrelang, auf Jahre
+常温	chang2 wen1	normale Temperatur (常温保存 = bei Raumtemperatur lagern)
+厂家	chang3 jia1	Fabrik; Fabrikant(in)
+厂商	chang3 shang1	Produzent(in), Anbieter
+场地	chang3 di4	Spielfeld, Sportplatz
+场合	chang3 he2	Gelegenheit; Rahmen (公共场合 = in der Öffentlichkeit)
+场面	chang3 mian4	Szenerie / Aufwand, Prunk (场面很大 = sehr aufwendig)
+畅销	chang4 xiao1	gefragt (畅销书 = Bestseller)
+超越	chao1 yue4	überwinden, hinauswachsen über
+朝代	chao2 dai4	-
+嘲笑	chao2 xiao4	sich lustig machen über; Spott
+潮湿	chao2 shi1	-
+吵架	chao3 jia4	sich zanken
+插座	cha1 zuo4	-
+撤销	che4 xiao1	abschaffen, annullieren
+称号	cheng1 hao4	Bezeichnung, Anrede
+成交	cheng2 jiao1	handelseinig werden; abgemacht!
+成效	cheng2 xiao4	Effekt
+成语	cheng2 yu3	Redewendung (meist vier Zeichen, oft mit einer Geschichte dahinter)
+呈现	cheng2 xian4	sich bieten (Anblick); präsentieren
+承办	cheng2 ban4	-
+城镇	cheng2 zhen4	Städte und Gemeinden
+持久	chi2 jiu3	langanhaltend; Ausdauer (持久力)
+持有	chi2 you3	innehaben (Pass, Aktien, Meinung)
+尺寸	chi3 cun4	Abmessung; Kleidergröße
+冲动	chong1 dong4	Drang; sich hinreißen lassen
+崇拜	chong2 bai4	vergöttern; Bewunderung
+抽象	chou1 xiang4	Abstraktion; unverständlich (umg.: 太抽象了 = schwer zu verstehen)
+出名	chu1 ming2	-
+除非	chu2 fei1	es sei denn
+储存	chu3 cun2	Vorrat; einlagern
+穿过	chuan1 guo4	überqueren (穿过马路 = die Straße überqueren)
+传达	chuan2 da2	ausrichten; Pförtnerloge (传达室)
+传染	chuan2 ran3	übertragen (Gefühle: 笑会传染 = Lachen steckt an)
+传染病	chuan2 ran3 bing4	Seuche
+传授	chuan2 shou4	beibringen, weitergeben (Wissen, Können)
+传输	chuan2 shu1	Datenübertragung
+传真	chuan2 zhen1	faxen; Faxgerät (传真机)
+窗口	chuang1 kou3	Aushängeschild, Schaufenster (fig.)
+创办	chuang4 ban4	errichten, ins Leben rufen
+创建	chuang4 jian4	einrichten (Konto, Datei)
+创立	chuang4 li4	stiften, begründen
+垂直	chui2 zhi2	rechtwinklig, im rechten Winkel
+纯	chun2	unvermischt, echt (纯棉 = reine Baumwolle) / bloß (纯属偶然 = reiner Zufall)
+瓷器	ci2 qi4	-
+匆匆	cong1 cong1	-
+匆忙	cong1 mang2	-
+从未	cong2 wei4	-
+脆弱	cui4 ruo4	empfindlich, labil
+存储	cun2 chu3	-
+挫折	cuo4 zhe2	Misserfolg, Frustration
+搭配	da1 pei4	zuordnen (词语搭配 = Wortverbindung)
+打击	da3 ji1	Schock (受到打击 = einen Schlag erleiden) / Schlagzeug (打击乐)
+打雷	da3 lei2	gewittern
+大洋洲	da4 yang2 zhou1	-
+打造	da3 zao4	schmieden (Metall) / etablieren (打造品牌 = eine Marke etablieren)
+打仗	da3 zhang4	in den Krieg ziehen
+大臣	da4 chen2	-
+大吃一惊	da4 chi1 yi4 jing1	-
+大使	da4 shi3	Gesandte(r) / Werbegesicht (形象大使)
+大致	da4 zhi4	mehr oder weniger, grob
+代价	dai4 jia4	Opfer (不惜代价 = um jeden Preis)
+带领	dai4 ling3	leiten, anleiten
+单调	dan1 diao4	monoton
+担忧	dan1 you1	besorgt sein
+耽误	dan1 wu5	aufhalten; Zeit verschwenden
+诞生	dan4 sheng1	-
+店铺	dian4 pu4	-
+动漫	dong4 man4	-
+法定	fa3 ding4	amtlich (法定节假日 = gesetzlicher Feiertag)
+肺炎	fei4 yan2	-
+分级	fen1 ji2	klassifizieren
+花朵	hua1 duo3	-
+加倍	jia1 bei4	verstärkt (加倍努力 = sich doppelt anstrengen)
+较为	jiao4 wei2	-
+结	jie1	-
+精准	jing1 zhun3	zielgenau
+落	la4	zurückbleiben, hinterherhinken
+兰花	lan2 hua1	-
+历年	li4 nian2	-
+露	lou4	verraten (露馅儿 = sich verraten) / zeigen (露一手 = sein Können zeigen)
+蚂蚁	ma3 yi3	-
+南极洲	nan2 ji2 zhou1	-
+南美洲	nan2 mei3 zhou1	-
+农田	nong2 tian2	-
+热度	re4 du4	Wärmegrad / Begeisterung (三分钟热度 = Strohfeuer)
+赛事	sai4 shi4	-
+上进	shang4 jin4	Fortschritte machen
+诗词	shi1 ci2	Shi- und Ci-Lyrik
+书画	shu1 hua4	-
+弹性	tan2 xing4	Spielraum (弹性工作制 = Gleitzeit)
+蛋白质	dan4 bai2 zhi4	-
+当今	dang1 jin1	heutig (当今世界 = die heutige Welt)
+当天	dang4 tian1	-
+档案	dang4 an4	Personalakte; Datei
+岛	dao3	-
+倒车	dao3 che1	-
+道德	dao4 de2	Tugend, Ethik
+地形	di4 xing2	-
+地质	di4 zhi4	-
+灯笼	deng1 long5	-
+等级	deng3 ji2	Grad, Status
+抵达	di3 da2	-
+抵抗	di3 kang4	Widerstand; Abwehrkraft (抵抗力 = Immunabwehr)
+典礼	dian3 li3	-
+电饭锅	dian4 fan4 guo1	-
+电源	dian4 yuan2	Netzanschluss
+钓鱼	diao4 yu2	ködern, hereinlegen (钓鱼网站 = Phishing-Seite)
+调节	tiao2 jie2	einstellen, justieren / schlichten
+订单	ding4 dan1	-
+定价	ding4 jia4	Listenpreis
+动力	dong4 li4	Motivation, Triebkraft
+动听	dong4 ting1	wohlklingend; überzeugend (Worte)
+都市	du1 shi4	-
+对称	dui4 chen4	-
+顿时	dun4 shi2	unvermittelt
+多媒体	duo1 mei2 ti3	-
+躲避	duo3 bi4	meiden; Schutz suchen (躲避风雨 = Schutz vor Wind und Regen suchen)
+恶劣	e4 lie4	gemein, niederträchtig / sehr schlecht (天气恶劣 = Unwetter)
+耳环	er3 huan2	-
+二氧化碳	er4 yang3 hua4 tan4	-
+发病	fa1 bing4	ausbrechen (Krankheit: 发病率 = Erkrankungsrate)
+发愁	fa1 chou2	bekümmert sein
+发电	fa1 dian4	Stromerzeugung (发电厂 = Kraftwerk)
+发动	fa1 dong4	anlassen (发动机 = Motor) / mobilisieren (发动群众 = die Massen mobilisieren)
+发光	fa1 guang1	glänzen, strahlen
+发票	fa1 piao4	Beleg (开发票 = eine Rechnung ausstellen)
+法官	fa3 guan1	-
+凡是	fan2 shi4	jeglich
+繁忙	fan2 mang2	-
+繁殖	fan2 zhi2	Fortpflanzung; vermehren
+反思	fan3 si1	Rückschau, Selbstreflexion
+方言	fang1 yan2	Mundart
+房价	fang2 jia4	-
+飞速	fei1 su4	rapide
+肥沃	fei2 wo4	-
+肺	fei4	-
+分工	fen1 gong1	die Arbeit aufteilen
+氛围	fen1 wei2	Ambiente, Flair
+愤怒	fen4 nu4	Empörung; empört
+风光	feng1 guang1	Ruhm, Glanz (风光一时 = eine Zeit lang glänzen) / prächtig (办得很风光 = groß feiern)
+风雨	feng1 yu3	Stürme des Lebens (经历风雨 = viel durchmachen)
+封闭	feng1 bi4	versiegeln, abdichten / abgeschottet (封闭式管理 = geschlossener Campus)
+奉献	feng4 xian4	darbringen, opfern; Beitrag
+服用	fu2 yong4	-
+符号	fu2 hao4	Markierung (标点符号 = Satzzeichen)
+富裕	fu4 yu4	begütert, gut situiert
+赋予	fu4 yu3	ausstatten mit
+改编	gai3 bian1	umschreiben, verfilmen (改编成电影)
+改造	gai3 zao4	umkrempeln, sanieren (旧城改造 = Altstadtsanierung)
+概率	gai4 lv4	-
+肝	gan1	stundenlang zocken (Slang, Videospiele)
+赶忙	gan3 mang2	-
+感想	gan3 xiang3	Gefühl, Reflexion
+干脆	gan1 cui4	einfach, gleich (干脆不去了 = dann gehen wir eben gar nicht)
+干燥	gan1 zao4	dürr, ausgetrocknet / trocknen (干燥剂 = Trockenmittel)
+钢笔	gang1 bi3	Füllfederhalter
+岗位	gang3 wei4	Stelle (工作岗位 = Arbeitsplatz)
+高尚	gao1 shang4	erhaben
+高手	gao1 shou3	Könner(in), Profi
+高新技术	gao1 xin1 ji4 shu4	Hightech-
+稿件	gao3 jian4	eingereichter Text, Artikel
+革命	ge2 ming4	revolutionär; revolutionieren
+隔壁	ge2 bi4	-
+给予	ji3 yu3	zukommen lassen (给予帮助 = Hilfe leisten)
+工序	gong1 xu4	Arbeitsgang
+公开	gong1 kai1	offen, offenkundig; bekanntmachen
+公民	gong1 min2	-
+公主	gong1 zhu3	-
+功效	gong1 xiao4	Effekt (Medikament)
+姑姑	gu1 gu5	-
+孤独	gu1 du2	Einsamkeit; allein
+古典	gu3 dian3	klassische Musik (古典音乐)
+古人	gu3 ren2	die Alten; Verstorbene (literarisch)
+股市	gu3 shi4	-
+固体	gu4 ti3	Festkörper
+故障	gu4 zhang4	Panne; Fehler (Computer)
+关爱	guan1 ai4	Zuwendung
+官	guan1	amtlich, offiziell (官方 = offiziell) / Organ (器官)
+规范	gui1 fan4	regelkonform (不规范 = nicht korrekt) / regeln
+跪	gui4	-
+国宝	guo2 bao3	Pandabär (umg.)
+国产	guo2 chan3	einheimisch; Eigenproduktion
+国歌	guo2 ge1	-
+国旗	guo2 qi2	-
+国王	guo2 wang2	-
+海岸	hai3 an4	Meeresufer
+海拔	hai3 ba2	Höhe (Gelände)
+海域	hai3 yu4	-
+航空	hang2 kong1	Flugverkehr (航空公司 = Fluggesellschaft)
+毫米	hao2 mi3	-
+毫升	hao2 sheng1	-
+好容易	hao3 rong2 yi4	-
+合并	he2 bing4	vereinigen
+核心	he2 xin1	Kern- (核心技术 = Schlüsseltechnologie)
+嘿	hei1	-
+狠	hen3	sich überwinden (狠下心 = sich ein Herz fassen) / heftig (狠狠地 = kräftig)
+衡量	heng2 liang2	erwägen, beurteilen
+洪水	hong2 shui3	Überschwemmung
+胡子	hu2 zi5	Schnurrbart
+花生	hua1 sheng1	-
+皇帝	huang2 di4	-
+灰尘	hui1 chen2	-
+绘画	hui4 hua4	zeichnen
+婚姻	hun1 yin1	Eheschließung
+混合	hun4 he2	vermengen; Misch- (混合动力 = Hybridantrieb)
+活力	huo2 li4	Lebenskraft, Schwung
+火柴	huo3 chai2	-
+货币	huo4 bi4	Geld
+机动车	ji1 dong4 che1	Motorfahrzeug
+基地	ji1 di4	Zentrum (生产基地 = Produktionsstandort)
+基因	ji1 yin1	-
+激发	ji1 fa1	anspornen, stimulieren
+激情	ji1 qing2	-
+即便	ji2 bian4	auch wenn
+极端	ji2 duan1	das andere Ende (走极端 = übertreiben) / äußerst, höchst
+急切	ji2 qie4	eifrig, erwartungsvoll
+纪律	ji4 lv4	-
+技巧	ji4 qiao3	Kunstfertigkeit, Kniff
+季军	ji4 jun1	-
+继承	ji4 cheng2	die Nachfolge antreten
+寂寞	ji4 mo4	still, öde (Ort) / langweilig
+加剧	jia1 ju4	sich zuspitzen
+家家户户	jia1 jia1 hu4 hu4	-
+假设	jia3 she4	angenommen, dass; Hypothese
+坚固	jian1 gu4	solide, robust
+坚决	jian1 jue2	-
+间隔	jian4 ge2	Zwischenraum; trennen
+间接	jian4 jie1	mittelbar
+艰辛	jian1 xin1	-
+减弱	jian3 ruo4	abschwächen
+检测	jian3 ce4	Messung; nachweisen (检测出病毒 = ein Virus nachweisen)
+简化	jian3 hua4	-
+简介	jian3 jie4	Inhaltsangabe, Steckbrief (个人简介 = Kurzprofil)
+剑	jian4	-
+箭	jian4	-
+讲解	jiang3 jie3	-
+奖牌	jiang3 pai2	-
+酱	jiang4	Sojabohnenpaste / Marmelade (果酱) / in Sojapaste geschmort (酱肉)
+胶带	jiao1 dai4	Tesafilm / Tonband (früher)
+焦点	jiao1 dian3	Mittelpunkt (焦点人物 = Person im Mittelpunkt)
+接连	jie1 lian2	in Folge, hintereinander
+街头	jie1 tou2	-
+节奏	jie2 zou4	Takt, Beat
+杰出	jie2 chu1	ausgezeichnet, hervorragend
+解读	jie3 du2	entschlüsseln, erläutern
+解放	jie3 fang4	Befreiung von 1949 (解放前 = vor 1949)
+借鉴	jie4 jian4	lernen von (Erfahrungen anderer)
+金额	jin1 e2	-
+金牌	jin1 pai2	-
+金融	jin1 rong2	Bankwesen (金融危机 = Finanzkrise)
+金子	jin1 zi5	-
+近来	jin4 lai2	jüngst
+近视	jin4 shi4	Kurzsichtigkeit (近视眼)
+进度	jin4 du4	Stand, Zeitplan (按进度 = nach Plan)
+进化	jin4 hua4	Entwicklung (进化论 = Evolutionstheorie)
+进展	jin4 zhan3	-
+精美	jing1 mei3	zart, erlesen
+精确	jing1 que4	exakt
+精通	jing1 tong1	bewandert sein, fließend können (精通三门语言 = drei Sprachen fließend sprechen)
+精心	jing1 xin1	akribisch, liebevoll (精心准备 = liebevoll vorbereitet)
+景观	jing3 guan1	Szenerie / Landschaftsgestaltung (景观设计)
+景象	jing3 xiang4	Bild, Ausblick (一片繁荣景象 = ein Bild des Wohlstands)
+酒精	jiu3 jing1	Spiritus
+酒水	jiu3 shui3	-
+救灾	jiu4 zai1	-
+舅舅	jiu4 jiu5	-
+局	ju2	Lage (局势, 大局) / Falle (骗局 = Schwindel) / Runde (饭局 = Essenseinladung)
+局面	ju2 mian4	-
+菊花	ju2 hua1	-
+俱乐部	ju4 le4 bu4	-
+剧烈	ju4 lie4	akut (剧烈疼痛 = heftiger Schmerz)
+决策	jue2 ce4	Entscheidungsfindung; Grundsatzentscheidung
+均匀	jun1 yun2	homogen, ausgewogen
+开关	kai1 guan1	Ventil (Gas) / ein- und ausschalten
+开启	kai1 qi3	aktivieren (Computer) / einläuten (开启新时代 = eine neue Ära einläuten)
+看重	kan4 zhong4	Wert legen auf
+考古	kao3 gu3	archäologische Ausgrabungen machen
+考核	kao3 he2	Bewertung, Leistungsbeurteilung
+考验	kao3 yan4	erproben, prüfen
+科	ke1	Fachgebiet (理科 = Naturwissenschaften) / Familie (Biologie: 猫科 = Katzen)
+科幻	ke1 huan4	-
+科普	ke1 pu3	Wissensvermittlung für alle; einfach erklären (umg.)
+可怜	ke3 lian2	erbärmlich, kläglich (少得可怜 = erbärmlich wenig)
+课题	ke4 ti2	Aufgabe, Problemstellung
+空地	kong4 di4	unbebautes Grundstück
+口腔	kou3 qiang1	-
+枯燥	ku1 zao4	eintönig, reizlos
+款式	kuan3 shi4	Schnitt, Modell
+扩展	kuo4 zhan3	Erweiterung (扩展名 = Dateiendung)
+辣椒	la4 jiao1	Paprika, Peperoni
+劳动力	lao2 dong4 li4	-
+牢	lao2	im Gefängnis sitzen (坐牢) / sicher (记牢 = sich fest einprägen)
+老实	lao3 shi5	folgsam / naiv, einfältig
+老鼠	lao3 shu3	-
+外甥	wai4 sheng5	-
+万物	wan4 wu4	die ganze Schöpfung
+围棋	wei2 qi2	-
+微小	wei1 xiao3	minimal
+文档	wen2 dang4	Schriftstück, Akte
+乌龟	wu1 gui1	-
+现货	xian4 huo4	Lagerware
+新媒体	xin1 mei2 ti3	-
+新能源	xin1 neng2 yuan2	alternative Energie
+元宵	yuan2 xiao1	-
+乐曲	yue4 qu3	-
+雷	lei2	Mine (地雷 = Landmine) / schockieren (umg.: 雷人 = haarsträubend)
+理财	li3 cai2	Vermögensverwaltung (理财产品 = Anlageprodukt)
+理科	li3 ke1	MINT-Zweig (Schule)
+力度	li4 du4	Dynamik (Musik) / Nachdruck (加大力度 = verstärkt vorgehen)
+历经	li4 jing1	-
+立场	li4 chang3	Position, Haltung
+利息	li4 xi1	-
+淋	lin2	besprenkeln (淋浴 = Dusche)
+浏览器	liu2 lan3 qi4	-
+流程	liu2 cheng2	Arbeitsablauf (流程图 = Flussdiagramm)
+流量	liu2 liang4	Verkehrsaufkommen, Traffic / Durchflussmenge
+楼道	lou2 dao4	Korridor
+漏洞	lou4 dong4	Schlupfloch, Sicherheitslücke
+旅途	lv3 tu2	-
+率	lv4	-
+率领	shuai4 ling3	befehligen
+轮船	lun2 chuan2	-
+轮椅	lun2 yi3	-
+论坛	lun4 tan2	Internetforum
+码头	ma3 tou2	Hafen, Pier
+埋	mai2	verbergen (埋在心里 = für sich behalten) / sich vertiefen (埋头 = sich in etw. vergraben)
+麦克风	mai4 ke4 feng1	-
+漫画	man4 hua4	Cartoon
+盲人	mang2 ren2	-
+眉毛	mei2 mao5	-
+煤	mei2	-
+迷人	mi2 ren2	faszinierend, verlockend
+密度	mi4 du4	-
+棉	mian2	wattiert (棉衣 = Wattejacke) / Watte (棉花)
+面粉	mian4 fen3	-
+描绘	miao2 hui4	porträtieren, malen
+民歌	min2 ge1	-
+民主	min2 zhu3	demokratisch
+名额	ming2 e2	Zulassungsquote, Platzzahl
+名胜	ming2 sheng4	-
+明亮	ming2 liang4	leuchtend, klar
+明明	ming2 ming2	zweifellos (明明是你 = du warst es doch!)
+模仿	mo2 fang3	kopieren
+模型	mo2 xing2	Gussform, Muster
+摩托车	mo2 tuo1 che1	-
+母语	mu3 yu3	-
+木材	mu4 cai2	Bauholz, Nutzholz
+奶粉	nai3 fen3	-
+难点	nan2 dian3	-
+难免	nan2 mian3	unausweichlich
+内外	nei4 wai4	etwa, rund (一百元内外 = um die 100 Yuan)
+内衣	nei4 yi1	-
+能量	neng2 liang4	Kraft (正能量 = positive Energie)
+能源	neng2 yuan2	Energie, Energieträger
+年度	nian2 du4	Jahres- (年度报告 = Jahresbericht)
+年终	nian2 zhong1	-
+念书	nian4 shu1	lesen; zur Schule gehen
+农产品	nong2 chan3 pin3	-
+浓厚	nong2 hou4	tief, intensiv (兴趣浓厚 = großes Interesse) / dick (Nebel, Wolken)
+暖气	nuan3 qi4	Heizkörper; warme Luft
+排除	pai2 chu2	beheben (排除故障 = eine Störung beheben)
+佩服	pei4 fu2	Respekt haben vor (我真佩服你 = Hut ab!)
+配套	pei4 tao4	kompatibel; Zubehör (配套设施 = Infrastruktur)
+片面	pian4 mian4	-
+骗子	pian4 zi5	Schwindler(in)
+频繁	pin2 fan2	-
+频率	pin2 lv4	Häufigkeit
+平凡	ping2 fan2	alltäglich, schlicht
+平方	ping2 fang1	zweite Potenz
+平方米	ping2 fang1 mi3	-
+评选	ping2 xuan3	auswählen (per Abstimmung)
+坡	po1	Böschung, Steigung
+迫切	po4 qie4	brennend, dringlich
+扑	pu1	flattern (扑翅膀) / tupfen (扑粉 = pudern) / sich voll einsetzen (扑在工作上)
+铺	pu1	ebnen (铺路 = den Weg bereiten) / beziehen (铺床 = das Bett machen)
+欺骗	qi1 pian4	-
+其间	qi2 jian1	inzwischen
+棋子	qi2 zi3	Schachfigur; Marionette (fig.: 别人的棋子 = Spielball anderer)
+恰恰	qia4 qia4	eben, gerade (恰恰相反 = ganz im Gegenteil)
+牵	qian1	mit hineinziehen (牵连) / an jmdn. denken (牵挂 = sich um jmdn. sorgen)
+前期	qian2 qi1	Frühzeit, Vorbereitungsphase
+前提	qian2 ti2	Prämisse
+墙壁	qiang2 bi4	-
+瞧	qiao2	besuchen (瞧病 = zum Arzt gehen) / sieh mal! (瞧你说的 = was du nicht sagst)
+巧妙	qiao3 miao4	clever, einfallsreich
+切实	qie4 shi2	durchführbar; ernsthaft (切实执行 = konsequent umsetzen)
+青春	qing1 chun1	Jugendjahre, Jugendfrische
+青春期	qing1 chun1 qi1	Adoleszenz
+清醒	qing1 xing3	besonnen, vernünftig / bei Bewusstsein
+求婚	qiu2 hun1	-
+求救	qiu2 jiu4	Notruf (求救信号 = Notsignal)
+渠道	qu2 dao4	Bewässerungsgraben / Vertriebsweg (销售渠道)
+取代	qu3 dai4	auswechseln, verdrängen
+权力	quan2 li4	Befugnis, Amtsgewalt
+缺陷	que1 xian4	Fehler, Makel
+燃料	ran2 liao4	Kraftstoff
+热门	re4 men2	angesagt (热门话题 = heißes Thema)
+人工智能	ren2 gong1 zhi4 neng2	-
+人均	ren2 jun1	-
+忍受	ren3 shou4	aushalten, dulden
+认错	ren4 cuo4	sich entschuldigen / verwechseln (认错人了 = jmdn. verwechseln)
+认可	ren4 ke3	Zustimmung, Billigung
+日前	ri4 qian2	unlängst
+融入	rong2 ru4	aufgehen in, Anschluss finden (融入社会 = in der Gesellschaft ankommen)
+入选	ru4 xuan3	in die Auswahl kommen
+撒	sa3	verstreuen
+塞	sai1	Stöpsel, Korken (瓶塞) / zustecken (塞钱 = Geld zustecken)
+扫描	sao3 miao2	einscannen; abtasten
+刹车	sha1 che1	-
+鲨鱼	sha1 yu2	-
+山顶	shan1 ding3	Bergspitze
+闪电	shan3 dian4	-
+商标	shang1 biao1	Logo
+上旬	shang4 xun2	-
+少儿	shao4 er2	Kinder- (少儿节目 = Kinderprogramm)
+设想	she4 xiang3	Überlegung, Plan / an andere denken (为他人设想)
+身心	shen1 xin1	Leib und Seele
+神奇	shen2 qi2	fantastisch, wundersam
+诗歌	shi1 ge1	Poesie
+湿度	shi1 du4	Feuchtigkeit
+石油	shi2 you2	-
+时光	shi2 guang1	Zeiten (美好时光 = schöne Zeiten)
+实话	shi2 hua4	ehrliche Worte (说实话 = ehrlich gesagt)
+实惠	shi2 hui4	Vorteil, Nutzen
+士兵	shi4 bing1	-
+示范	shi4 fan4	demonstrieren; Modell- (示范区 = Modellzone)
+事后	shi4 hou4	hinterher
+视力	shi4 li4	Sehschärfe
+识别	shi2 bie2	identifizieren (人脸识别 = Gesichtserkennung)
+收藏	shou1 cang2	aufbewahren / als Favorit speichern (收藏夹 = Lesezeichen)
+收取	shou1 qu3	einkassieren
+手法	shou3 fa3	Kniff, Trick / Stilmittel (艺术手法)
+手势	shou3 shi4	Handzeichen
+寿命	shou4 ming4	Lebenserwartung; Haltbarkeit (Gerät)
+书籍	shu1 ji2	Literatur, Werke
+书写	shu1 xie3	-
+输送	shu1 song4	transportieren, zuführen
+薯片	shu3 pian4	-
+数目	shu4 mu4	Summe
+衰老	shuai1 lao3	altersschwach
+水泥	shui3 ni2	-
+瞬间	shun4 jian1	-
+思路	si1 lu4	Denkansatz, Idee
+艘	sou1	-
+塑造	su4 zao4	darstellen (Romanfigur) / prägen (Image)
+算了	suan4 le5	-
+虽	sui1	zwar
+岁数	sui4 shu5	Lebensjahre (上岁数 = älter werden)
+岁月	sui4 yue4	Zeiten, Lebensjahre
+损坏	sun3 huai4	kaputtmachen
+台风	tai2 feng1	Bühnenpräsenz
+台球	tai2 qiu2	-
+太阳能	tai4 yang2 neng2	Solarenergie
+谈判	tan2 pan4	-
+探讨	tan4 tao3	diskutieren
+汤圆	tang1 yuan2	-
+淘汰	tao2 tai4	ausrangieren (被淘汰 = aus dem Rennen sein) / aussterben
+套餐	tao4 can1	Tarif (手机套餐 = Handytarif)
+特	te4	sehr (umg.: 特好 = total gut)
+特地	te4 di4	-
+特定	te4 ding4	definiert
+特性	te4 xing4	Charakteristik, Eigenart
+特意	te4 yi4	eigens
+特长	te4 chang2	Spezialgebiet
+体操	ti3 cao1	-
+体系	ti3 xi4	Gefüge
+天然	tian1 ran2	naturbelassen
+天然气	tian1 ran2 qi4	-
+天文	tian1 wen2	astronomisch (天文数字 = astronomische Zahl)
+天下	tian1 xia4	Reich, Herrschaft (打天下 = die Macht erobern)
+天真	tian1 zhen1	unbefangen, ungekünstelt
+田径	tian2 jing4	-
+通讯	tong1 xun4	Fernmeldewesen (通讯录 = Adressbuch)
+同伴	tong2 ban4	Kamerad(in)
+同行	tong2 hang2	-
+铜	tong2	-
+铜牌	tong2 pai2	Messingschild (mit Firmennamen)
+童话	tong2 hua4	-
+透明	tou4 ming2	offen, nachvollziehbar (fig.)
+突发	tu1 fa1	Not- (突发事件 = Notfall, Zwischenfall)
+徒弟	tu2 di4	Jünger, Anhänger(in)
+推测	tui1 ce4	Spekulation
+推行	tui1 xing2	durchführen, umsetzen
+托运	tuo1 yun4	per Spedition schicken (Waren)
+挖	wa1	auskratzen / abwerben (挖人 = Personal abwerben)
+外表	wai4 biao3	Oberfläche
+外交	wai4 jiao1	auswärtige Angelegenheiten (外交部 = Außenministerium)
+顽强	wan2 qiang2	standhaft, beharrlich
+网	wang3	Internet (上网 = online gehen) / Netzwerk
+往后	wang3 hou4	später
+往年	wang3 nian2	-
+危机	wei1 ji1	-
+违规	wei2 gui1	-
+维生素	wei2 sheng1 su4	-
+委屈	wei3 qu5	Unrecht; jmdm. Unrecht tun (委屈你了 = tut mir leid, dass du das ertragen musst)
+委托	wei3 tuo1	Auftrag, Vollmacht
+为何	wei4 he2	-
+为期	wei2 qi1	-
+为止	wei2 zhi3	-
+未成年人	wei4 cheng2 nian2 ren2	-
+温柔	wen1 rou2	sanftmütig, liebevoll
+文科	wen2 ke1	-
+无所谓	wu2 suo3 wei4	einerlei; es macht nichts
+武器	wu3 qi4	-
+物体	wu4 ti3	Objekt
+吸取	xi1 qu3	absorbieren
+细致	xi4 zhi4	akribisch, gründlich
+下旬	xia4 xun2	-
+夏令营	xia4 ling4 ying2	-
+鲜明	xian1 ming2	markant, ausgeprägt (个性鲜明 = eine ausgeprägte Persönlichkeit)
+鲜艳	xian1 yan4	bunt
+显著	xian3 zhu4	beachtlich, beträchtlich; signifikant (Statistik)
+线索	xian4 suo3	Anhaltspunkte; roter Faden (Geschichte)
+限	xian4	Frist (期限)
+限度	xian4 du4	Höchstmaß (最大限度 = maximal)
+陷入	xian4 ru4	versinken in (陷入沉思 = in Gedanken versinken)
+相差	xiang1 cha4	Differenz, Abstand
+相传	xiang1 chuan2	weitergeben (代代相传 = von Generation zu Generation)
+相等	xiang1 deng3	identisch
+香肠	xiang1 chang2	-
+香水	xiang1 shui3	-
+向往	xiang4 wang3	erträumen; Sehnsucht
+小麦	xiao3 mai4	-
+效应	xiao4 ying4	-
+协会	xie2 hui4	Vereinigung, Gesellschaft
+协助	xie2 zhu4	assistieren
+携带	xie2 dai4	immer dabeihaben (随身携带) / übertragen (携带者 = Träger eines Virus)
+心爱	xin1 ai4	-
+心灵	xin1 ling2	Innerstes, Gemüt
+心愿	xin1 yuan4	Wunsch, Traum
+心脏	xin1 zang4	-
+新颖	xin1 ying3	frisch, ungewöhnlich
+薪水	xin1 shui5	-
+信念	xin4 nian4	Glaube
+形态	xing2 tai4	Morphologie
+性价比	xing4 jia4 bi3	-
+性能	xing4 neng2	Eigenschaften (Gerät)
+修订	xiu1 ding4	verbessern (修订版 = überarbeitete Auflage)
+学位	xue2 wei4	Schulplatz (学位房 = Wohnung im Schulbezirk)
+学问	xue2 wen5	Bildung; Kunst für sich (这里面有学问 = da steckt einiges dahinter)
+血压	xue4 ya1	-
+淹没	yan1 mo4	überschwemmen; übertönen (Lärm)
+严寒	yan2 han2	strenger Winter
+言语	yan2 yu3	Rede, Ausdrucksweise
+炎症	yan2 zheng4	-
+演奏	yan3 zou4	-
+验证	yan4 zheng4	verifizieren (验证码 = Bestätigungscode)
+养老院	yang3 lao3 yuan4	Pflegeheim
+要点	yao4 dian3	Kernpunkt, das Wesentliche
+要么	yao4 me5	-
+野外	ye3 wai4	Gelände (野外考察 = Feldforschung)
+液体	ye4 ti3	-
+一辈子	yi2 bei4 zi5	lebenslang
+一带	yi2 dai4	Umgebung (北京一带 = Raum Peking)
+一道	yi2 dao4	gemeinsam
+一身	yi4 shen1	ein komplettes Outfit (一身西装 = im Anzug)
+一同	yi4 tong2	gemeinsam
+一一	yi1 yi1	-
+衣食住行	yi1 shi2 zhu4 xing2	Alltagsbedarf
+仪器	yi2 qi4	Messgerät, Apparat
+遗产	yi2 chan3	Kulturerbe (世界遗产 = Welterbe)
+遗址	yi2 zhi3	historische Stätte
+以免	yi3 mian3	damit nicht
+益处	yi4 chu4	-
+音节	yin1 jie2	-
+银牌	yin2 pai2	-
+引发	yin3 fa1	hervorrufen (Gefühle, Diskussion)
+饮用水	yin3 yong4 shui3	-
+隐私	yin3 si1	Privates, Geheimnisse (个人隐私 = Privatleben)
+婴儿	ying1 er2	-
+涌现	yong3 xian4	aus dem Boden schießen
+用餐	yong4 can1	speisen
+用处	yong4 chu4	Brauchbarkeit (没用处 = nutzlos)
+用功	yong4 gong1	eifrig lernen
+由来	you2 lai2	Herkunft (节日的由来 = Ursprung des Festes)
+游人	you2 ren2	Ausflügler(in)
+有机	you3 ji1	Bio-Lebensmittel (有机食品)
+与其	yu3 qi2	-
+羽绒服	yu3 rong2 fu2	-
+浴室	yu4 shi4	Badeanstalt, Duschraum
+欲望	yu4 wang4	Begehren, Appetit
+原材料	yuan2 cai2 liao4	Rohmaterial
+原先	yuan2 xian1	-
+远程	yuan3 cheng2	Langstrecken- / aus der Ferne (远程办公 = Homeoffice)
+远方	yuan3 fang1	ferner Ort
+约束	yue1 shu4	zügeln; Zwang
+月球	yue4 qiu2	-
+运送	yun4 song4	befördern
+灾	zai1	-
+灾害	zai1 hai4	-
+在意	zai4 yi4	achten auf (别在意 = mach dir nichts draus)
+遭受	zao1 shou4	betroffen sein
+遭遇	zao1 yu4	begegnen (Feind) / Schicksal (悲惨的遭遇 = ein trauriges Schicksal)
+造型	zao4 xing2	Styling, Look / Pose
+噪声	zao4 sheng1	Rauschen
+炸	zha4	in die Luft jagen (炸桥) / ausrasten (umg.: 气炸了 = vor Wut platzen)
+占据	zhan4 ju4	-
+战胜	zhan4 sheng4	-
+战争	zhan4 zheng1	-
+长辈	zhang3 bei4	-
+账单	zhang4 dan1	-
+招收	zhao1 shou1	einstellen
+阵雨	zhen4 yu3	-
+中	zhong4	erleiden (中毒 = sich vergiften; 中暑 = einen Hitzschlag bekommen)
+针	zhen1	Stich (Nähen) / Zeiger (时针 = Stundenzeiger)
+珍珠	zhen1 zhu1	-
+争议	zheng1 yi4	Streit, Meinungsverschiedenheit
+政策	zheng4 ce4	Richtlinie, Strategie (优惠政策 = Vergünstigungen)
+症状	zheng4 zhuang4	-
+支撑	zhi1 cheng1	Stütze, Strebe / durchhalten
+支出	zhi1 chu1	Kosten
+脂肪	zhi1 fang2	-
+职位	zhi2 wei4	Position
+职员	zhi2 yuan2	Mitarbeiter(in)
+只顾	zhi3 gu4	nur mit … beschäftigt sein (只顾玩 = nur ans Spielen denken)
+指定	zhi3 ding4	ernennen; vorgegeben (指定地点 = vorgegebener Ort)
+指示	zhi3 shi4	zeigen, hinweisen
+至关重要	zhi4 guan1 zhong4 yao4	unerlässlich
+治理	zhi4 li3	bekämpfen (治理污染 = Umweltverschmutzung bekämpfen) / verwalten
+质疑	zhi4 yi2	bezweifeln, anzweifeln
+智力	zhi4 li4	-
+中等	zhong1 deng3	Mittelschul- (中等教育 = Sekundarbildung)
+中毒	zhong4 du2	süchtig sein (umg.: 游戏中毒 = spielsüchtig)
+中奖	zhong4 jiang3	-
+中旬	zhong1 xun2	-
+钟头	zhong1 tou2	-
+肿	zhong3	Schwellung
+众人	zhong4 ren2	jedermann
+重心	zhong4 xin1	Mittelpunkt, Kern
+周到	zhou1 dao4	durchdacht, reiflich
+粥	zhou1	Congee
+诸多	zhu1 duo1	eine Menge
+主导	zhu3 dao3	dominieren (起主导作用 = die führende Rolle spielen)
+主流	zhu3 liu2	Hauptarm (Fluss) / Trend
+主演	zhu3 yan3	Hauptdarsteller(in)
+助理	zhu4 li3	-
+助手	zhu4 shou3	Hilfskraft
+专科	zhuan1 ke1	Fachgebiet (Medizin: 专科医生 = Facharzt)
+专题	zhuan1 ti2	Sonderbericht, Themenseite
+庄稼	zhuang1 jia5	Korn
+追究	zhui1 jiu1	einer Sache auf den Grund gehen
+资本	zi1 ben3	-
+资产	zi1 chan3	Aktiva; Besitz
+字幕	zi4 mu4	-
+自豪	zi4 hao2	-
+自来水	zi4 lai2 shui3	-
+自愿	zi4 yuan4	aus freiem Willen
+总裁	zong3 cai2	Präsident(in) (Unternehmen)
+粽子	zong4 zi5	-
+祖国	zu3 guo2	Heimat
+
+# Neuordnung nach heutigem Alltagsgebrauch, HSK 5 (28.11.2026): wichtigste zuerst, die ersten drei erscheinen beim Lernen
+哎呀	ai1 ya1	nanu!, also nein!, ah!
+爱护	ai4 hu4	lieben und beschützen; umsorgen
+保质期	bao3 zhi4 qi1	Haltbarkeitsdauer
+病房	bing4 fang2	Krankensaal, Station
+餐饮	can1 yin3	Gaststättengewerbe
+产量	chan3 liang4	Ausstoß, Leistung
+产品	chan3 pin3	Erzeugnis, Fabrikat
+车祸	che1 huo4	Autounfall
+出色	chu1 se4	bemerkenswert
+大胆	da4 dan3	wagemutig, dreist
+大力	da4 li4	tatkräftig, intensiv
+大脑	da4 nao3	Großhirn
+地位	di4 wei4	Position, Rang
+敌人	di2 ren2	Gegner
+电池	dian4 chi2	Zelle
+派出所	pai4 chu1 suo3	Polizeirevier, Revier
+风险	feng1 xian3	Gefahr
+夫妇	fu1 fu4	Eheleute
+高大	gao1 da4	groß und stark, riesig, mächtig
+高效	gao1 xiao4	Hochleistungs-
+肌肉	ji1 rou4	Muskulatur
+深远	shen1 yuan3	tief greifend
+省会	sheng3 hui4	Sitz der Provinzregierung
+视为	shi4 wei2	erachten
+首次	shou3 ci4	erstmals
+挑选	tiao1 xuan3	aussuchen
+拖鞋	tuo1 xie2	Pantoffel
+勇气	yong3 qi4	Tapferkeit
+职场	zhi2 chang3	Arbeitsplatz
+中期	zhong1 qi1	Mitte der Laufzeit, Mitte eines Zeitraums
+
+# Neuordnung nach heutigem Alltagsgebrauch, HSK 6 (28.11.2026): wichtigste zuerst, die ersten drei erscheinen beim Lernen
+材质	cai2 zhi4	Materialqualität
+成千上万	cheng2 qian1 shang4 wan4	unzählig
+数字化	shu4 zi4 hua4	Digitalisierung
+当初	dang1 chu1	ursprünglich
+倒闭	dao3 bi4	Konkurs anmelden
+感激	gan3 ji1	Dankbarkeit
+过后	guo4 hou4	nachträglich
+技艺	ji4 yi4	Geschicklichkeit
+金钱	jin1 qian2	Mammon
+颈椎	jing3 zhui1	Halswirbel
+就算	jiu4 suan4	auch wenn
+下单	xia4 dan1	Auftrag erteilen
+路况	lu4 kuang4	Straßenbeschaffenheit
+热线	re4 xian4	Informationsdienst
+柔软	rou2 ruan3	geschmeidig
+入境	ru4 jing4	Einreise
+适度	shi4 du4	angemessen
+下功夫	xia4 gong1 fu5	Zeit und Kraft in etw. investieren
+相声	xiang4 sheng5	humoristischer Dialog, Sketch (oft im Peking-Dialekt)
+中暑	zhong4 shu3	Sonnenstich
+真相	zhen1 xiang4	Sachverhalt
+
+# Neuordnung nach heutigem Alltagsgebrauch, HSK 1–3 (25.11.2026): wichtigste zuerst, die ersten drei erscheinen beim Lernen
+八	ba1	-
+爸爸	ba4 ba5	-
+杯子	bei1 zi5	-
+那个	na4 ge5	äh … (Füllwort beim Zögern)
+不要	bu2 yao4	-
+唱	chang4	-
+超市	chao1 shi4	-
+出租车	chu1 zu1 che1	-
+打电话	da3 dian4 hua4	-
+弟弟	di4 di5	-
+电脑	dian4 nao3	-
+电影	dian4 ying3	-
+店	dian4	Hotel (in 酒店, 饭店)
+东西	dong1 xi5	Kerl (abwertend: 不是东西 = ein Mistkerl)
+多少	duo1 shao5	welche Nummer? (你电话多少? = wie ist deine Telefonnummer?)
+儿子	er2 zi5	-
+二	er4	doof (umg.: 你真二 = du bist echt doof)
+房间	fang2 jian1	-
+飞机	fei1 ji1	-
+分钟	fen1 zhong1	-
+哥哥	ge1 ge5	-
+歌	ge1	-
+公司	gong1 si1	-
+狗	gou3	-
+国	guo2	Nation; National- (国歌 = Nationalhymne)
+汉语	han4 yu3	-
+汉字	han4 zi4	-
+好吃	hao3 chi1	-
+好听	hao3 ting1	schöne Worte (说得好听 = das klingt gut, aber …)
+喝	he1	-
+火车	huo3 che1	Eisenbahn
+鸡蛋	ji1 dan4	-
+饺子	jiao3 zi5	-
+姐姐	jie3 jie5	-
+今年	jin1 nian2	-
+今天	jin1 tian1	heutzutage (今天的中国 = das heutige China)
+看见	kan4 jian4	-
+老师	lao3 shi1	höfliche Anrede für Fachleute und Künstler
+六	liu4	-
+妈妈	ma1 ma5	-
+吗	ma5	-
+买	mai3	-
+猫	mao1	sich verkriechen (umg.: 猫在家里 = zu Hause hocken)
+妹妹	mei4 mei5	junges Mädchen (Anrede, umg.)
+们	men5	-
+米饭	mi3 fan4	-
+面包	mian4 bao1	-
+面条儿	mian4 tiao2 r5	-
+名字	ming2 zi5	-
+明年	ming2 nian2	-
+明天	ming2 tian1	Zukunft (明天会更好 = die Zukunft wird besser)
+哪些	na3 xie1	-
+那边	na4 bian1	-
+那儿	na4 r5	-
+那些	na4 xie1	-
+男朋友	nan2 peng2 you5	-
+牛奶	niu2 nai3	-
+女儿	nv3 er2	-
+女朋友	nv3 peng2 you5	-
+女士	nv3 shi4	-
+朋友	peng2 you5	Partner(in) (umg.: 她有朋友了 = sie hat einen Freund)
+苹果	ping2 guo3	Apple (苹果手机 = iPhone)
+七	qi1	-
+起床	qi3 chuang2	-
+请问	qing3 wen4	-
+去年	qu4 nian2	-
+三	san1	-
+商店	shang1 dian4	-
+上午	shang4 wu3	-
+上学	shang4 xue2	-
+生病	sheng1 bing4	-
+时候	shi2 hou5	-
+时间	shi2 jian1	-
+手机	shou3 ji1	-
+书店	shu1 dian4	-
+水果	shui3 guo3	-
+睡觉	shui4 jiao4	ins Bett gehen
+四	si4	-
+天气	tian1 qi4	-
+外边	wai4 bian5	auswärts (在外边吃饭 = auswärts essen)
+晚饭	wan3 fan4	-
+晚上	wan3 shang5	nachts (晚上十一点 = 23 Uhr)
+五	wu3	-
+午饭	wu3 fan4	-
+下班	xia4 ban1	-
+下午	xia4 wu3	-
+下雨	xia4 yu3	-
+现在	xian4 zai4	gegenwärtig, momentan
+小朋友	xiao3 peng2 you3	Kleine(r) (Anrede für Kinder: 小朋友们好! = hallo, Kinder!)
+小时	xiao3 shi2	-
+小学生	xiao3 xue2 sheng1	-
+谢谢	xie4 xie5	danken (谢谢你的帮助 = danke für deine Hilfe)
+星期日	xing1 qi1 ri4	-
+星期天	xing1 qi1 tian1	-
+休息	xiu1 xi5	frei haben (我今天休息 = ich habe heute frei)
+学生	xue2 sheng1	-
+学习	xue2 xi2	sich ein Beispiel nehmen (向他学习 = von ihm lernen)
+学校	xue2 xiao4	-
+衣服	yi1 fu5	-
+医生	yi1 sheng1	-
+医院	yi1 yuan4	-
+椅子	yi3 zi5	-
+有的	you3 de5	-
+有点儿	you3 dian3 r5	-
+早饭	zao3 fan4	-
+早上	zao3 shang5	-
+这个	zhe4 ge5	äh … (Füllwort beim Zögern)
+这儿	zhe4 r5	-
+这里	zhe4 li3	-
+这些	zhe4 xie1	-
+正在	zheng4 zai4	-
+知道	zhi1 dao4	-
+中文	zhong1 wen2	-
+中午	zhong1 wu3	-
+中学	zhong1 xue2	Klassen 7–12 (Unter- und Oberstufe)
+中学生	zhong1 xue2 sheng1	-
+桌子	zhuo1 zi5	-
+昨天	zuo2 tian1	-
+做饭	zuo4 fan4	-
+白色	bai2 se4	-
+帮忙	bang1 mang2	-
+本子	ben3 zi5	Übungsheft
+车站	che1 zhan4	-
+出去	chu1 qu4	-
+打车	da3 che1	ein Taxi rufen (auch per App)
+但是	dan4 shi4	-
+地铁	di4 tie3	-
+懂	dong3	-
+饭馆	fan4 guan3	-
+飞	fei1	-
+高中	gao1 zhong1	-
+告诉	gao4 su5	-
+个子	ge4 zi5	-
+公交车	gong1 jiao1 che1	-
+红茶	hong2 cha2	-
+回来	hui2 lai2	-
+回去	hui2 qu4	-
+机场	ji1 chang3	-
+机票	ji1 piao4	-
+教	jiao1	-
+教室	jiao4 shi4	-
+进来	jin4 lai2	-
+经常	jing1 chang2	ständig, regelmäßig
+咖啡	ka1 fei1	-
+裤子	ku4 zi5	-
+快乐	kuai4 le4	Freude (生日快乐 = alles Gute zum Geburtstag)
+篮球	lan2 qiu2	-
+绿茶	lv4 cha2	scheinbar unschuldig, aber berechnend (Slang, über Mädchen)
+门口	men2 kou3	vor der Tür (在门口等 = vor der Tür warten)
+门票	men2 piao4	-
+奶茶	nai3 cha2	Bubble Tea (珍珠奶茶)
+鸟	niao3	-
+女孩儿	nv3 hai2 r5	Tochter (umg.)
+旁边	pang2 bian1	-
+妻子	qi1 zi5	-
+晴	qing2	-
+肉	rou4	Fruchtfleisch / mollig (umg.: 肉嘟嘟 = pausbäckig)
+商场	shang1 chang3	Geschäftswelt (商场如战场 = im Geschäft geht es zu wie im Krieg)
+上来	shang4 lai2	gelingen (als Ergänzung: 答不上来 = keine Antwort wissen)
+上网	shang4 wang3	surfen / online gestellt werden
+生日	sheng1 ri4	-
+手表	shou3 biao3	-
+书包	shu1 bao1	-
+虽然	sui1 ran2	-
+所以	suo3 yi3	der Grund, warum (之所以…，是因为… = dass …, liegt daran, dass …)
+跳舞	tiao4 wu3	-
+外国	wai4 guo2	-
+小孩儿	xiao3 hai2 r5	-
+小时候	xiao3 shi2 hou5	-
+眼睛	yan3 jing5	-
+药店	yao4 dian4	-
+一会儿	yi2 hui4 r5	gleich (我一会儿去 = ich gehe gleich) / mal … mal (一会儿哭一会儿笑 = mal weinen, mal lachen)
+已经	yi3 jing1	-
+游泳	you2 yong3	-
+有时	you3 shi2	-
+右	you4	politisch rechts (右派 = die Rechten)
+鱼	yu2	-
+丈夫	zhang4 fu5	Gatte
+走路	zou3 lu4	-
+足球	zu2 qiu2	-
+安静	an1 jing4	-
+搬家	ban1 jia1	Umzug (搬家公司 = Umzugsfirma)
+办法	ban4 fa3	Lösung (没办法 = da kann man nichts machen)
+办公室	ban4 gong1 shi4	-
+冰激凌	bing1 ji1 ling2	-
+比如	bi3 ru2	-
+变成	bian4 cheng2	-
+变化	bian4 hua4	sich verändern (变化很大 = sich stark verändert haben)
+宾馆	bin1 guan3	-
+冰箱	bing1 xiang1	-
+病人	bing4 ren2	-
+不但	bu2 dan4	-
+不久	bu4 jiu3	-
+不同	bu4 tong2	-
+不用	bu2 yong4	nicht brauchen (不用谢 = gern geschehen)
+菜单	cai4 dan1	Menü (Computer, App)
+查	cha2	kontrollieren (查票 = Fahrkarten kontrollieren)
+常常	chang2 chang2	-
+成绩	cheng2 ji4	Errungenschaft, Erfolg
+城市	cheng2 shi4	-
+迟到	chi2 dao4	-
+出生	chu1 sheng1	-
+初中	chu1 zhong1	Klassen 7–9
+除了	chu2 le5	außer … auch noch (除了…还… = neben … auch)
+船	chuan2	-
+春天	chun1 tian1	-
+词典	ci2 dian3	-
+聪明	cong1 ming2	clever, schlau
+打扫	da3 sao3	fegen, sauber machen
+大小	da4 xiao3	groß und klein (大小事情 = alle Angelegenheiten)
+大熊猫	da4 xiong2 mao1	-
+担心	dan1 xin1	-
+蛋糕	dan4 gao1	-
+到处	dao4 chu4	-
+电子书	dian4 zi3 shu1	-
+地点	di4 dian3	-
+地图	di4 tu2	-
+的话	de5 hua4	-
+电梯	dian4 ti1	Rolltreppe (umg.)
+东北	dong1 bei3	Nordostchina (Mandschurei)
+冬天	dong1 tian1	-
+动物	dong4 wu4	-
+动物园	dong4 wu4 yuan2	-
+耳朵	er3 duo5	Henkel (Tasse, Topf)
+耳机	er3 ji1	Hörer (Telefon)
+发烧	fa1 shao1	begeistert sein (umg.: 发烧友 = Enthusiast)
+发生	fa1 sheng1	ausbrechen (Krieg, Feuer)
+方法	fang1 fa3	-
+方向	fang1 xiang4	-
+放假	fang4 jia4	frei haben (国庆放假 = frei zum Nationalfeiertag)
+放心	fang4 xin1	erleichtert sein (放心吧 = keine Sorge!)
+放学	fang4 xue2	-
+复习	fu4 xi2	auffrischen
+夫妻	fu1 qi1	-
+感兴趣	gan3 xing4 qu4	-
+刚才	gang1 cai2	-
+公斤	gong1 jin1	-
+公园	gong1 yuan2	-
+关机	guan1 ji1	Drehschluss (Film)
+国家	guo2 jia1	Staats- (国家队 = Nationalmannschaft)
+过节	guo4 jie2	-
+海	hai3	Unmenge (人山人海 = Menschenmassen)
+害怕	hai4 pa4	-
+好多	hao3 duo1	viel besser (好多了)
+号码	hao4 ma3	-
+黑板	hei1 ban3	-
+后来	hou4 lai2	-
+后年	hou4 nian2	-
+花园	hua1 yuan2	-
+机会	ji1 hui4	-
+季节	ji4 jie2	-
+假期	jia4 qi1	Urlaub
+见面	jian4 mian4	-
+街	jie1	Einkaufsstraße (逛街 = bummeln gehen)
+节日	jie2 ri4	-
+结婚	jie2 hun1	-
+姐妹	jie3 mei4	Partner- (姐妹城市 = Partnerstadt) / beste Freundin (umg.: 好姐妹)
+酒	jiu3	Reiswein (黄酒) / chinesischer Schnaps (白酒) / Rotwein (红酒)
+句子	ju4 zi5	-
+开花	kai1 hua1	aufplatzen / aufblühen (fig.: 乐开了花 = vor Freude strahlen)
+看来	kan4 lai2	-
+渴	ke3	sich sehnen (渴望 = sich sehnen nach)
+客人	ke4 ren2	Besucher(in), Kunde/Kundin
+课本	ke4 ben3	Schulbuch
+筷子	kuai4 zi5	-
+矿泉水	kuang4 quan2 shui3	-
+蓝	lan2	-
+礼物	li3 wu4	-
+辆	liang4	für Auto, Fahrrad, Bus (一辆车)
+聊天儿	liao2 tian1 r5	klönen, quatschen
+邻居	lin2 ju1	-
+留学	liu2 xue2	-
+留学生	liu2 xue2 sheng1	ausländische(r) Student(in) (in China)
+马路	ma3 lu4	Fahrbahn (过马路 = die Straße überqueren)
+马上	ma3 shang4	unverzüglich
+名单	ming2 dan1	-
+男人	nan2 ren2	Ehemann (umg.: 我男人 = mein Mann)
+南	nan2	-
+难看	nan2 kan4	blamabel (输得很难看 = blamabel verlieren) / schlecht (脸色难看 = blass, verstimmt aussehen)
+年级	nian2 ji2	-
+年轻	nian2 qing1	-
+女生	nv3 sheng1	-
+盘子	pan2 zi5	Tablett, Platte
+啤酒	pi2 jiu3	-
+平时	ping2 shi2	-
+瓶子	ping2 zi5	-
+起飞	qi3 fei1	Aufschwung nehmen (经济起飞 = Wirtschaftsaufschwung)
+铅笔	qian1 bi3	-
+前年	qian2 nian2	-
+前天	qian2 tian1	-
+请客	qing3 ke4	Gäste bewirten
+秋天	qiu1 tian1	-
+裙子	qun2 zi5	-
+然后	ran2 hou4	anschließend
+认为	ren4 wei2	der Meinung sein, finden
+伞	san3	Sonnenschirm / Fallschirm (降落伞)
+山	shan1	Gebirge, Hügel
+身高	shen1 gao1	-
+声音	sheng1 yin1	Schall, Ton
+司机	si1 ji1	Chauffeur
+四季	si4 ji4	-
+太阳	tai4 yang2	Schläfe (Abk. für 太阳穴)
+甜	tian2	lieblich (笑得很甜 = süß lächeln) / tief (睡得很甜 = tief und fest schlafen)
+同事	tong2 shi4	Mitarbeiter(in)
+头发	tou2 fa5	-
+突然	tu1 ran2	unerwartet
+图书馆	tu2 shu1 guan3	-
+腿	tui3	Schenkel / Tischbein (桌子腿) / Schinken (火腿)
+外卖	wai4 mai4	bestellen (点外卖 = Essen liefern lassen)
+外语	wai4 yu3	-
+网站	wang3 zhan4	-
+为了	wei4 le5	wegen, zwecks
+洗衣机	xi3 yi1 ji1	-
+洗澡	xi3 zao3	-
+喜爱	xi3 ai4	Lieblings- (最喜爱的 = Lieblings-)
+西瓜	xi1 gua1	-
+夏天	xia4 tian1	-
+相机	xiang4 ji1	Fotoapparat
+香蕉	xiang1 jiao1	-
+箱子	xiang1 zi5	Kasten
+小区	xiao3 qu1	-
+校园	xiao4 yuan2	-
+校长	xiao4 zhang3	Direktor(in); Präsident(in) (Uni)
+鞋	xie2	-
+新年	xin1 nian2	frohes neues Jahr! (新年快乐)
+信用卡	xin4 yong4 ka3	-
+行李	xing2 li5	-
+休假	xiu1 jia4	freinehmen
+选	xuan3	aussuchen
+牙刷	ya2 shua1	-
+羊	yang2	-
+一共	yi2 gong4	alles zusammen
+一样	yi2 yang4	wie (像…一样 = genauso wie …)
+以后	yi3 hou4	in Zukunft (以后再说 = das klären wir später)
+以为	yi3 wei2	dachte (我以为你走了 = ich dachte, du wärst schon weg)
+音乐	yin1 yue4	-
+银行	yin2 hang2	-
+饮料	yin3 liao4	-
+影响	ying3 xiang3	stören (影响休息 = beim Ausruhen stören)
+游戏	you2 xi4	Computerspiel (玩游戏 = zocken)
+有名	you3 ming2	-
+有用	you3 yong4	-
+羽毛球	yu3 mao2 qiu2	Federball (der Ball)
+语言	yu3 yan2	-
+遇到	yu4 dao4	stoßen auf (遇到困难 = auf Schwierigkeiten stoßen)
+遇见	yu4 jian4	begegnen
+月亮	yue4 liang5	-
+运动会	yun4 dong4 hui4	Spiele (亚洲运动会 = Asienspiele)
+脏	zang1	unanständig (脏话 = Schimpfwörter)
+照片	zhao4 pian4	-
+照相	zhao4 xiang4	-
+只能	zhi3 neng2	keine andere Wahl haben
+只是	zhi3 shi4	aber (想去，只是没时间 = ich würde gern, habe aber keine Zeit)
+只要	zhi3 yao4	sofern
+纸	zhi3	-
+终于	zhong1 yu2	-
+重要	zhong4 yao4	-
+周末	zhou1 mo4	-
+字典	zi4 dian3	-
+自行车	zi4 xing2 che1	-
+总是	zong3 shi4	-
+做客	zuo4 ke4	-
+
+# Neuordnung nach heutigem Alltagsgebrauch, HSK 4 (25.11.2026): wichtigste zuerst, die ersten drei erscheinen beim Lernen
+背包	bei1 bao1	Backpacker (背包客)
+笨	ben4	schwerfällig, plump (笨重 = klobig)
+鼻子	bi2 zi5	-
+笔试	bi3 shi4	-
+毕业生	bi4 ye4 sheng1	-
+表示	biao3 shi4	bedeuten (这表示 = das heißt) / aussprechen (表示感谢 = Dank aussprechen)
+表扬	biao3 yang2	Lob
+饼干	bing3 gan1	Cracker, Plätzchen
+不必	bu2 bi4	nicht unbedingt
+不论	bu2 lun4	-
+部门	bu4 men2	Ressort, Behörde (政府部门 = Regierungsbehörde)
+参观	can1 guan1	besuchen (Museum, Firma)
+厕所	ce4 suo3	-
+茶叶	cha2 ye4	Tee (als Ware)
+厂	chang3	Werk, Betrieb
+车位	che1 wei4	Parkplatz
+成为	cheng2 wei2	-
+诚实	cheng2 shi2	aufrichtig
+城	cheng2	Wall (长城 = Große Mauer) / Stadtzentrum (进城 = in die Stadt fahren)
+乘客	cheng2 ke4	-
+迟	chi2	verspätet, langsam (迟早 = früher oder später)
+窗	chuang1	-
+出差	chu1 chai1	-
+出现	chu1 xian4	auftauchen, aufkommen
+出行	chu1 xing2	verreisen, herumkommen
+出租	chu1 zu1	Miet- (出租房 = Mietwohnung)
+厨房	chu2 fang2	-
+厨师	chu2 shi1	Küchenchef(in)
+窗户	chuang1 hu5	-
+此	ci3	hier (到此为止 = bis hierhin)
+从此	cong2 ci3	-
+从中	cong2 zhong1	davon (从中受益 = davon profitieren)
+粗心	cu1 xin1	fahrlässig, unbedacht
+村	cun1	Ortschaft
+错过	cuo4 guo4	-
+达到	da2 dao4	erzielen (达到目标 = das Ziel erreichen)
+答案	da2 an4	-
+袋子	dai4 zi5	-
+打印机	da3 yin4 ji1	-
+大巴	da4 ba1	-
+大自然	da4 zi4 ran2	-
+动车	dong4 che1	-
+入住	ru4 zhu4	-
+道歉	dao4 qian4	um Verzeihung bitten
+地球	di4 qiu2	-
+地址	di4 zhi3	-
+登机	deng1 ji1	-
+低于	di1 yu2	-
+点头	dian3 tou2	zustimmen (fig.)
+电动车	dian4 dong4 che1	Elektroauto
+电视剧	dian4 shi4 ju4	-
+东部	dong1 bu4	-
+读者	du2 zhe3	Leserschaft
+肚子	du4 zi5	-
+度假	du4 jia4	-
+队员	dui4 yuan2	-
+队长	dui4 zhang3	-
+对方	dui4 fang1	Gegenpartei / Gesprächspartner(in)
+对于	dui4 yu2	hinsichtlich
+方面	fang1 mian4	Hinsicht (在这方面 = in dieser Hinsicht)
+房租	fang2 zu1	-
+放弃	fang4 qi4	verzichten auf
+分为	fen1 wei2	-
+风景	feng1 jing3	Szenerie, Aussicht
+父母	fu4 mu3	-
+父亲	fu4 qin1	-
+父子	fu4 zi3	-
+负责人	fu4 ze2 ren2	-
+复印	fu4 yin4	vervielfältigen
+改	gai3	Hausaufgaben verbessern (改作业) / ablegen (改掉坏习惯 = eine schlechte Gewohnheit ablegen)
+钢琴	gang1 qin2	-
+胳膊	ge1 bo5	-
+歌声	ge1 sheng1	-
+工厂	gong1 chang3	Werk
+工人	gong1 ren2	-
+工资	gong1 zi1	Vergütung
+公共	gong1 gong4	Gemeinschafts-, gemeinsam
+公里	gong1 li3	-
+公路	gong1 lu4	Autobahn (高速公路)
+购买	gou4 mai3	anschaffen
+购物	gou4 wu4	-
+顾客	gu4 ke4	-
+管理	guan3 li3	Management (管理员 = Verwalter(in), Admin)
+广告	guang3 gao4	Anzeige, Werbespot
+逛	guang4	sich umsehen (逛商店 = durch die Läden gehen)
+国籍	guo2 ji2	-
+国际	guo2 ji4	-
+果汁	guo3 zhi1	-
+咳	ke2	-
+寒假	han2 jia4	-
+航班	hang2 ban1	Fährverbindung (Schiff)
+好处	hao3 chu4	Gewinn; Schmiergeld (好处费)
+好笑	hao3 xiao4	komisch (有什么好笑的? = was gibt's da zu lachen?)
+忽然	hu1 ran2	-
+互联网	hu4 lian2 wang3	-
+护士	hu4 shi5	Krankenschwester
+环保	huan2 bao3	umweltfreundlich
+获奖	huo4 jiang3	-
+基础	ji1 chu3	Grund- (基础知识 = Grundwissen)
+技术	ji4 shu4	Fertigkeit, Können
+加班	jia1 ban1	Mehrarbeit leisten
+加快	jia1 kuai4	-
+加强	jia1 qiang2	festigen, steigern
+加油站	jia1 you2 zhan4	-
+家乡	jia1 xiang1	Heimat
+价格	jia4 ge2	-
+价钱	jia4 qian2	-
+将来	jiang1 lai2	zukünftig
+奖学金	jiang3 xue2 jin1	-
+教练	jiao4 lian4	Fahrlehrer(in) (驾校教练)
+教师	jiao4 shi1	-
+节假日	jie2 jia4 ri4	-
+精彩	jing1 cai3	mitreißend (精彩的比赛 = ein mitreißendes Spiel)
+镜子	jing4 zi5	-
+举例	ju3 li4	zum Beispiel (举例来说)
+开玩笑	kai1 wan2 xiao4	nicht ernst meinen (别开玩笑了 = mach keine Witze!)
+看法	kan4 fa3	-
+棵	ke1	auch für Kohl (一棵白菜)
+客厅	ke4 ting1	Empfangsraum (für Gäste)
+课堂	ke4 tang2	-
+快餐	kuai4 can1	Schnellimbiss
+懒	lan3	keine Lust haben (懒得 = keine Lust haben zu)
+浪漫	lang4 man4	-
+老虎	lao3 hu3	hoher korrupter Funktionär (打老虎 = Korruptionsbekämpfung)
+例子	li4 zi5	-
+零花钱	ling2 hua1 qian2	-
+零食	ling2 shi2	Zwischenmahlzeit
+零下	ling2 xia4	-
+路过	lu4 guo4	durchreisen
+律师	lv4 shi1	-
+馒头	man2 tou5	-
+美丽	mei3 li4	-
+免费	mian3 fei4	gratis
+母亲	mu3 qin1	-
+男士	nan2 shi4	Herren- (男士用品 = Herrenartikel)
+难忘	nan2 wang4	-
+内容	nei4 rong2	Details, Gehalt
+能否	neng2 fou3	-
+年底	nian2 di3	-
+年龄	nian2 ling2	-
+暖和	nuan3 huo5	sich aufwärmen (暖和暖和)
+排球	pai2 qiu2	-
+皮肤	pi2 fu1	-
+皮鞋	pi2 xie2	-
+葡萄酒	pu2 tao5 jiu3	-
+气温	qi4 wen1	-
+千克	qian1 ke4	-
+桥	qiao2	-
+巧克力	qiao3 ke4 li4	-
+亲戚	qin1 qi5	-
+情况	qing2 kuang4	Umstände; Zwischenfall (有情况 = da ist etwas los)
+全都	quan2 dou1	ohne Ausnahme
+缺少	que1 shao3	-
+人生	ren2 sheng1	Lebensweg
+人数	ren2 shu4	-
+任务	ren4 wu5	-
+日常	ri4 chang2	täglich (日常生活 = Alltag)
+日记	ri4 ji4	-
+日期	ri4 qi1	-
+散步	san4 bu4	-
+稍微	shao1 wei1	-
+社会	she4 hui4	gesellschaftlich (社会问题 = soziales Problem)
+摄氏度	she4 shi4 du4	-
+身份证	shen1 fen4 zheng4	-
+甚至	shen4 zhi4	-
+生命	sheng1 ming4	Lebewesen
+食堂	shi2 tang2	Speisesaal
+世纪	shi4 ji4	-
+试题	shi4 ti2	Prüfungsaufgabe
+收听	shou1 ting1	-
+首都	shou3 du1	-
+受不了	shou4 bu5 liao3	-
+熟悉	shu2 xi5	sich vertraut machen (熟悉环境 = sich einleben)
+暑假	shu3 jia4	-
+数量	shu4 liang4	Quantität
+塑料	su4 liao4	-
+躺	tang3	-
+体温	ti3 wen1	-
+体重	ti3 zhong4	-
+填写	tian2 xie3	-
+童年	tong2 nian2	-
+温度	wen1 du4	-
+午餐	wu3 can1	-
+吸引	xi1 yin3	fesseln (吸引力 = Anziehungskraft)
+细心	xi4 xin1	-
+西红柿	xi1 hong2 shi4	-
+现金	xian4 jin1	bar (付现金 = bar bezahlen)
+消息	xiao1 xi5	Neuigkeit (有消息吗? = gibt es Neuigkeiten?)
+小说	xiao3 shuo1	Belletristik
+心情	xin1 qing2	Gemütszustand
+性别	xing4 bie2	-
+许多	xu3 duo1	-
+牙膏	ya2 gao1	-
+亚洲	ya4 zhou1	-
+盐	yan2	-
+眼镜	yan3 jing4	-
+钥匙	yao4 shi5	-
+夜	ye4	-
+夜晚	ye4 wan3	-
+艺术	yi4 shu4	Kunstfertigkeit (说话的艺术 = die Kunst des Redens)
+有趣	you3 qu4	unterhaltsam
+友谊	you3 yi4	-
+语法	yu3 fa3	-
+预习	yu4 xi2	-
+院子	yuan4 zi5	Innenhof
+月饼	yue4 bing5	-
+月份	yue4 fen4	-
+杂志	za2 zhi4	Magazin
+暂时	zan4 shi2	provisorisch
+早餐	zao3 can1	-
+早晨	zao3 chen5	-
+着火	zhao2 huo3	-
+纸巾	zhi3 jin1	-
+转发	zhuan3 fa1	-
+至少	zhi4 shao3	-
+座位	zuo4 wei4	-
+话剧	hua4 ju4	Sprechtheater, modernes Drama
+
+# Neuordnung nach heutigem Alltagsgebrauch, HSK 5 (28.11.2026): wichtigste zuerst, die ersten drei erscheinen beim Lernen
+常识	chang2 shi2	gesunder Menschenverstand
+成人	cheng2 ren2	erwachsen werden (长大成人)
+充电	chong1 dian4	sich weiterbilden, auftanken (fig.)
+打断	da3 duan4	brechen (打断腿 = das Bein brechen)
+调	diao4	Tonfall (语调 = Intonation)
+升温	sheng1 wen1	an Fahrt gewinnen, sich zuspitzen (fig.)
+组织	zu3 zhi1	Gewebe (Biologie)
+
+# Neuordnung nach heutigem Alltagsgebrauch, HSK 6 (28.11.2026): wichtigste zuerst, die ersten drei erscheinen beim Lernen
+导师	dao3 shi1	Doktorvater, Doktormutter
+跌	die1	sinken (Preise, Kurse)
+蹲	dun1	herumhocken (umg.: 蹲在家里 = zu Hause hocken)
+攻击	gong1 ji1	verbal angreifen
+骨头	gu3 tou5	Charakter (fig.: 硬骨头 = harter Brocken, standhafter Mensch)
+夸张	kua1 zhang1	krass (umg.: 太夸张了! = das ist ja krass!)
