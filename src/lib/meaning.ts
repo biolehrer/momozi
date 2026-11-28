@@ -34,6 +34,22 @@ export function shortMeaning(senses: string, maxItems = 3, maxLen = 48): string 
   return out
 }
 
+/** Platzhalter für das gesuchte Wort in Beispielen – wie die Tilde im Wörterbuch */
+export const WORD_MASK = '～'
+
+/**
+ * Verdeckt in einem Text das gesuchte Wort, solange es abgefragt wird (Schreiben, Zeichnen): Dort ist die
+ * Hauptbedeutung die Frage, und manche Beispiele enthalten das Wort selbst – „Partikel (我的 = mein)“ wird zu
+ * „Partikel (我～ = mein)“. Ganze Vorkommen werden zu einer Tilde, einzelne Zeichen eines mehrsilbigen Worts
+ * (z. B. 面 in 前面) ebenfalls. Nach der Antwort zeigen die Abfragen wieder den vollen Text.
+ */
+export function maskWord(text: string, word: string): string {
+  const han = new Set([...word].filter((c) => /\p{Script=Han}/u.test(c)))
+  if (!han.size) return text
+  const whole = [...word].length > 1 ? text.split(word).join(WORD_MASK) : text
+  return [...whole].map((c) => (han.has(c) ? WORD_MASK : c)).join('')
+}
+
 /**
  * Die ersten weiteren Bedeutungen für die Lernansichten („auch: a · b · c“) – nur wenn die Liste von Hand
  * nach Alltagsgebrauch sortiert ist (h) und sich von der Hauptbedeutung unterscheidet; sonst ''.

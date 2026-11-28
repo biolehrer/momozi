@@ -6,6 +6,7 @@
   import Pinyin from './Pinyin.svelte'
   import WritingPad from './WritingPad.svelte'
   import { consume, isPrimary, shortcut } from '../lib/keys'
+  import { maskWord } from '../lib/meaning'
   import type { Word } from '../lib/types'
 
   let { word, onclose }: { word: Word; onclose: () => void } = $props()
@@ -26,6 +27,12 @@
   let hinted = $state(false)
   let pad: WritingPad | undefined = $state()
   let closeBtn: HTMLButtonElement | undefined = $state()
+  /** Zeichen, dessen Lösung gezeigt wurde (−1 = keins) */
+  let revealedAt = $state(-1)
+  // wie in der Schreibabfrage: Beispiele in der Bedeutung verraten das Wort erst, wenn es ohnehin zu sehen ist
+  const meaning = $derived(
+    finished || outline || noData || revealedAt === chars.length - 1 ? word.m : maskWord(word.m, word.s),
+  )
 
   const result = $derived(
     hinted
@@ -66,6 +73,7 @@
     attempt++
     idx = 0
     finished = false
+    revealedAt = -1
     mistakes = 0
     tips = 0
     hinted = false
@@ -73,6 +81,7 @@
 
   function solve() {
     hinted = true
+    revealedAt = idx
     pad?.reveal()
   }
 
@@ -117,7 +126,7 @@
   <header class="head">
     <div class="info">
       <div class="pinyin"><Pinyin n={word.n} /></div>
-      <div class="muted small meaning">{word.m}</div>
+      <div class="muted small meaning">{meaning}</div>
     </div>
     <button class="icon-btn" bind:this={closeBtn} onclick={onclose} aria-label="Schließen" title="Schließen (Esc)">
       <Icon name="close" />

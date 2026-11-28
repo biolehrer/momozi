@@ -4,7 +4,7 @@
   import Icon from './Icon.svelte'
   import SpeakButton from './SpeakButton.svelte'
   import Hanzi from './Hanzi.svelte'
-  import { alsoMeanings } from '../lib/meaning'
+  import { alsoMeanings, maskWord } from '../lib/meaning'
   import Pinyin from './Pinyin.svelte'
   import WritingPad from './WritingPad.svelte'
   import { consume, isPrimary, shortcut } from '../lib/keys'
@@ -66,6 +66,8 @@
   const showWord = $derived(outline || finished || paperRevealed || revealedAt === chars.length - 1)
   /** weitere Bedeutungen erst nach dem Schreiben – vorher wären es zusätzliche Hinweise */
   const also = $derived(finished || paperRevealed ? alsoMeanings(word) : '')
+  // Die Bedeutung ist hier die Frage: Beispiele darin verraten das Wort erst, wenn es ohnehin zu sehen ist
+  const prompt = $derived(showWord ? word.m : maskWord(word.m, word.s))
 
   function resultLabel(r: Result): string {
     if (r.hinted) return 'mit Hilfe'
@@ -154,7 +156,7 @@
   <div class="q-side">
     <p class="label">{free ? (outline ? 'Nachzeichnen' : 'Zeichnen') : 'Schreiben'}</p>
     <div class="prompt">
-      <div class="meaning">{word.m}</div>
+      <div class="meaning">{prompt}</div>
       <div class="pinyin-row">
         {#if showWord}<span class="hanzi zh fade-in" lang="zh-Hans"><Hanzi s={word.s} n={word.n} /></span>{/if}
         {#if word.n}<span class="pinyin"><Pinyin n={word.n} /></span>{/if}
